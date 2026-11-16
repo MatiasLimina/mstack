@@ -5,7 +5,11 @@ obra de origen, qué archivos derivan de ella y su licencia.
 
 ## tstack — Theo Browne
 
-Skills derivadas: `skills/gemini-loop` (de `skills/sol-loop`).
+Skills derivadas:
+
+- `skills/gemini-loop` (de `skills/sol-loop`)
+- `skills/file-pr` (de `skills/file-pr`)
+- `skills/babysit-pr` y `skills/babysit-pr/scripts/pr-wait` (de `skills/babysit-pr`)
 
 Fuente: https://github.com/t3dotgg/tstack
 
