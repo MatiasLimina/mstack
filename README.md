@@ -1,4 +1,4 @@
-# AStackPropio
+# mstack
 
 Mi stack personal de skills para agentes (Claude Code y T3 Code), armado
 tomando lo que más me sirve de otros stacks y adaptándolo a mi forma de
@@ -30,10 +30,11 @@ Fundación (solo proyectos grandes): `discovery-research` → `kb-creator`.
 
 ## Instalación
 
-Copiar (o enlazar) las skills a la carpeta de skills del agente:
+Clonar el repo y copiar (o enlazar) las skills a la carpeta de skills del agente:
 
 ```powershell
-Copy-Item -Recurse -Force "D:\AStackPropio\skills\*" "$env:USERPROFILE\.claude\skills\"
+git clone https://github.com/MatiasLimina/mstack
+Copy-Item -Recurse -Force "mstack\skills\*" "$env:USERPROFILE\.claude\skills\"
 ```
 
 ## Preferencias personales
