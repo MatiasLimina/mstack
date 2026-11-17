@@ -13,6 +13,7 @@ Skills derivadas:
 - `skills/council` (de `skills/council`)
 - `skills/full-send` (de `skills/full-send`)
 - `skills/full-stop` (de `skills/full-stop`)
+- `skills/leaving-pr-comments` (de `skills/leaving-pr-comments`)
 
 Fuente: https://github.com/t3dotgg/tstack
 
