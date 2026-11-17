@@ -4,7 +4,7 @@ description: Abre un pull request conciso. Usala cuando el usuario pida abrir, c
 ---
 
 <!-- Origen: tstack/skills/file-pr (MIT, Theo Browne). Ver NOTICE.md.
-     Cambios: traducida; sin la skill leaving-pr-comments (todavía no está en mstack). -->
+     Cambios: traducida. -->
 
 # file-pr
 
@@ -54,4 +54,4 @@ falla porque se agotó el rate limit de GraphQL, abrilo por REST con
 Si el usuario también pidió vigilarlo, seguí con la skill `babysit-pr`.
 
 No dejes un comentario de seguimiento en el PR salvo que sirva al pedido del
-usuario. Si hace falta, que sea corto, concreto y diga que lo escribió un agente.
+usuario. Si hace falta, usá la skill `leaving-pr-comments`.

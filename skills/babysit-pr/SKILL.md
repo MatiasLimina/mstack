@@ -4,7 +4,7 @@ description: Vigila un pull request durante la review y el CI. Usala cuando el u
 ---
 
 <!-- Origen: tstack/skills/babysit-pr (MIT, Theo Browne). Ver NOTICE.md.
-     Cambios: traducida; pr-wait corre en Windows; sin la skill leaving-pr-comments. -->
+     Cambios: traducida; pr-wait corre en Windows. -->
 
 # babysit-pr
 
@@ -94,8 +94,8 @@ CodeRabbit es consultivo. Tratá sus hallazgos como cualquier otro, pero nunca
 lo esperes ni frenes un merge por él.
 
 Si un bot deja feedback que creés que no vale la pena, respondé con un motivo
-escrito y resolvé el comentario. Todo comentario que postees en nombre del
-usuario: corto, concreto, y aclarando que lo escribió un agente.
+escrito y resolvé el comentario. Usá la skill `leaving-pr-comments` para todo
+comentario que postees en nombre del usuario.
 
 Las capturas y videos también ayudan, si tenés forma de subirlos.
 
