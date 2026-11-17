@@ -11,6 +11,8 @@ Skills derivadas:
 - `skills/file-pr` (de `skills/file-pr`)
 - `skills/babysit-pr` y `skills/babysit-pr/scripts/pr-wait` (de `skills/babysit-pr`)
 - `skills/council` (de `skills/council`)
+- `skills/full-send` (de `skills/full-send`)
+- `skills/full-stop` (de `skills/full-stop`)
 
 Fuente: https://github.com/t3dotgg/tstack
 

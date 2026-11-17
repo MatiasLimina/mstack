@@ -12,6 +12,8 @@ trabajar.
 | `file-pr` | "abrí el PR" | Abre un PR con título y descripción concisos, sin secretos. | Adaptada de `file-pr` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `babysit-pr` | "vigilá el PR" | Vigila CI y reviews del PR hasta que esté listo para mergear. Incluye `pr-wait`. | Adaptada de `babysit-pr` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `council` | "council" | Convoca a Opus, Gemini Argon y un tercer modelo a elección para revisar o dar feedback. | Adaptada de `council` ([tstack](https://github.com/t3dotgg/tstack)) |
+| `full-send` | "full send" | Lleva el cambio solo hasta un PR mergeado: prueba, code-review, gemini-loop, PR y vigilancia. | Adaptada de `full-send` ([tstack](https://github.com/t3dotgg/tstack)) |
+| `full-stop` | "full stop" | Igual que `full-send`, pero deja el PR listo sin mergear. | Adaptada de `full-stop` ([tstack](https://github.com/t3dotgg/tstack)) |
 
 ## Workflow (en construcción)
 
@@ -56,9 +58,8 @@ skills sin perder la configuración. Cada skill documenta sus defaults.
 Este stack se apoya en el trabajo de otros. Gracias a:
 
 - **Theo Browne** — [tstack](https://github.com/t3dotgg/tstack) (MIT).
-  `gemini-loop`, `file-pr`, `babysit-pr` y `council` son adaptaciones de sus
-  skills (`sol-loop`, `file-pr`, `babysit-pr`, `council`), y las ideas de
-  `full-send` / `full-stop` vienen de ahí.
+  `gemini-loop`, `file-pr`, `babysit-pr`, `council`, `full-send` y
+  `full-stop` son adaptaciones de sus skills (`sol-loop` y las homónimas).
   Ver [`NOTICE.md`](NOTICE.md).
 - **Matt Pocock** — [skills](https://github.com/mattpocock/skills) (MIT).
   El flujo `grill-with-docs` → `to-spec` → `implement` + `tdd` → `code-review`
