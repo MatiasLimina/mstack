@@ -50,9 +50,9 @@ no saltea un pedido de aprobación del harness o del sistema si aparece.
    que funcione. Arreglá el caso que pasó, no todos los que podrían pasar. Si
    estás en la rama default, creá una rama primero.
 2. **Probalo.** Conseguí prueba de cada cambio que hiciste. Ver "Prueba".
-3. **Conseguí feedback.** Corré la skill `code-review` (Matt Pocock) sobre el
+3. **Conseguí feedback.** Corré la skill `mattpocock-skills:code-review` (no el `/code-review` built-in) sobre el
    diff y resolvé sus hallazgos. Después usá la skill `gemini-loop` como gate
-   entre proveedores. Si `code-review` no está disponible en el proyecto,
+   entre proveedores. Si `mattpocock-skills:code-review` no está disponible en el proyecto,
    preguntale al usuario antes de seguir.
 4. **Abrí el PR** con la skill `file-pr`. Antes, hacé rebase sobre la última
    versión de la rama default. Agregá una línea corta a la descripción que diga

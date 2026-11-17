@@ -14,6 +14,7 @@ trabajar.
 | `council` | "council" | Convoca a Opus, Gemini Argon y un tercer modelo a elección para revisar o dar feedback. | Adaptada de `council` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `full-send` | "full send" | Lleva el cambio solo hasta un PR mergeado: prueba, code-review, gemini-loop, PR y vigilancia. | Adaptada de `full-send` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `full-stop` | "full stop" | Igual que `full-send`, pero deja el PR listo sin mergear. | Adaptada de `full-stop` ([tstack](https://github.com/t3dotgg/tstack)) |
+| `opsx-orchestrator` | "opsx" | Modo orquestador OpenSpec (propose/apply/archive), opt-in para proyectos que usan `openspec/`. | Propia (antes vivía en el `CLAUDE.md` global) |
 | `leaving-pr-comments` | (automática) | Formatea los comentarios que un agente deja en GitHub en tu nombre. La usan `file-pr` y `babysit-pr`. | Adaptada de `leaving-pr-comments` ([tstack](https://github.com/t3dotgg/tstack)) |
 
 ## Workflow (en construcción)
@@ -25,14 +26,22 @@ to-spec → implement + tdd ── (mismo error 2 veces) ──→ advisor      
                  ▼
 verify-<proyecto>                                                     [¿funciona de verdad?]
                  ▼
-code-review (Matt) ─ ¿cumple spec y estándares?                       [convergente, 1 modelo]
+gate final según governance                                           [convergente]
                  ▼
-gemini-loop ─ gate cross-provider                                     [convergente]
-                 ▼
-file-pr → babysit-pr        ← full-stop encadena desde verify
+file-pr → babysit-pr        ← full-stop / full-send encadenan desde verify
 ```
 
-Fundación (solo proyectos grandes): `discovery-research` → `kb-creator`.
+Gate final según el nivel de governance del cambio (detalle en `config/CLAUDE.md`):
+
+| Nivel | Revisión |
+|---|---|
+| LOW | Tests en verde |
+| MEDIUM | `code-review` (Matt) |
+| HIGH | `code-review` + `gemini-loop` |
+| CRITICAL | `code-review` + `gemini-loop` + `council` |
+
+Fundación (solo proyectos grandes): `discovery-research` → `kb-creator` →
+`roadmap-generator` → `agent-instruction`.
 
 ## Instalación
 
@@ -41,7 +50,37 @@ Clonar el repo y copiar (o enlazar) las skills a la carpeta de skills del agente
 ```powershell
 git clone https://github.com/MatiasLimina/mstack
 Copy-Item -Recurse -Force "mstack\skills\*" "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Force "$env:USERPROFILE\.claude\CLAUDE.md" "$env:USERPROFILE\.claude\CLAUDE.md.bak"  # backup del global actual
+Copy-Item -Force "mstack\config\CLAUDE.md" "$env:USERPROFILE\.claude\CLAUDE.md"
 ```
+
+### Dependencias
+
+El workflow usa skills de terceros que este repo no copia:
+
+```powershell
+# Matt Pocock (grill-with-docs, to-spec, implement, tdd, code-review): plugin, se actualiza solo
+claude plugin marketplace add mattpocock/skills
+claude plugin install mattpocock-skills@mattpocock --scope user
+
+# pstack (Lauren Tan): solo las dos skills de verificación; el plugin entero suma ~40 skills que el workflow no usa
+git clone https://github.com/cursor/plugins cursor-plugins
+Copy-Item -Recurse -Force "cursor-plugins\pstack\skills\create-verification-skill" "$env:USERPROFILE\.claude\skills\"
+Copy-Item -Recurse -Force "cursor-plugins\pstack\skills\maintain-verification-skill" "$env:USERPROFILE\.claude\skills\"
+```
+
+No mezcles el plugin de Matt con copias sueltas de sus skills en
+`~/.claude/skills`: quedarían duplicadas.
+
+Los agentes `advisor` y `scout`, y las skills de fundación (`discovery-research`,
+`kb-creator`, `roadmap-generator`, `agent-instruction`, `active-orchestrator`)
+vienen de **active-stack**. Instalalo antes, pero ojo: su install/update
+reescribe el `CLAUDE.md` global con bloques `active-stack:sdd-*`; después de
+correrlo, volvé a copiar `config/CLAUDE.md`.
+
+`config/CLAUDE.md` es el `CLAUDE.md` global: shell, workflow, governance,
+gate final y preferencias. Reemplaza al tuyo (el bloque de instalación hace
+backup en `CLAUDE.md.bak`).
 
 ## Preferencias personales
 
