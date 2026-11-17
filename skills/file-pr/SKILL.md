@@ -39,6 +39,12 @@ BIEN
 > ✅ Mi default de "nuevo worktree" se ignoraba al crear threads sobre worktrees
 > existentes. Nada intuitivo. Ahora tus preferencias se aplican siempre.
 
+Si el cambio sale de un issue (lo dice el nombre de la rama, `<tipo>/<N>-<slug>`,
+o el pedido del usuario), agregá `Closes #N` en una línea propia de la
+descripción, así GitHub cierra el ticket al mergear. Si cubre varios, una
+línea por issue. No cierres el issue de la spec padre salvo que el PR complete
+todos sus tickets.
+
 Cerrá la descripción con el nombre público del modelo y el harness que hicieron
 los cambios, por ejemplo `Created with <modelo> in <harness>.` Incluí los
 modelos de subagentes que escribieron parte del cambio. Usá el nombre que
