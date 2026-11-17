@@ -19,27 +19,49 @@ quitar worktree → `git worktree remove "C:\..."`; variable de entorno →
 
 ## Workflow
 
+Trabajo con el modo de Matt Pocock más algunos agregados. El tracker es
+GitHub Issues y cada ticket se cierra con su propio PR.
+
 ```
-grill-with-docs ─┬─ (trabado / dudas de diseño) ──→ council
-                 ▼
-to-spec → implement + tdd ── (mismo error 2 veces) ──→ advisor
-                 ▼
-verify-<proyecto>
-                 ▼
-gate final (según governance, ver abajo)
-                 ▼
-file-pr → babysit-pr        ← full-stop / full-send encadenan desde verify
+/mattpocock-skills:grill-with-docs ─┬─ (trabado / dudas de diseño) ──→ council
+          ▼
+/mattpocock-skills:to-spec        → issue de spec en GitHub
+          ▼
+/mattpocock-skills:to-tickets     → issues hijos de la spec, con bloqueos
+          ▼
+por cada ticket desbloqueado (su rama, su PR):
+  /mattpocock-skills:implement #N (tdd + code-review adentro) ── (mismo error 2 veces) ──→ advisor
+          ▼
+  verify-<proyecto>
+          ▼
+  gate final (según governance, ver abajo)
+          ▼
+  file-pr (Closes #N) → babysit-pr   ← full-stop / full-send encadenan desde verify
 ```
 
+- Con `/` adelante: la escribe el usuario (la skill no es invocable por un
+  agente). Sin `/`: el agente la lanza solo.
+- Las fases van en orden: grill → spec → tickets → implement. Cuando la
+  conversación cierre una fase, decile al usuario el próximo comando, tal
+  cual hay que escribirlo, y esperá a que lo corra. Cada fase produce su
+  artefacto con su propia skill, aunque el cambio parezca chico.
+- `implement` commitea en la rama actual, así que antes de `/implement #N`
+  parate en la rama del ticket: si no existe, creala desde la default
+  actualizada como `<tipo>/<N>-<slug>` (`<tipo>`: `feat`, `fix`, `refactor`,
+  `docs` o `chore`; `<slug>`: el título del issue en kebab-case corto).
+  Arrancá un ticket recién cuando sus bloqueantes estén mergeados.
+- El `code-review` que corre `implement` cuenta como el `code-review` del gate
+  final para ese diff; el gate suma lo que falte según el nivel.
 - Antes de implementar, ubicá el estado del proyecto: leé su `CLAUDE.md` /
   `AGENTS.md` y, si existen, `knowledge-base/` y `CHANGES.md`.
 - Fundación (solo proyectos grandes y vacíos): `discovery-research` →
   `kb-creator` → `roadmap-generator` → `agent-instruction`.
-- Las skills de Matt Pocock (`grill-with-docs`, `to-spec`, `implement`, `tdd`,
-  `code-review`) vienen del plugin `mattpocock-skills`: invocalas con prefijo (`mattpocock-skills:code-review`, no el `/code-review` built-in
-  de Claude Code). En un proyecto nuevo, corré antes
-  `mattpocock-skills:setup-matt-pocock-skills`.
-- `verify-<proyecto>` se crea con `create-verification-skill` (pstack) si el
+- Las skills de Matt vienen del plugin `mattpocock-skills`. Siempre van con
+  prefijo (`mattpocock-skills:code-review`, no el `/code-review` built-in de
+  Claude Code). En un proyecto nuevo, el usuario corre antes
+  `/mattpocock-skills:setup-matt-pocock-skills` con GitHub como tracker; sin
+  eso, `to-spec` y `to-tickets` no saben dónde publicar.
+- `verify-<proyecto>` se crea con `/create-verification-skill` (pstack) si el
   proyecto no la tiene.
 - Implementá test-first con `mattpocock-skills:tdd`. Nunca escribas aserciones
   triviales (tautologías, chequeos solo de tipo).
@@ -70,7 +92,7 @@ Antes de cualquier acción no trivial, identificá el nivel del dominio:
 
 ### Gate final
 
-Antes de declarar un cambio terminado o commitear, revisá el diff según el
+Antes de declarar un cambio terminado o abrir su PR, revisá el diff según el
 nivel más alto que toque:
 
 | Nivel | Revisión |

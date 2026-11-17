@@ -17,19 +17,31 @@ trabajar.
 | `opsx-orchestrator` | "opsx" | Modo orquestador OpenSpec (propose/apply/archive), opt-in para proyectos que usan `openspec/`. | Propia (antes vivía en el `CLAUDE.md` global) |
 | `leaving-pr-comments` | (automática) | Formatea los comentarios que un agente deja en GitHub en tu nombre. La usan `file-pr` y `babysit-pr`. | Adaptada de `leaving-pr-comments` ([tstack](https://github.com/t3dotgg/tstack)) |
 
-## Workflow (en construcción)
+## Workflow
+
+El modo de trabajo de Matt Pocock con agregados. Los pasos con `/` los
+escribís vos (esas skills no las puede invocar un agente); el resto lo encadena
+el agente. Tracker en GitHub Issues: un PR por ticket.
 
 ```
-grill-with-docs ─┬─ (trabado / dudas de diseño) ──→ council           [divergente]
-                 ▼
-to-spec → implement + tdd ── (mismo error 2 veces) ──→ advisor        [causa raíz]
-                 ▼
-verify-<proyecto>                                                     [¿funciona de verdad?]
-                 ▼
-gate final según governance                                           [convergente]
-                 ▼
-file-pr → babysit-pr        ← full-stop / full-send encadenan desde verify
+/mattpocock-skills:grill-with-docs ─┬─ (trabado / dudas de diseño) ──→ council          [divergente]
+                  ▼
+/mattpocock-skills:to-spec        → issue de spec
+                  ▼
+/mattpocock-skills:to-tickets     → issues hijos con bloqueos
+                  ▼
+por ticket desbloqueado (rama <tipo>/<N>-<slug>):
+  /mattpocock-skills:implement #N  (tdd + code-review) ── (mismo error 2 veces) ──→ advisor  [causa raíz]
+                  ▼
+  verify-<proyecto>                                                  [¿funciona de verdad?]
+                  ▼
+  gate final según governance                                        [convergente]
+                  ▼
+  file-pr (Closes #N) → babysit-pr   ← full-stop / full-send encadenan desde verify
 ```
+
+Cada proyecto necesita antes `/mattpocock-skills:setup-matt-pocock-skills` con
+GitHub como tracker.
 
 Gate final según el nivel de governance del cambio (detalle en `config/CLAUDE.md`):
 
