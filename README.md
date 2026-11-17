@@ -16,6 +16,7 @@ trabajar.
 | `full-stop` | "full stop" | Igual que `full-send`, pero deja el PR listo sin mergear. | Adaptada de `full-stop` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `opsx-orchestrator` | "opsx" | Modo orquestador OpenSpec (propose/apply/archive), opt-in para proyectos que usan `openspec/`. | Propia (antes vivía en el `CLAUDE.md` global) |
 | `leaving-pr-comments` | (automática) | Formatea los comentarios que un agente deja en GitHub en tu nombre. La usan `file-pr` y `babysit-pr`. | Adaptada de `leaving-pr-comments` ([tstack](https://github.com/t3dotgg/tstack)) |
+| `unslop` | `/unslop` | Saca de un texto las marcas típicas de la escritura de IA. Solo la invocás vos. | Copia de `unslop` ([pstack](https://github.com/cursor/plugins/tree/main/pstack)) |
 
 ## Workflow
 
@@ -119,7 +120,8 @@ Este stack se apoya en el trabajo de otros. Gracias a:
   del workflow usa sus skills tal cual; este repo no copia su código.
 - **Lauren Tan** — [pstack](https://github.com/cursor/plugins/tree/main/pstack) (MIT).
   La idea de una skill de verificación por proyecto (`create-verification-skill`)
-  viene de ahí; este repo no copia su código.
+  viene de ahí. `unslop` es una copia de su skill homónima.
+  Ver [`NOTICE.md`](NOTICE.md).
 
 Si alguna skill de este repo pasa a derivar de otro trabajo, su licencia y
 autoría se agregan a `NOTICE.md` y al encabezado de la skill.
