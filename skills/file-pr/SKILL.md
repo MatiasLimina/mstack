@@ -48,7 +48,7 @@ adivines. Si el harness pide su propia línea de atribución, usá esa.
 Antes de enviarlo, revisá título, descripción, citas y adjuntos en busca de
 secretos y datos privados.
 
-Abrí un PR real, no un draft, así corren los bots de review. Si `gh pr create`
+Abrí un PR real, no un draft, así revisa Copilot si el repo lo tiene. Si `gh pr create`
 falla porque se agotó el rate limit de GraphQL, abrilo por REST con
 `gh api repos/<owner>/<repo>/pulls -f title=... -f head=... -f base=... -F body=@<archivo>`.
 Si el usuario también pidió vigilarlo, seguí con la skill `babysit-pr`.

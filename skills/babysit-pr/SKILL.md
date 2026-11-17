@@ -4,12 +4,13 @@ description: Vigila un pull request durante la review y el CI. Usala cuando el u
 ---
 
 <!-- Origen: tstack/skills/babysit-pr (MIT, Theo Browne). Ver NOTICE.md.
-     Cambios: traducida; pr-wait corre en Windows. -->
+     Cambios: traducida; pr-wait corre en Windows; el bot de review es Copilot
+     (Greptile, Macroscope y CodeRabbit fuera); pr-wait no se cuelga sin CI. -->
 
 # babysit-pr
 
-Muchos repos tienen bots de review con IA. Ayudan, aunque no siempre tienen
-razón.
+El bot de review que puede aparecer es Copilot
+(`copilot-pull-request-reviewer`). Ayuda, aunque no siempre tiene razón.
 
 ## Esperar
 
@@ -55,11 +56,15 @@ Imprime una línea por cada evento real. Sale con 0 cuando se cumple el
 requerido, conflictos, threads sin resolver, PR cerrado), y con 2 si la
 entrada es inválida u otro `pr-wait` ya vigila ese PR.
 
-- `ready` (default): checks requeridos en verde, Greptile o Macroscope
-  revisaron el head, y no hay threads sin resolver. Usalo para vigilar.
-- `green`: solo checks requeridos. Usalo si el repo no tiene Greptile ni
-  Macroscope.
+- `ready` (default): checks en verde, sin threads sin resolver y la rama al
+  día. Si el repo no tiene CI, no hay checks que esperar. Usalo para vigilar.
+- `green`: solo checks.
 - `any-change`: sale con el primer evento.
+
+`pr-wait` avisa cuando Copilot termina su review, pero nunca la espera. Copilot
+revisa al abrirse el PR y, salvo que el repo lo configure, no vuelve a revisar
+después de cada push. Sus hallazgos llegan como threads, y `ready` ya exige
+resolverlos.
 
 En Claude Code, corrélo con la herramienta Monitor (`timeout_ms: 3600000`), así
 cada línea te despierta. Sin monitor, corrélo como un solo comando largo.
@@ -87,13 +92,7 @@ hallazgo de un bot contra el código antes de cambiar nada. Arreglá los
 hallazgos reales y las fallas de CI, distinguí fallas del repo de flakes de
 infraestructura, y respondé con un motivo escrito al descartar falsos positivos.
 
-Si el repo tiene `.macroscope/check-run-agents/*.md`, leé esas reglas antes de
-responder un hallazgo de Macroscope. Sus hallazgos las citan.
-
-CodeRabbit es consultivo. Tratá sus hallazgos como cualquier otro, pero nunca
-lo esperes ni frenes un merge por él.
-
-Si un bot deja feedback que creés que no vale la pena, respondé con un motivo
+Si Copilot deja feedback que creés que no vale la pena, respondé con un motivo
 escrito y resolvé el comentario. Usá la skill `leaving-pr-comments` para todo
 comentario que postees en nombre del usuario.
 
