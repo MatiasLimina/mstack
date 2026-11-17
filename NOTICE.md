@@ -10,6 +10,7 @@ Skills derivadas:
 - `skills/gemini-loop` (de `skills/sol-loop`)
 - `skills/file-pr` (de `skills/file-pr`)
 - `skills/babysit-pr` y `skills/babysit-pr/scripts/pr-wait` (de `skills/babysit-pr`)
+- `skills/council` (de `skills/council`)
 
 Fuente: https://github.com/t3dotgg/tstack
 
