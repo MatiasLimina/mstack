@@ -17,6 +17,11 @@ trabajar.
 | `opsx-orchestrator` | "opsx" | Modo orquestador OpenSpec (propose/apply/archive), opt-in para proyectos que usan `openspec/`. | Propia (antes vivía en el `CLAUDE.md` global) |
 | `leaving-pr-comments` | (automática) | Formatea los comentarios que un agente deja en GitHub en tu nombre. La usan `file-pr` y `babysit-pr`. | Adaptada de `leaving-pr-comments` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `unslop` | `/unslop` | Saca de un texto las marcas típicas de la escritura de IA. Solo la invocás vos. | Copia de `unslop` ([pstack](https://github.com/cursor/plugins/tree/main/pstack)) |
+| `discovery-research` | "investiguemos el producto" | Fundación, paso opcional: investiga competidores (con `web-scraper`) y guía una Q&A sobre el producto antes de la KB. | Copia de [Group-Active-IA/discovery-research](https://github.com/Group-Active-IA/discovery-research) |
+| `web-scraper` | "investigá este competidor: `<URL>`" | Saca de la URL de un competidor una nota con esquema fijo. La usa `discovery-research`. | Copia de [Group-Active-IA/web-scraper](https://github.com/Group-Active-IA/web-scraper) |
+| `kb-creator` | "armá la KB" | Fundación: arma la base de conocimiento del proyecto en `knowledge-base/`. | Copia de [Group-Active-IA/kb-creator](https://github.com/Group-Active-IA/kb-creator) |
+| `roadmap-generator` | "armá el roadmap" | Fundación: arma el plan de trabajo a partir de la KB. | Copia de [Group-Active-IA/roadmap-generator](https://github.com/Group-Active-IA/roadmap-generator) |
+| `agent-instruction` | "generá el AGENTS.md" | Fundación: genera las instrucciones del proyecto para los agentes a partir de la KB y el roadmap. | Copia de [JuanCruzRobledo/agent-instruction](https://github.com/JuanCruzRobledo/agent-instruction) |
 
 ## Workflow
 
@@ -85,11 +90,10 @@ Copy-Item -Recurse -Force "cursor-plugins\pstack\skills\maintain-verification-sk
 No mezcles el plugin de Matt con copias sueltas de sus skills en
 `~/.claude/skills`: quedarían duplicadas.
 
-Los agentes `advisor` y `scout`, y las skills de fundación (`discovery-research`,
-`kb-creator`, `roadmap-generator`, `agent-instruction`, `active-orchestrator`)
-vienen de **active-stack**. Instalalo antes, pero ojo: su install/update
-reescribe el `CLAUDE.md` global con bloques `active-stack:sdd-*`; después de
-correrlo, volvé a copiar `config/CLAUDE.md`.
+Las skills de fundación vienen en este repo. Los agentes `advisor` y `scout`, y
+`active-orchestrator`, vienen de **active-stack**. Instalalo antes, pero ojo: su
+install/update reescribe el `CLAUDE.md` global con bloques `active-stack:sdd-*`;
+después de correrlo, volvé a copiar `config/CLAUDE.md`.
 
 `config/CLAUDE.md` es el `CLAUDE.md` global: shell, workflow, governance,
 gate final y preferencias. Reemplaza al tuyo (el bloque de instalación hace
@@ -118,6 +122,15 @@ Este stack se apoya en el trabajo de otros. Gracias a:
 - **Matt Pocock** — [skills](https://github.com/mattpocock/skills) (MIT).
   El flujo `grill-with-docs` → `to-spec` → `implement` + `tdd` → `code-review`
   del workflow usa sus skills tal cual; este repo no copia su código.
+- **Group-Active-IA** — [discovery-research](https://github.com/Group-Active-IA/discovery-research),
+  [kb-creator](https://github.com/Group-Active-IA/kb-creator),
+  [roadmap-generator](https://github.com/Group-Active-IA/roadmap-generator) y
+  [web-scraper](https://github.com/Group-Active-IA/web-scraper) (Apache-2.0).
+  Las skills de fundación homónimas son copias de esos repos.
+  Ver [`NOTICE.md`](NOTICE.md).
+- **Juan Cruz Robledo** — [agent-instruction](https://github.com/JuanCruzRobledo/agent-instruction) (Apache-2.0).
+  `agent-instruction` es una copia de su skill.
+  Ver [`NOTICE.md`](NOTICE.md).
 - **Lauren Tan** — [pstack](https://github.com/cursor/plugins/tree/main/pstack) (MIT).
   La idea de una skill de verificación por proyecto (`create-verification-skill`)
   viene de ahí. `unslop` es una copia de su skill homónima.

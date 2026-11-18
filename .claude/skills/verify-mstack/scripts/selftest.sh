@@ -25,6 +25,19 @@ fresh_copy() {
   cp -r "$REPO/skills" "$dst/skills"
   cp -r "$REPO/.claude/skills" "$dst/.claude/skills"
   cp "$REPO/NOTICE.md" "$dst/NOTICE.md"
+  # Las skills de fundación reales se sacan: el selftest prueba el verificador, no el
+  # estado del repo (entre #13 y #17 están a medio adaptar y harían fallar el baseline).
+  # La lista sale de check-static.sh, para no mantenerla en dos lugares.
+  local s foundation
+  foundation=$(tr -d '\r' < "$HERE/check-static.sh" | sed -n 's/^FOUNDATION="\(.*\)"$/\1/p')
+  if [ -z "$foundation" ]; then
+    echo "ERROR: no encontré FOUNDATION=\"...\" en check-static.sh" >&2
+    exit 2
+  fi
+  for s in $foundation; do
+    rm -rf "$dst/skills/$s"
+    sed -i "/^- \`skills\/$s\`/d" "$dst/NOTICE.md"
+  done
   echo "$dst"
 }
 
