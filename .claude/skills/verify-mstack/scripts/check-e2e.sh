@@ -6,9 +6,9 @@
 #   bash check-e2e.sh snapshot TEST_REPO OUT_FILE
 #       Guarda la sección "## Agent skills" de TEST_REPO/AGENTS.md en OUT_FILE.
 #       Correlo justo después de /setup-matt-pocock-skills.
-#   bash check-e2e.sh check TEST_REPO [SNAPSHOT_FILE]
-#       Corre todas las verificaciones. Con SNAPSHOT_FILE, además exige que
-#       "## Agent skills" siga idéntica a la del snapshot.
+#   bash check-e2e.sh check TEST_REPO SNAPSHOT_FILE
+#       Corre todas las verificaciones. Exige que "## Agent skills" siga
+#       idéntica a la del snapshot: sin él, una sección reescrita pasaría.
 # Exit: 0 todo pasa, 1 alguna verificación falla, 2 uso incorrecto.
 
 set -u
@@ -34,6 +34,7 @@ if [ "$mode" = snapshot ]; then
 fi
 [ "$mode" = check ] || usage
 snapshot="${3:-}"
+[ -f "$snapshot" ] || { echo "ERROR: falta el snapshot de '## Agent skills' (check-e2e.sh snapshot ...)." >&2; usage; }
 
 status=0
 pass() { echo "PASS $1"; }
@@ -47,8 +48,14 @@ CANON="01_vision_y_objetivos 02_descripcion_general 03_actores_y_roles 04_modelo
 missing=()
 for f in $CANON; do [ -f "$KB/$f.md" ] || missing+=("falta knowledge-base/$f.md"); done
 for f in "$KB"/09_*; do [ -e "$f" ] && missing+=("sobra ${f#$repo/}: el 09 tiene que quedar vacío"); done
-if [ ${#missing[@]} = 0 ]; then pass "knowledge-base/ con los 9 canónicos y sin 09"
-else fail "knowledge-base/ con los 9 canónicos y sin 09" "${missing[@]}"; fi
+if [ -f "$KB/README.md" ]; then
+  for f in $CANON GLOSSARY.md docs/adr; do
+    grep -qF "$f" "$KB/README.md" || missing+=("knowledge-base/README.md no lista $f")
+  done
+else missing+=("falta el índice knowledge-base/README.md")
+fi
+if [ ${#missing[@]} = 0 ]; then pass "knowledge-base/ con los 9 canónicos, sin 09 y con índice"
+else fail "knowledge-base/ con los 9 canónicos, sin 09 y con índice" "${missing[@]}"; fi
 
 # 2. GLOSSARY.md con el formato de domain-modeling de Matt.
 G="$repo/GLOSSARY.md"; probs=()
@@ -57,6 +64,7 @@ else
   tr -d '\r' < "$G" | head -n 1 | grep -q '^# ' || probs+=("la primera línea no es '# <Contexto>'")
   tr -d '\r' < "$G" | grep -q '^## Language' || probs+=("falta la sección '## Language'")
   tr -d '\r' < "$G" | grep -qE '^\*\*[^*]+\*\*:' || probs+=("no hay ningún término '**Término**:'")
+  tr -d '\r' < "$G" | grep -qE '^_Avoid_:' || probs+=("ningún término tiene '_Avoid_:' (el formato pide elegir una palabra y listar las que se evitan)")
 fi
 if [ ${#probs[@]} = 0 ]; then pass "GLOSSARY.md con formato de Matt"; else fail "GLOSSARY.md con formato de Matt" "${probs[@]}"; fi
 
@@ -68,7 +76,7 @@ else
     [ -e "$f" ] || continue
     b=$(basename "$f"); n=$((n + 1))
     printf '%s' "$b" | grep -qE '^[0-9]{4}-[a-z0-9-]+\.md$' || probs+=("docs/adr/$b: el nombre no es NNNN-slug.md")
-    tr -d '\r' < "$f" | grep -m1 -v '^\s*$' | grep -qE '^(# |---)' || probs+=("docs/adr/$b: no arranca con '# <título>' (o frontmatter)")
+    tr -d '\r' < "$f" | grep -qE '^# ' || probs+=("docs/adr/$b: no tiene título '# <decisión>'")
   done
   [ $n -gt 0 ] || probs+=("docs/adr/ está vacío")
 fi
@@ -110,18 +118,17 @@ if [ ${#probs[@]} = 0 ]; then pass "AGENTS.md es la fuente y CLAUDE.md lo import
 probs=()
 sec=$(agent_skills_section "$repo/AGENTS.md" 2>/dev/null)
 [ -n "$sec" ] || probs+=("AGENTS.md no tiene '## Agent skills'")
-if [ -n "$sec" ] && [ -n "$snapshot" ]; then
+if [ -n "$sec" ]; then
   d=$(diff <(tr -d '\r' < "$snapshot") <(printf '%s\n' "$sec"))
   [ -z "$d" ] || probs+=("'## Agent skills' cambió respecto del snapshot:" "$d")
-elif [ -z "$snapshot" ]; then
-  echo "  (sin snapshot: solo compruebo que la sección exista, no que sea idéntica)"
 fi
-if [ ${#probs[@]} = 0 ]; then pass "'## Agent skills' presente${snapshot:+ e idéntica al snapshot}"; else fail "'## Agent skills' sobrevive" "${probs[@]}"; fi
+if [ ${#probs[@]} = 0 ]; then pass "'## Agent skills' presente e idéntica al snapshot"; else fail "'## Agent skills' sobrevive" "${probs[@]}"; fi
 
 # 7. Nada de OpenSpec ni estado de orquestador.
-leftovers=$(find "$repo" -path "$repo/.git" -prune -o \( -name openspec -type d -print \) -o \( -name '*orchestrator-state*.json' -print \))
-if [ -z "$leftovers" ]; then pass "sin openspec/ ni *-orchestrator-state.json"
-else fail "sin openspec/ ni *-orchestrator-state.json" $leftovers; fi
+leftovers=()
+while IFS= read -r p; do leftovers+=("${p#$repo/}"); done < <(find "$repo" -path "$repo/.git" -prune -o \( -name openspec -type d -print \) -o \( -name '*orchestrator-state*.json' -print \))
+if [ ${#leftovers[@]} = 0 ]; then pass "sin openspec/ ni *-orchestrator-state.json"
+else fail "sin openspec/ ni *-orchestrator-state.json" "${leftovers[@]}"; fi
 
 [ $status = 0 ] && echo "RESULTADO: todo en verde" || echo "RESULTADO: hay verificaciones en rojo"
 exit $status

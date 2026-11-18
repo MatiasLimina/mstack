@@ -11,6 +11,9 @@ status=0
 ok()   { echo "ok   $1"; }
 bad()  { echo "MAL  $1"; status=1; }
 warn() { echo "ojo  $1"; }
+# gh solo bloquea si se va a verificar el sandbox; los chequeos estáticos no usan red.
+need_gh() { if [ -n "$TEST_ARG" ]; then bad "$1"; else warn "$1"; fi; }
+TEST_ARG="${1:-}"
 
 for t in bash git awk sed grep find diff; do
   command -v "$t" >/dev/null 2>&1 && ok "$t disponible" || bad "falta $t en PATH (corré los scripts desde Git Bash)"
@@ -29,10 +32,10 @@ if command -v gh >/dev/null 2>&1; then
   if gh auth status >/dev/null 2>&1; then
     ok "gh autenticado ($(gh --version | head -n 1))"
   else
-    bad "gh no está autenticado ('gh auth login'); el punto de prueba 1 lo necesita"
+    need_gh "gh no está autenticado ('gh auth login'); la corrida de punta a punta lo necesita"
   fi
 else
-  bad "falta gh; el punto de prueba 1 lo necesita"
+  need_gh "falta gh; la corrida de punta a punta lo necesita"
 fi
 
 TEST="${1:-}"

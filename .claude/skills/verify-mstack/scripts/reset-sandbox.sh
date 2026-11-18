@@ -21,6 +21,12 @@ if [ "$actual" != "$REPO" ]; then
   echo "ERROR: $DIR apunta a '${actual:-sin remote}', no a $REPO. No toco nada." >&2
   exit 2
 fi
+# gh puede resolver a otro repo (fork, remote upstream); el push va a origin, así que se valida origin.
+origin=$(git remote get-url origin 2>/dev/null)
+if ! printf '%s' "$origin" | grep -qiE "github\.com[:/]$REPO(\.git)?$"; then
+  echo "ERROR: el origin de $DIR es '${origin:-ninguno}', no github.com/$REPO. No toco nada." >&2
+  exit 2
+fi
 echo "reset del sandbox $REPO en $DIR"
 
 # 1. Issues: todos, cerrados incluidos ("exactamente un issue" cuenta todos).

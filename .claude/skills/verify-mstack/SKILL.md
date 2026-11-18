@@ -111,4 +111,4 @@ se borra. Nunca borres `.verify-artifacts/`: ahí queda la prueba.
 | `scripts/selftest.sh` | `bash .claude/skills/verify-mstack/scripts/selftest.sh [OUT]` | Prueba que cada chequeo estático falla cuando debe. |
 | `scripts/selftest-e2e.sh` | `bash .claude/skills/verify-mstack/scripts/selftest-e2e.sh [OUT]` | Arma a mano en el sandbox una salida buena de la fundación y rompe cada cosa para probar `check-e2e`. Toca issues del sandbox y lo resetea al terminar. Corrélo si tocaste `check-e2e.sh`. |
 | `scripts/reset-sandbox.sh` | `bash .claude/skills/verify-mstack/scripts/reset-sandbox.sh [--dry-run]` | Borra los issues del sandbox y deja `main` en su primer commit. Termina con `SANDBOX LIMPIO`. |
-| `scripts/check-e2e.sh` | `bash .claude/skills/verify-mstack/scripts/check-e2e.sh snapshot TEST_REPO FILE` / `check TEST_REPO [FILE]` | Verificaciones de disco y GitHub de la corrida de punta a punta. |
+| `scripts/check-e2e.sh` | `bash .claude/skills/verify-mstack/scripts/check-e2e.sh snapshot TEST_REPO FILE` / `check TEST_REPO FILE` | Verificaciones de disco y GitHub de la corrida de punta a punta. |

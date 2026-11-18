@@ -30,7 +30,10 @@ for f in 01_vision_y_objetivos 02_descripcion_general 03_actores_y_roles 04_mode
          10_preguntas_abiertas; do
   printf '# %s\n\nContenido de prueba de Turnera.\n' "$f" > "knowledge-base/$f.md"
 done
-printf '# Knowledge base\n\nVer también `GLOSSARY.md` y `docs/adr/`.\n' > knowledge-base/README.md
+{ printf '# Knowledge base\n\n'
+  for f in knowledge-base/*.md; do printf -- '- [%s](%s)\n' "${f#knowledge-base/}" "${f#knowledge-base/}"; done
+  printf -- '- Vocabulario: [GLOSSARY.md](../GLOSSARY.md)\n- Decisiones: [docs/adr/](../docs/adr/)\n'
+} > knowledge-base/README.md.tmp && mv knowledge-base/README.md.tmp knowledge-base/README.md
 cat > GLOSSARY.md <<'EOF'
 # Turnera
 
@@ -108,11 +111,23 @@ expect kb-missing 1 'falta knowledge-base/03_actores_y_roles.md'
 printf 'x\n' > knowledge-base/09_decisiones_y_supuestos.md
 expect kb-09 1 'sobra knowledge-base/09_decisiones_y_supuestos.md'
 
+sed -i '/05_reglas_de_negocio/d' knowledge-base/README.md
+expect kb-index 1 'knowledge-base/README.md no lista 05_reglas_de_negocio'
+
 sed -i '/^## Language/d' GLOSSARY.md
 expect glossary 1 "falta la sección '## Language'"
 
+sed -i '/^_Avoid_:/d' GLOSSARY.md
+expect glossary-avoid 1 "ningún término tiene '_Avoid_:'"
+
 mv docs/adr/0001-los-turnos-no-se-borran.md docs/adr/adr-1.md
 expect adr-name 1 'docs/adr/adr-1.md: el nombre no es NNNN-slug.md'
+
+printf -- '---\nstatus: accepted\n---\n\nSin título.\n' > docs/adr/0001-los-turnos-no-se-borran.md
+expect adr-no-title 1 "0001-los-turnos-no-se-borran.md: no tiene título"
+
+mkdir -p "dir con espacio/openspec"
+expect openspec-spaces 1 '  dir con espacio/openspec$'
 
 printf '\n# Turnera\n\nCopia del contenido.\n' >> CLAUDE.md
 expect claude-md 1 "CLAUDE.md tiene que ser solo '@AGENTS.md'"

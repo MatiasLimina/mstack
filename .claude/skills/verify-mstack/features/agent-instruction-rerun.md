@@ -29,5 +29,5 @@ Preconditions:
 
 ## Gotchas
 
-- Sin snapshot, `check-e2e` solo comprueba que la sección exista. Una regeneración que la reescribe con otro contenido pasaría. Guardá siempre el snapshot.
+- `check-e2e check` exige el snapshot. Tomalo después de `/setup-matt-pocock-skills` y antes de la segunda corrida: si lo tomás después, compara la sección consigo misma y no prueba nada.
 - Si `agent-instruction` pregunta si sobrescribe el archivo, la respuesta que prueba el comportamiento pedido es la que conserva las secciones. Si solo ofrece sobrescribirlo entero, es un bug.
