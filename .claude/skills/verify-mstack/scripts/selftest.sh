@@ -25,6 +25,13 @@ fresh_copy() {
   cp -r "$REPO/skills" "$dst/skills"
   cp -r "$REPO/.claude/skills" "$dst/.claude/skills"
   cp "$REPO/NOTICE.md" "$dst/NOTICE.md"
+  # Las skills de fundación reales se sacan: el selftest prueba el verificador, no el
+  # estado del repo (entre #13 y #17 están a medio adaptar y harían fallar el baseline).
+  local s
+  for s in discovery-research kb-creator roadmap-generator web-scraper agent-instruction; do
+    rm -rf "$dst/skills/$s"
+    sed -i "/^- \`skills\/$s\`/d" "$dst/NOTICE.md"
+  done
   echo "$dst"
 }
 
