@@ -29,8 +29,8 @@ precisión quién lo va a usar, qué problema resuelve exactamente, o cómo se
 compara con lo que ya existe. Es el primer paso, opcional, de la fundación de un
 proyecto grande y vacío, antes de `kb-creator`. El resultado de esta skill
 (`discovery/discovery.md` y las notas de `discovery/sources/`) es el INSUMO de
-`kb-creator`, que lo lee de disco; no es un reemplazo — `kb-creator` sigue siendo quien arma la
-Knowledge Base final, ahora con menos preguntas repetidas.
+`kb-creator`, que lo lee de disco; no es un reemplazo — `kb-creator` sigue
+siendo quien arma la Knowledge Base final, ahora con menos preguntas repetidas.
 
 ## Workflow
 
@@ -47,9 +47,8 @@ las decisiones no obvias — igual nivel que `kb-creator`. El paso 3 es la
 compuerta de aprobación: nunca escribas `discovery/discovery.md` sin que el
 usuario haya confirmado el resumen.
 
-Todo lo que produce esta skill vive en `discovery/`. No leas ni escribas ningún
-archivo de estado (`*.json` de orquestador o similar): el siguiente paso de la
-cadena encuentra el resultado en disco.
+Todo lo que produce esta skill vive en `discovery/`; no crees archivos fuera
+de esa carpeta.
 
 ## Fase 1 — Fuentes
 
