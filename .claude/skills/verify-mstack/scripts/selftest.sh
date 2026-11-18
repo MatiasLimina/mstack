@@ -27,8 +27,9 @@ fresh_copy() {
   cp "$REPO/NOTICE.md" "$dst/NOTICE.md"
   # Las skills de fundación reales se sacan: el selftest prueba el verificador, no el
   # estado del repo (entre #13 y #17 están a medio adaptar y harían fallar el baseline).
+  # La lista sale de check-static.sh, para no mantenerla en dos lugares.
   local s
-  for s in discovery-research kb-creator roadmap-generator web-scraper agent-instruction; do
+  for s in $(tr -d '\r' < "$HERE/check-static.sh" | sed -n 's/^FOUNDATION="\(.*\)"$/\1/p'); do
     rm -rf "$dst/skills/$s"
     sed -i "/^- \`skills\/$s\`/d" "$dst/NOTICE.md"
   done

@@ -73,37 +73,66 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## Fundación — Group-Active-IA y Juan Cruz Robledo
+## discovery-research — Group-Active-IA
 
-Skills derivadas, copiadas de la versión que instaló active-stack (los repos de
-origen siguieron cambiando después; `discovery-research` y `web-scraper`
-coinciden con su último commit, las otras tres son anteriores):
+Skills derivadas:
 
-- `skills/discovery-research` (de [Group-Active-IA/discovery-research](https://github.com/Group-Active-IA/discovery-research))
-- `skills/kb-creator` (de [Group-Active-IA/kb-creator](https://github.com/Group-Active-IA/kb-creator))
-- `skills/roadmap-generator` (de [Group-Active-IA/roadmap-generator](https://github.com/Group-Active-IA/roadmap-generator))
-- `skills/web-scraper` (de [Group-Active-IA/web-scraper](https://github.com/Group-Active-IA/web-scraper))
-- `skills/agent-instruction` (de [JuanCruzRobledo/agent-instruction](https://github.com/JuanCruzRobledo/agent-instruction))
+- `skills/discovery-research` (de `discovery-research`, en la versión que instaló active-stack)
 
-Licencia de cada repo, tal como la publica:
+Fuente: https://github.com/Group-Active-IA/discovery-research
 
-| Repo | Licencia | Dónde la declara |
-|---|---|---|
-| Group-Active-IA/discovery-research | Apache-2.0 | archivo `LICENSE` (texto de abajo, sin cambios) y `license:` del frontmatter |
-| Group-Active-IA/web-scraper | Apache-2.0 | archivo `LICENSE` (texto de abajo, sin cambios) y `license:` del frontmatter |
-| Group-Active-IA/kb-creator | Apache-2.0 | sección `## Licencia` del README y `license:` del frontmatter; no trae archivo `LICENSE` |
-| Group-Active-IA/roadmap-generator | Apache-2.0 | sección `## Licencia` del README y `license:` del frontmatter; no trae archivo `LICENSE` |
-| JuanCruzRobledo/agent-instruction | Apache-2.0 | sección `## Licencia` del README y `license:` del frontmatter; no trae archivo `LICENSE` |
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: archivo `LICENSE` (copiado también en `skills/discovery-research/LICENSE`) y `license:` del frontmatter. Coincide con el último commit del repo.
 
-Ninguno de los cinco repos publica un archivo `NOTICE` ni completa la línea de
-copyright del apéndice de la licencia. El frontmatter de `kb-creator`,
-`roadmap-generator` y `agent-instruction` declara `metadata.author:
-gentleman-programming`; se conserva tal cual.
+## web-scraper — Group-Active-IA
 
-Cumplimiento de Apache-2.0 (sección 4): cada skill conserva sus avisos y
-archivos originales (incluido `LICENSE` donde existe), el texto de la licencia
-va abajo, y cada `SKILL.md` modificado lo dice en su encabezado
-`<!-- Origen: ... Cambios: ... -->`.
+Skills derivadas:
+
+- `skills/web-scraper` (de `web-scraper`, en la versión que instaló active-stack)
+
+Fuente: https://github.com/Group-Active-IA/web-scraper
+
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: archivo `LICENSE` (copiado también en `skills/web-scraper/LICENSE`) y `license:` del frontmatter. Coincide con el último commit del repo.
+
+## kb-creator — Group-Active-IA
+
+Skills derivadas:
+
+- `skills/kb-creator` (de `kb-creator`, en la versión que instaló active-stack)
+
+Fuente: https://github.com/Group-Active-IA/kb-creator
+
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`. La copia es de una versión anterior a su último commit.
+
+## roadmap-generator — Group-Active-IA
+
+Skills derivadas:
+
+- `skills/roadmap-generator` (de `roadmap-generator`, en la versión que instaló active-stack)
+
+Fuente: https://github.com/Group-Active-IA/roadmap-generator
+
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`. La copia es de una versión anterior a su último commit.
+
+## agent-instruction — Juan Cruz Robledo
+
+Skills derivadas:
+
+- `skills/agent-instruction` (de `agent-instruction`, en la versión que instaló active-stack)
+
+Fuente: https://github.com/JuanCruzRobledo/agent-instruction
+
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`. La copia es de una versión anterior a su último commit.
+
+## Apache License 2.0
+
+Licencia de las cinco skills de fundación de arriba. Ninguno de esos repos
+publica un archivo `NOTICE` ni completa la línea de copyright del apéndice;
+`kb-creator`, `roadmap-generator` y `agent-instruction` declaran
+`metadata.author: gentleman-programming` en su frontmatter, que se conserva.
+
+Cumplimiento de la sección 4: cada skill conserva sus avisos y archivos
+originales (incluido `LICENSE` donde existe), el texto de la licencia va abajo
+y cada `SKILL.md` modificado lo dice en su encabezado `<!-- Origen: ... -->`.
 
 ```
 
