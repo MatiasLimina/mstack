@@ -6,7 +6,7 @@ license: Apache-2.0
 ---
 
 <!-- Origen: Group-Active-IA/discovery-research@dd7efb7 (Apache-2.0). Ver NOTICE.md.
-     Cambios: ninguno; solo se agregó este encabezado. -->
+     Cambios: ninguno en el contenido; solo se agregó este encabezado. -->
 
 # Discovery Research
 
