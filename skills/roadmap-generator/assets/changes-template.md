@@ -9,17 +9,21 @@ Esta es la **estructura exacta** que tenés que generar en la raíz del proyecto
 
 > Índice canónico de todos los changes del proyecto **{NombreProyecto}**.
 > Cada change es atómico: un agente puede implementarlo en una sesión (~4-6 horas).
-> **Leer este archivo antes de ejecutar cualquier `/opsx:propose`.**
+> **Leer este archivo antes de empezar un item.**
 
 ---
 
 ## Cómo usar este documento
 
-1. Identificar el change a implementar (verificar que sus dependencias están en `openspec/changes/archive/`).
+1. Identificar el item a implementar y verificar que sus dependencias figuran completas en este roadmap.
 2. Leer los docs de la knowledge-base indicados en "Leer antes".
-3. Ejecutar `/opsx:propose <nombre-del-change>`.
-4. Al terminar el change, archivarlo con `/opsx:archive <nombre-del-change>`.
-5. Marcar el checkbox `[x]` en este archivo.
+3. Acordar el alcance y los criterios de aceptación del item.
+4. Implementar, verificar los criterios acordados y registrar la evidencia.
+5. Marcar el checkbox `[x]` en este archivo al completar la verificación técnica.
+
+Conservá los IDs de las fichas al editar o reordenar. Si el proyecto usa ClickUp,
+este roadmap conserva el alcance y las dependencias. Consultá el responsable y el estado operativo
+en ClickUp y el último dato confirmado en `.active-stack/roadmap-state.json`.
 
 ---
 

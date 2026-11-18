@@ -1,4 +1,4 @@
-# agents-md-generator
+# agent-instruction
 
 Skill que genera el `AGENTS.md` / `CLAUDE.md` canónico de un proyecto a partir de su base de conocimiento (`knowledge-base/`) y su roadmap (`CHANGES.md`).
 
@@ -10,15 +10,7 @@ Consolida en un solo archivo:
 - **Roadmap de changes** (resumen de `CHANGES.md`: camino crítico, fases, primer change)
 - **Reglas duras del proyecto** (contrato no negociable)
 
-## Reglas duras incluidas
-
-1. No buildear automático.
-2. No commitear sin pedido explícito.
-3. Conventional Commits sin `Co-Authored-By`.
-4. Tests sin mocks de DB.
-5. Pydantic schemas con `extra='forbid'`.
-6. snake_case en Python.
-7. PascalCase en componentes React.
+Las reglas se proponen según el stack detectado y se registran después de confirmarlas con el usuario. En fundación, la skill puede generar instrucciones, reutilizarlas o actualizar un bloque delimitado, según el plan aprobado.
 
 ## Instalación
 
@@ -48,7 +40,7 @@ agent-instruction/
 
 ## Skills relacionadas
 
-Parte de una trilogía que se encadena: `kb-creator` (documenta) → `roadmap-generator` (planifica) → `agents-md-generator` (instruye).
+Parte de una trilogía que se encadena: `kb-creator` (documenta) → `roadmap-generator` (planifica) → `agent-instruction` (instruye).
 
 ## Licencia
 

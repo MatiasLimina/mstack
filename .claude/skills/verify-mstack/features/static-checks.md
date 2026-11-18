@@ -37,4 +37,4 @@ Preconditions:
 - Los archivos tienen CRLF (`core.autocrlf=true`). Los scripts sacan los `\r`; un chequeo nuevo tiene que hacer lo mismo o `name: x\r` no va a coincidir con `x`.
 - NOTICE se parsea por viñetas que arrancan con `` - `skills/<nombre>` ``. Una entrada escrita de otra forma no cuenta como listada.
 - `opsx-orchestrator` menciona OpenSpec a propósito. No es de fundación y queda fuera del chequeo 1. No la sumes a `FOUNDATION`.
-- Entre #13 y #17, el FAIL de "fundación sin OpenSpec" es lo esperado, y también el de "name:" por `agent-instruction` (su frontmatter dice `agents-md-generator` hasta #17). No los tapes; listá las líneas en el reporte.
+- Entre #13 y #17, el FAIL de "fundación sin OpenSpec" es lo esperado. No lo tapes; listá las líneas en el reporte.

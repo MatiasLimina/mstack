@@ -1,16 +1,17 @@
 ---
 name: roadmap-generator
 description: >
-  Generates CHANGES.md — an operational index of all OpenSpec changes for a project, with dependency tree, parallelism gates, critical path, multi-agent plan, and per-change scope, governance level, dependencies and "Leer antes" pointers to the knowledge base. Fire-and-forget, no questions asked.
+  Generates CHANGES.md — an operational index of implementation work items for a project, with dependency tree, parallelism gates, critical path, multi-agent plan, and per-change scope, governance level, dependencies and "Leer antes" pointers to the knowledge base. Fire-and-forget, no questions asked.
   Trigger: When user asks to create, build, regenerate, or update CHANGES.md, roadmap, change map, implementation plan; or says "armar CHANGES", "armar roadmap", "crear mapa de changes", "generar plan de implementación", "qué changes necesito", "índice de changes".
 license: Apache-2.0
 metadata:
   author: gentleman-programming
-  version: "2.0"
+  version: "2.1"
 ---
 
-<!-- Origen: Group-Active-IA/roadmap-generator (Apache-2.0). Ver NOTICE.md.
-     Cambios: ninguno; solo se agregó este encabezado. -->
+<!-- Origen: Group-Active-IA/roadmap-generator@d603877 (Apache-2.0). Ver NOTICE.md.
+     Cambios: ninguno en el contenido; solo se agregó este encabezado y no se
+     copió tests/ (prueba el contrato de estado del orquestador). -->
 
 ## When to Use
 
@@ -20,38 +21,52 @@ metadata:
 
 **Don't use when:**
 - No existe `knowledge-base/` en raíz (corré `kb-creator` primero).
-- No existe la carpeta `openspec/` (corré `openspec init` primero).
 - Ya existe `CHANGES.md` en raíz completo y el usuario quiere actualizar uno solo (sugerí edición puntual en su lugar).
 
 ---
+
+## Variantes de fundación
+
+La invocación orquestada para la fase `roadmap` trae la variante confirmada del plan. El roadmap local usa Markdown tanto con trabajo directo como con entrega SDD.
+
+- `local-markdown`: generá `CHANGES.md` con la plantilla de esta skill. Si ya existe, conservá el archivo y devolvé el conflicto para resolverlo con el usuario.
+- `reuse`: abrí `CHANGES.md`, verificá que identifica trabajo y dependencias y devolvé la ruta y los IDs existentes sin escribir en el archivo. Conservá los IDs de la fuente aunque difieran de C-NN. El orquestador registra la reutilización.
+
+En uso independiente, generá el roadmap solo si falta. Cuando exista, proponé una revisión puntual y esperá confirmación antes de modificarlo.
+
+Cuando el proyecto tenga ClickUp configurado en `.active-stack/roadmap.json`,
+`CHANGES.md` conserva el alcance y las dependencias. ClickUp lleva los
+responsables y estados operativos. Derivá la publicación a `active-roadmap`,
+que requiere vista previa y confirmación. Generar o reutilizar el roadmap solo
+produce resultados locales. Conservá los vínculos y las observaciones
+registrados en `.active-stack/roadmap-state.json`.
 
 ## Critical Patterns
 
 ### Pre-checks obligatorios
 
-Antes de generar `CHANGES.md`, **validá** estas tres condiciones. Si alguna falla, **NO generes nada** y devolvé un mensaje claro:
+Antes de generar `CHANGES.md`, **validá** estas condiciones. Si alguna falla, **NO generes nada** y devolvé un mensaje claro:
 
 | Check | Si falla |
 |-------|----------|
 | `knowledge-base/` existe en raíz | "Falta la KB. Corré primero `kb-creator` para generarla." |
 | `knowledge-base/` tiene los 10 canónicos | "KB incompleta. Faltan: [lista]. Corré `kb-creator` para completarla." |
-| `openspec/` existe en raíz | "OpenSpec no inicializado. Corré `npx @fission-ai/openspec@latest init` primero." |
 
 ### Output — ubicación
 
-Generá UN archivo: **`CHANGES.md` en la raíz del proyecto** (no dentro de `openspec/`).
+Generá UN archivo: **`CHANGES.md` en la raíz del proyecto**.
 
 Justificación: CHANGES.md es el **índice maestro** del proyecto, debe ser lo primero que ve cualquier persona o agente al entrar al repo. Su lugar es la raíz.
 
 ### Input — qué leer de la KB
 
-**Si orquestado** (`.active-orchestrator-state.json` presente, `version == 2` y `state.kb.files` no vacío):
+**Si orquestado** (`.active-orchestrator-state.json` presente, `version >= 2` y `state.kb.files` no vacío):
 usá `state.kb.files` como lista autoritativa de paths a leer, en lugar de globbear el directorio.
 Usá `state.kb.discovery` como contexto para nombrar/agrupar changes e inferir governance (hint only — los archivos son la fuente de verdad).
 Si `state.kb.files` está vacío o ausente, caé al fallback de disco (comportamiento standalone).
 
 **Si standalone** (sin estado o fallback por `state.kb.files` vacío):
-corré los tres pre-checks normales y leé los archivos directamente de `knowledge-base/`.
+corré los pre-checks normales y leé los archivos directamente de `knowledge-base/`.
 
 Leé **siempre** estos 4 canónicos (los más informativos):
 1. `04_modelo_de_datos.md` → entidades y relaciones (revela orden de creación de tablas).
@@ -77,13 +92,13 @@ El archivo SIEMPRE tiene esta estructura. **No agregues ni quites secciones de p
 
 > Índice canónico de todos los changes del proyecto {NombreProyecto}.
 > Cada change es atómico: un agente puede implementarlo en una sesión (~4-6 horas).
-> **Leer este archivo antes de ejecutar cualquier `/opsx:propose`.**
+> **Leer este archivo antes de empezar un item.**
 
 ---
 
 ## Cómo usar este documento
 
-(5 pasos numerados: identificar change → leer KB → propose → archive → marcar checkbox)
+(5 pasos numerados: identificar item → verificar dependencias y leer KB → acordar alcance y verificación → verificar resultado → actualizar estado)
 
 ---
 
@@ -122,6 +137,8 @@ El archivo SIEMPRE tiene esta estructura. **No agregues ni quites secciones de p
 ### Reglas para nombrar changes
 
 - Códigos secuenciales `C-01`, `C-02`, ..., `C-NN`. Padding de 2 dígitos siempre.
+- No renumeres IDs existentes al editar, reordenar o renombrar fichas. Al agregar
+  trabajo, usá IDs nuevos y evitá reciclar los retirados.
 - Nombre kebab-case, descriptivo, **sin prefijos us-NNN-** (en este formato usamos C-NN como ID).
 - Si un change cubre varias US, mencionarlas dentro del **Scope**.
 - Si es transversal (infra), igual recibe un C-NN normal.
@@ -130,8 +147,8 @@ El archivo SIEMPRE tiene esta estructura. **No agregues ni quites secciones de p
 
 Jerarquía obligatoria:
 
-1. **Infra primero**: C-01 es siempre el foundation-setup (estructura, dependencias, .env, DB inicial). No depende de nada.
-2. **Modelos core antes que features**: C-02 suele ser core-models (entidades base, mixins, repositorios genéricos).
+1. **Infra primero solo si falta**: si hace falta scaffolding o infraestructura, priorizá el trabajo pendiente real. En un repo existente, tomá la infraestructura ya operativa como contexto. C-01 es el primer item elegible.
+2. **Modelos core antes que features**: el primer item de dominio suele ser core-models (entidades base, mixins, repositorios genéricos).
 3. **Auth antes que recursos protegidos**: si un change requiere usuario logueado o roles, depende del change de auth.
 4. **Entidad referenciada antes que la que referencia**: ejemplo, `categorias` antes que `productos`.
 5. **Backend antes que frontend acoplado**: si una vista frontend consume un endpoint, su change depende del que creó el endpoint.
@@ -158,7 +175,7 @@ GATE {N}: {change(s) que se completaron} ✓     {← anotación opcional: PRIME
 
 ### Reglas para Camino crítico
 
-- La **cadena lineal más corta** desde C-01 hasta el último change indispensable para producción.
+- La **cadena lineal más corta** desde el primer requisito pendiente hasta el último change indispensable para producción.
 - No incluye refactors visuales, dashboards extra, ni features opcionales.
 - Si dos changes pueden ser el "último" del camino crítico, anotá ambos con asterisco.
 
@@ -211,7 +228,7 @@ Mencioná explícitamente:
 
 ## Workflow
 
-1. Ejecutar pre-checks (KB existe, 10 canónicos, openspec/ existe).
+1. Ejecutar pre-checks (existen los 10 canónicos de la KB).
 2. Leer los 4 canónicos obligatorios + los 3 opcionales si están.
 3. Identificar capacidades atómicas del sistema (cada una será un C-NN).
 4. Asignar C-NN secuenciales agrupados por FASES semánticas.
@@ -222,7 +239,7 @@ Mencioná explícitamente:
 9. Para cada change escribir: Estado, Scope, Dependencias, Governance, Leer antes.
 10. Escribir `CHANGES.md` en la raíz.
 11. Cerrar con tabla resumen + sugerencia del primer change.
-12. **Si orquestado**: ejecutar el hook de estado — actualizar `state.roadmap` con `created_by: "roadmap-generator"`, `source: "CHANGES.md"`, y la lista de IDs `C-NN` generados. No escribir `step` (el orquestador avanza el step). Ver [`assets/state-contract.md`](assets/state-contract.md) para el algoritmo condicional completo.
+12. **Si orquestado**: ejecutar el hook de estado — actualizar `state.roadmap` con `created_by: "roadmap-generator"`, `source: "CHANGES.md"`, `changes_file: "CHANGES.md"` y la lista de IDs `C-NN` generados. No escribir `step` (el orquestador avanza el step). Ver [`assets/state-contract.md`](assets/state-contract.md) para el algoritmo condicional completo.
 
 ### Output al usuario al cerrar
 
@@ -233,16 +250,16 @@ Mencioná explícitamente:
 
 **Camino crítico**: {K} changes
 **Gates de paralelismo**: {G}
-**Primer change recomendado**: `C-01` ({nombre})
+**Primer item elegible**: `{id}` ({nombre})
 
-Para arrancar: `/opsx:propose C-01-{nombre}`
+Para arrancar, leé las referencias del item elegido y acordá su alcance y verificación.
 ```
 
 ---
 
 ## State integration (orchestrated)
 
-Este hook es **condicional y standalone-safe**: se ejecuta solo si `.active-orchestrator-state.json` ya existe en la raíz del proyecto (run orquestado por active-orchestrator). Si el archivo no existe, el comportamiento es idéntico al de hoy — ningún archivo de estado es creado.
+Este hook es **condicional y standalone-safe**: se ejecuta solo si `.active-orchestrator-state.json` ya existe en la raíz del proyecto (run orquestado por active-orchestrator). Si el archivo no existe, la generación de Markdown termina sin crear estado.
 
 **Cuándo corre**: inmediatamente después de escribir `CHANGES.md` (último paso del workflow, antes de retornar al usuario).
 
@@ -253,6 +270,7 @@ Este hook es **condicional y standalone-safe**: se ejecuta solo si `.active-orch
 |---|---|
 | `created_by` | `"roadmap-generator"` |
 | `source` | `"CHANGES.md"` |
+| `changes_file` | `"CHANGES.md"` |
 | `changes` | lista de IDs `C-NN` generados, en orden |
 
 El slice es un **índice thin**: el detalle de scope, governance y dependencias por change vive en `CHANGES.md` (fuente de verdad única). No se duplica nada en el estado.

@@ -5,7 +5,7 @@ description: >-
 license: Apache-2.0
 ---
 
-<!-- Origen: Group-Active-IA/web-scraper (Apache-2.0). Ver NOTICE.md.
+<!-- Origen: Group-Active-IA/web-scraper@1ac73c2 (Apache-2.0). Ver NOTICE.md.
      Cambios: ninguno; solo se agregó este encabezado. -->
 
 # Web Scraper

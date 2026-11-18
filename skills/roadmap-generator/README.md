@@ -40,13 +40,7 @@ Diferencias clave con un roadmap simple:
 
 Antes de invocar esta skill necesitás:
 
-1. **Base de conocimiento generada** en `knowledge-base/` (raíz). Si no la tenés, corré primero la skill [`kb-creator`](https://github.com/Group-Active-IA/kb-creator).
-2. **OpenSpec inicializado** en el proyecto:
-   ```bash
-   npx @fission-ai/openspec@latest init
-   ```
-
-Si falta cualquiera de los dos, la skill te avisa y se detiene **sin escribir nada**.
+**Base de conocimiento generada** en `knowledge-base/` (raíz). Si falta la KB o alguno de sus 10 archivos canónicos, la skill te avisa y se detiene sin escribir.
 
 ---
 
@@ -64,14 +58,13 @@ npx skills add https://github.com/Group-Active-IA/roadmap-generator
 Tu repo:
 proyecto/
 ├── docs/                        # Documentos fuente
-├── knowledge-base/              # KB generada por kb-creator
-└── openspec/                    # OpenSpec inicializado
+└── knowledge-base/              # KB generada por kb-creator
 
 Le decís al agente:
 "generá el CHANGES.md del proyecto"
 ```
 
-→ El agente lee la KB y escribe `CHANGES.md` en la raíz.
+El agente lee la KB y escribe `CHANGES.md` en la raíz si falta. En una fundación, la variante `reuse` valida el roadmap existente y conserva su contenido.
 
 ---
 
@@ -143,7 +136,7 @@ Le decís al agente:
 Camino crítico: 7 changes
 Gates de paralelismo: 5
 Primer change recomendado: C-01 (foundation-setup)
-Para arrancar: /opsx:propose C-01-foundation-setup
+Para arrancar: leé las referencias de C-01 y acordá su alcance y verificación.
 ```
 
 ---

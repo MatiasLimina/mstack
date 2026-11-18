@@ -77,7 +77,7 @@ Resultado esperado según el estado del repo:
 | Estado | `check-static` |
 |---|---|
 | Antes de #13 (fundación fuera del repo) | todo PASS; "todavía no están en el repo" lista las 5 skills |
-| Después de #13, antes de #14-#17 | FAIL en "fundación sin OpenSpec", con cada línea que adaptan esos tickets, y en "name:" solo por `agent-instruction` (`agents-md-generator`, lo corrige #17) |
+| Después de #13, antes de #14-#17 | FAIL solo en "fundación sin OpenSpec", con cada línea que adaptan esos tickets |
 | Después de #17 | todo PASS |
 
 ## Evidence

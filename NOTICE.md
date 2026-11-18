@@ -77,51 +77,51 @@ SOFTWARE.
 
 Skills derivadas:
 
-- `skills/discovery-research` (de `discovery-research`, en la versión que instaló active-stack)
+- `skills/discovery-research` (de `discovery-research`, commit `dd7efb7`)
 
 Fuente: https://github.com/Group-Active-IA/discovery-research
 
-Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: archivo `LICENSE` (copiado también en `skills/discovery-research/LICENSE`) y `license:` del frontmatter. Coincide con el último commit del repo.
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: archivo `LICENSE` (copiado también en `skills/discovery-research/LICENSE`) y `license:` del frontmatter.
 
 ## web-scraper — Group-Active-IA
 
 Skills derivadas:
 
-- `skills/web-scraper` (de `web-scraper`, en la versión que instaló active-stack)
+- `skills/web-scraper` (de `web-scraper`, commit `1ac73c2`)
 
 Fuente: https://github.com/Group-Active-IA/web-scraper
 
-Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: archivo `LICENSE` (copiado también en `skills/web-scraper/LICENSE`) y `license:` del frontmatter. Coincide con el último commit del repo.
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: archivo `LICENSE` (copiado también en `skills/web-scraper/LICENSE`) y `license:` del frontmatter.
 
 ## kb-creator — Group-Active-IA
 
 Skills derivadas:
 
-- `skills/kb-creator` (de `kb-creator`, en la versión que instaló active-stack)
+- `skills/kb-creator` (de `kb-creator`, commit `e204c47`; sin `tests/`)
 
 Fuente: https://github.com/Group-Active-IA/kb-creator
 
-Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`. La copia es de una versión anterior a su último commit.
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`.
 
 ## roadmap-generator — Group-Active-IA
 
 Skills derivadas:
 
-- `skills/roadmap-generator` (de `roadmap-generator`, en la versión que instaló active-stack)
+- `skills/roadmap-generator` (de `roadmap-generator`, commit `d603877`; sin `tests/`)
 
 Fuente: https://github.com/Group-Active-IA/roadmap-generator
 
-Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`. La copia es de una versión anterior a su último commit.
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`.
 
 ## agent-instruction — Juan Cruz Robledo
 
 Skills derivadas:
 
-- `skills/agent-instruction` (de `agent-instruction`, en la versión que instaló active-stack)
+- `skills/agent-instruction` (de `agent-instruction`, commit `71b9aa8`; sin `tests/`)
 
 Fuente: https://github.com/JuanCruzRobledo/agent-instruction
 
-Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`. La copia es de una versión anterior a su último commit.
+Licencia: Apache-2.0 (texto completo en [Apache License 2.0](#apache-license-20)). La declara en: sección `## Licencia` del README y `license:` del frontmatter; el repo no trae archivo `LICENSE`.
 
 ## Apache License 2.0
 
