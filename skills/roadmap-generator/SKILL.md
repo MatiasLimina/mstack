@@ -21,9 +21,7 @@ metadata:
 
 > **Cierre obligatorio.** El mensaje con el que termina esta skill lleva
 > siempre, como última línea, el `Próximo paso: …` de la sección
-> [Próximo paso](#próximo-paso), aunque la conversación haya sido larga o
-> cierres con un resumen. Sin esa línea la cadena de fundación se corta: el
-> usuario no sabe qué correr después.
+> [Próximo paso](#próximo-paso), aunque la conversación haya sido larga.
 
 ## When to Use
 

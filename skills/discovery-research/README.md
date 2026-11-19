@@ -23,7 +23,7 @@ restricciones, riesgos, preguntas abiertas):
    escribir nada.
 4. **Escribir** — genera `discovery/discovery.md`, junto a las notas de
    `discovery/sources/`. No usa ningún archivo de estado.
-5. **Próximo paso** — te indica seguir con `kb-creator`, que lee
+5. **Próximo paso** — te indica seguir con `/kb-creator`, que lee
    `discovery/discovery.md` de disco.
 
 ---

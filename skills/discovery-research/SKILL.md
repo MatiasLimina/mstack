@@ -14,9 +14,7 @@ license: Apache-2.0
 
 > **Cierre obligatorio.** El mensaje con el que termina esta skill lleva
 > siempre, como última línea, el `Próximo paso: …` de la sección
-> [Fase 5 — Próximo paso](#fase-5--próximo-paso), aunque la conversación haya sido larga o
-> cierres con un resumen. Sin esa línea la cadena de fundación se corta: el
-> usuario no sabe qué correr después.
+> [Fase 5 — Próximo paso](#fase-5--próximo-paso), aunque la conversación haya sido larga.
 
 Convierte "tengo una idea" en "sé qué voy a construir y por qué", ANTES de que
 exista una Knowledge Base. El principio que ordena todo: **no completes un punto
@@ -45,7 +43,7 @@ siendo quien arma la Knowledge Base final, ahora con menos preguntas repetidas.
 2. Checklist Q&A    → 11 puntos, guiado por references/checklist.md
 3. Gate final       → resumen + confirmación explícita del usuario
 4. Escribir         → discovery/discovery.md
-5. Próximo paso     → indicarle al usuario que siga con kb-creator
+5. Próximo paso     → indicarle al usuario que siga con /kb-creator
 ```
 
 Es una fase de governance MEDIUM: implementa con checkpoints y expone al usuario
