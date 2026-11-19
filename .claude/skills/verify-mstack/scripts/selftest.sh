@@ -36,7 +36,7 @@ fresh_copy() {
   fi
   for s in $foundation; do
     rm -rf "$dst/skills/$s"
-    sed -i "/^- \`skills\/$s\`/d" "$dst/NOTICE.md"
+    sed -i "/^- \`skills\/$s[\`/]/d" "$dst/NOTICE.md"
   done
   echo "$dst"
 }
@@ -100,6 +100,16 @@ add_fake_foundation "$r" 'Contenido limpio.'
 mkdir -p "$r/skills/kb-creator/references"
 printf 'Generá CHANGES.md al final.\n' > "$r/skills/kb-creator/references/extra.md"
 expect reference "$r" 1 'skills/kb-creator/references/extra.md:1:'
+
+# 2e. Governance con el vocabulario viejo (en mayúsculas) cuenta.
+r=$(fresh_copy governance-es)
+add_fake_foundation "$r" '- **Governance**: CRÍTICO'
+expect governance-es "$r" 1 'skills/kb-creator/SKILL.md:[0-9]+:.*CRÍTICO'
+
+# 2f. Pero las mismas palabras en minúscula son castellano normal y no cuentan.
+r=$(fresh_copy governance-prose)
+add_fake_foundation "$r" 'Un nivel medio de detalle, ni alto ni bajo; es crítico leer la KB.'
+expect governance-prose "$r" 0 'PASS fundación sin OpenSpec'
 
 # 3. name: distinto de la carpeta.
 r=$(fresh_copy name)

@@ -69,7 +69,7 @@ bash .claude/skills/verify-mstack/scripts/selftest.sh "$OUT" 2>&1 | tee "$OUT/se
 ```
 
 - `check-static.sh [ROOT]`: tres chequeos, exit 0/1. Cada FAIL lista `archivo:línea` y el motivo.
-- `selftest.sh [OUT]`: inyecta cada falla (una mención a `/opsx`, un `name:` distinto, una entrada de NOTICE que falta, un Origen que falta) en una copia temporal y comprueba que `check-static` la atrape. Corrélo si tocaste `check-static.sh`.
+- `selftest.sh [OUT]`: inyecta cada falla (una mención a `/opsx`, governance `CRÍTICO` en vez de `CRITICAL`, un `name:` distinto, una entrada de NOTICE que falta, un Origen que falta) en una copia temporal y comprueba que `check-static` la atrape. Corrélo si tocaste `check-static.sh`.
 - `check-e2e.sh snapshot|check TEST_REPO ...`: verificaciones finales de la corrida de punta a punta. Ver el feature.
 
 Resultado esperado según el estado del repo:

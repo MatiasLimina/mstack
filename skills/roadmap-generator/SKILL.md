@@ -1,285 +1,164 @@
 ---
 name: roadmap-generator
 description: >
-  Generates CHANGES.md — an operational index of implementation work items for a project, with dependency tree, parallelism gates, critical path, multi-agent plan, and per-change scope, governance level, dependencies and "Leer antes" pointers to the knowledge base. Fire-and-forget, no questions asked.
-  Trigger: When user asks to create, build, regenerate, or update CHANGES.md, roadmap, change map, implementation plan; or says "armar CHANGES", "armar roadmap", "crear mapa de changes", "generar plan de implementación", "qué changes necesito", "índice de changes".
+  Publica el plan de trabajo de un proyecto como un único issue de roadmap en GitHub, a partir de knowledge-base/: árbol de dependencias, paralelismo, camino crítico y una task list con una línea por spec futura (alcance, governance LOW/MEDIUM/HIGH/CRITICAL, dependencias y qué leer antes). Confirma el repo destino antes de publicar y no crea issues hijos.
+  Trigger: When user asks to create, build, regenerate, or update the roadmap, change map, implementation plan; or says "armar roadmap", "issue de roadmap", "generar plan de implementación", "qué specs necesito", or after kb-creator.
 license: Apache-2.0
 metadata:
   author: gentleman-programming
-  version: "2.1"
+  version: "3.0"
 ---
 
 <!-- Origen: Group-Active-IA/roadmap-generator@d603877 (Apache-2.0). Ver NOTICE.md.
-     Cambios: ninguno en el contenido; solo se agregó este encabezado y no se
-     copió tests/ (prueba el contrato de estado del orquestador). -->
+     Cambios: publica un issue de roadmap en GitHub en lugar de escribir
+     CHANGES.md; la lista de trabajo es una task list con IDs R-NN; governance
+     LOW/MEDIUM/HIGH/CRITICAL en lugar de BAJO/MEDIO/ALTO/CRITICO; pre-check de
+     9 canónicos (sin 09) y punteros a GLOSSARY.md y docs/adr/; sin orquestador
+     ni archivo de estado (se borró assets/state-contract.md); sin variantes
+     local-markdown/reuse ni ClickUp; sin plan de 3 agentes; confirma el repo
+     destino antes de publicar; cierra indicando agent-instruction; no se copió
+     tests/. -->
 
 ## When to Use
 
-- Generar el **índice canónico** de changes para implementar un sistema desde cero hasta producción.
-- Convertir una base de conocimiento estructurada en un plan operativo con paralelización explícita.
-- Identificar **camino crítico**, **niveles de governance** y **contratos con la KB** por change.
+- Convertir la base de conocimiento de un proyecto nuevo en el plan de specs a escribir.
+- Identificar **camino crítico**, **paralelismo** y **nivel de governance** de cada spec futura.
 
 **Don't use when:**
-- No existe `knowledge-base/` en raíz (corré `kb-creator` primero).
-- Ya existe `CHANGES.md` en raíz completo y el usuario quiere actualizar uno solo (sugerí edición puntual en su lugar).
+- No existe `knowledge-base/` (corré `kb-creator` primero).
+- El repo ya tiene un issue de roadmap abierto y el usuario quiere cambiar un ítem: editá ese issue en lugar de publicar otro.
 
 ---
 
-## Variantes de fundación
+## Qué produce
 
-La invocación orquestada para la fase `roadmap` trae la variante confirmada del plan. El roadmap local usa Markdown tanto con trabajo directo como con entrega SDD.
+**Un único issue de GitHub**, con label `roadmap` y título `Roadmap: <NombreProyecto>`. Nada más:
 
-- `local-markdown`: generá `CHANGES.md` con la plantilla de esta skill. Si ya existe, conservá el archivo y devolvé el conflicto para resolverlo con el usuario.
-- `reuse`: abrí `CHANGES.md`, verificá que identifica trabajo y dependencias y devolvé la ruta y los IDs existentes sin escribir en el archivo. Conservá los IDs de la fuente aunque difieran de C-NN. El orquestador registra la reutilización.
+- No escribe archivos en el repo.
+- No crea issues de spec ni issues hijos. Cada ítem se vuelve spec más adelante, con `/grill-with-docs` y `/to-spec`, y recién ahí tiene su issue.
 
-En uso independiente, generá el roadmap solo si falta. Cuando exista, proponé una revisión puntual y esperá confirmación antes de modificarlo.
+El cuerpo sigue [assets/roadmap-template.md](assets/roadmap-template.md).
 
-Cuando el proyecto tenga ClickUp configurado en `.active-stack/roadmap.json`,
-`CHANGES.md` conserva el alcance y las dependencias. ClickUp lleva los
-responsables y estados operativos. Derivá la publicación a `active-roadmap`,
-que requiere vista previa y confirmación. Generar o reutilizar el roadmap solo
-produce resultados locales. Conservá los vínculos y las observaciones
-registrados en `.active-stack/roadmap-state.json`.
+---
 
-## Critical Patterns
+## Pre-checks
 
-### Pre-checks obligatorios
-
-Antes de generar `CHANGES.md`, **validá** estas condiciones. Si alguna falla, **NO generes nada** y devolvé un mensaje claro:
+Validá esto antes de leer la KB. Si algo falla, **no publiques nada** y devolvé el mensaje:
 
 | Check | Si falla |
 |-------|----------|
-| `knowledge-base/` existe en raíz | "Falta la KB. Corré primero `kb-creator` para generarla." |
-| `knowledge-base/` tiene los 10 canónicos | "KB incompleta. Faltan: [lista]. Corré `kb-creator` para completarla." |
-
-### Output — ubicación
-
-Generá UN archivo: **`CHANGES.md` en la raíz del proyecto**.
-
-Justificación: CHANGES.md es el **índice maestro** del proyecto, debe ser lo primero que ve cualquier persona o agente al entrar al repo. Su lugar es la raíz.
-
-### Input — qué leer de la KB
-
-**Si orquestado** (`.active-orchestrator-state.json` presente, `version >= 2` y `state.kb.files` no vacío):
-usá `state.kb.files` como lista autoritativa de paths a leer, en lugar de globbear el directorio.
-Usá `state.kb.discovery` como contexto para nombrar/agrupar changes e inferir governance (hint only — los archivos son la fuente de verdad).
-Si `state.kb.files` está vacío o ausente, caé al fallback de disco (comportamiento standalone).
-
-**Si standalone** (sin estado o fallback por `state.kb.files` vacío):
-corré los pre-checks normales y leé los archivos directamente de `knowledge-base/`.
-
-Leé **siempre** estos 4 canónicos (los más informativos):
-1. `04_modelo_de_datos.md` → entidades y relaciones (revela orden de creación de tablas).
-2. `06_funcionalidades.md` → US y épicas (la unidad de cada change).
-3. `07_flujos_principales.md` → flujos E2E (revela qué changes son atómicos vs compuestos).
-4. `08_arquitectura_propuesta.md` → patrones (revela infraestructura previa necesaria).
-
-Leé **opcionalmente** estos si están:
-- `03_actores_y_roles.md` → para changes de auth + RBAC.
-- `05_reglas_de_negocio.md` → para detectar reglas que cruzan changes.
-- `10_preguntas_abiertas.md` → para flaggear changes con dependencias inciertas.
+| `knowledge-base/` existe en la raíz | "Falta la KB. Corré primero `kb-creator` para generarla." |
+| Están los 9 canónicos: `01_` a `08_` y `10_` (el `09` queda vacío a propósito) | "KB incompleta. Faltan: [lista]. Corré `kb-creator` para completarla." |
+| `gh auth status` responde y `gh repo view --json nameWithOwner` devuelve un repo | "No hay repo de GitHub accesible con `gh`. Creá el remote o logueate y volvé a correr la skill." |
+| `gh issue list --label roadmap --state open` está vacío | "Ya existe el roadmap #N. Si querés cambiarlo, decime qué ítem y lo edito." Frená ahí. |
 
 ---
 
-## Formato obligatorio de CHANGES.md
+## Qué leer
 
-El archivo SIEMPRE tiene esta estructura. **No agregues ni quites secciones de primer nivel** — son contrato.
+Leé de disco, siempre:
 
-### Estructura de alto nivel
+1. `knowledge-base/04_modelo_de_datos.md`: entidades y relaciones (orden de creación).
+2. `knowledge-base/06_funcionalidades.md`: épicas e historias (la materia de cada ítem).
+3. `knowledge-base/07_flujos_principales.md`: flujos E2E (qué ítems son atómicos y cuáles compuestos).
+4. `knowledge-base/08_arquitectura_propuesta.md`: patrones e infraestructura previa.
 
-```markdown
-# CHANGES — Secuencia de Implementación
+Leé también, si existen:
 
-> Índice canónico de todos los changes del proyecto {NombreProyecto}.
-> Cada change es atómico: un agente puede implementarlo en una sesión (~4-6 horas).
-> **Leer este archivo antes de empezar un item.**
-
----
-
-## Cómo usar este documento
-
-(5 pasos numerados: identificar item → verificar dependencias y leer KB → acordar alcance y verificación → verificar resultado → actualizar estado)
+- `knowledge-base/03_actores_y_roles.md`: ítems de auth y roles.
+- `knowledge-base/05_reglas_de_negocio.md`: reglas que cruzan ítems.
+- `knowledge-base/10_preguntas_abiertas.md`: ítems con dependencias inciertas.
+- `GLOSSARY.md`: nombrá los ítems con los términos del dominio.
+- `docs/adr/`: decisiones ya tomadas que fijan el orden o el alcance.
 
 ---
 
-## Árbol de dependencias
+## Ítems del roadmap
 
-(ASCII art jerárquico con └── y │ mostrando la cadena de dependencias)
+Cada ítem es **una spec futura**: algo que después pasa por `/grill-with-docs` → `/to-spec` → `/to-tickets` y se implementa en varios tickets. Apuntá a ítems que un grill pueda cerrar en una sesión, no a tareas de una hora.
 
-### Paralelismo por fase
+### IDs
 
-(GATES numerados desde GATE 0. Cada gate dice qué se desbloqueó y qué se puede ejecutar en paralelo, con [Agente A/B/C] marcando asignaciones sugeridas)
+- `R-01`, `R-02`, …, `R-NN`, siempre con 2 dígitos, en orden de fase.
+- Las dependencias, el árbol, el paralelismo y el camino crítico se refieren a los ítems **solo por su ID**.
+- El ID sobrevive a la vida del roadmap: cuando se crea la spec `#N` de un ítem, la línea pasa a `- [ ] R-NN #N` (ver "Cómo usar este roadmap" en la plantilla). Por eso nunca se renumera ni se recicla un ID.
 
-### Camino crítico ({N} changes — mínimo irreducible)
+### Línea de la task list
 
-(la cadena más corta para llegar a producción, en flecha)
-
-### Plan óptimo con 3 agentes
-
-(tabla 3 columnas: Paso | Agente A | Agente B | Agente C — qué hace cada uno en cada paso)
-
----
-
-## FASE {N} — {Nombre semántico de la fase}
-
-> Nota opcional sobre paralelismo dentro de la fase
-
-### [C-{NN}] `{kebab-case-name}`
-- **Estado**: `[ ]` pendiente
-- **Scope**: descripción densa con bullets (modelos, endpoints, eventos, migraciones, tests)
-- **Dependencias**: ninguna | `C-NN` | `C-NN, C-MM`
-- **Governance**: BAJO | MEDIO | ALTO | CRITICO
-- **Leer antes**:
-  - `knowledge-base/0X_archivo.md` §{sección}
-  - `knowledge-base/0Y_archivo.md`
-```
-
-### Reglas para nombrar changes
-
-- Códigos secuenciales `C-01`, `C-02`, ..., `C-NN`. Padding de 2 dígitos siempre.
-- No renumeres IDs existentes al editar, reordenar o renombrar fichas. Al agregar
-  trabajo, usá IDs nuevos y evitá reciclar los retirados.
-- Nombre kebab-case, descriptivo, **sin prefijos us-NNN-** (en este formato usamos C-NN como ID).
-- Si un change cubre varias US, mencionarlas dentro del **Scope**.
-- Si es transversal (infra), igual recibe un C-NN normal.
-
-### Reglas para inferir dependencias
-
-Jerarquía obligatoria:
-
-1. **Infra primero solo si falta**: si hace falta scaffolding o infraestructura, priorizá el trabajo pendiente real. En un repo existente, tomá la infraestructura ya operativa como contexto. C-01 es el primer item elegible.
-2. **Modelos core antes que features**: el primer item de dominio suele ser core-models (entidades base, mixins, repositorios genéricos).
-3. **Auth antes que recursos protegidos**: si un change requiere usuario logueado o roles, depende del change de auth.
-4. **Entidad referenciada antes que la que referencia**: ejemplo, `categorias` antes que `productos`.
-5. **Backend antes que frontend acoplado**: si una vista frontend consume un endpoint, su change depende del que creó el endpoint.
-6. **Integraciones externas / pagos / webhooks al final**: dependen de las entidades del dominio ya creadas.
-7. **Admin / dashboards al final**: dependen de los datos que muestran.
-8. **Refactors visuales / UI restyle al final del todo**: requieren producto estable.
-
-### Reglas para GATES de paralelismo
-
-Identificá puntos del grafo donde, completado un change, se desbloquean **múltiples** changes que no dependen entre sí. Cada uno de esos puntos es un `GATE N`.
-
-Formato de cada GATE:
+Una línea por ítem, sin saltos, con este orden:
 
 ```
-GATE {N}: {change(s) que se completaron} ✓     {← anotación opcional: PRIMER FORK, etc.}
-  → C-XX nombre-del-change             [Agente A]
-  → C-YY nombre-del-change             [Agente B]
-  → C-ZZ nombre-del-change             [Agente C — si C-NN ✓]
+- [ ] R-NN `nombre-kebab` — alcance · **GOVERNANCE** · deps: R-AA, R-BB · leer: ruta §sección, ruta
 ```
 
-- Asigná `[Agente A]`, `[Agente B]`, `[Agente C]` por dominio (backend core, backend aux, frontend) cuando tenga sentido.
-- Si un change dentro de un gate depende además de otro, anotalo: `[Agente C — si C-NN ✓]`.
-- Marcá con `← FORK` los gates donde se abren múltiples ramas (más de 2 changes paralelos).
+- **Nombre**: kebab-case, con términos de `GLOSSARY.md` cuando existan.
+- **Alcance**: operacional y compacto, separado por `;`. Nombrá entidades, endpoints, eventos y migraciones concretas.
+  - ✅ `Category, Subcategory, Product; CRUD /api/admin/*; GET /api/public/menu cacheado; migración 003`
+  - ❌ `Gestión completa del catálogo`
+- **Governance**: uno de `LOW`, `MEDIUM`, `HIGH`, `CRITICAL` (tabla abajo).
+- **deps**: IDs separados por coma, o `—` si no tiene.
+- **leer**: 3 a 5 punteros, con sección cuando aplique. Pueden apuntar a `knowledge-base/`, a un ADR concreto de `docs/adr/` o a `GLOSSARY.md`.
 
-### Reglas para Camino crítico
+### Governance
 
-- La **cadena lineal más corta** desde el primer requisito pendiente hasta el último change indispensable para producción.
-- No incluye refactors visuales, dashboards extra, ni features opcionales.
-- Si dos changes pueden ser el "último" del camino crítico, anotá ambos con asterisco.
-
-### Reglas para Plan con 3 agentes
-
-Tabla con columnas: `Paso | Agente A (Backend Core) | Agente B (Backend Aux) | Agente C (Frontend)`.
-
-- Asigná cada change a un agente respetando dependencias.
-- Si un agente queda libre en un paso, marcá con `—`.
-- Apuntá a que los 3 agentes terminen aproximadamente al mismo tiempo.
-
-### Reglas para Governance
+Mismos niveles que el gate final del `CLAUDE.md` global:
 
 | Nivel | Cuándo |
 |-------|--------|
-| **BAJO** | Scaffolding, CRUDs simples, pages frontend sin lógica crítica, configuración. |
-| **MEDIO** | Flujos con estado, sesiones, máquinas de estado, eventos WebSocket no críticos. |
-| **ALTO** | Sistemas de notificaciones, gestión de roles, WS gateway, observabilidad. |
-| **CRITICO** | Auth, pagos, datos de seguridad (alérgenos en food), audit trail, modelos core que todo lo demás referencia. |
+| **LOW** | Scaffolding, CRUDs simples, catálogos, pantallas sin lógica crítica, utilidades read-only. |
+| **MEDIUM** | Lógica de negocio, flujos con estado, máquinas de estado, adapters, eventos no críticos. |
+| **HIGH** | Configuración que afecta datos del usuario, gestión de roles, notificaciones, gateway de eventos, observabilidad, backup/restore. |
+| **CRITICAL** | Auth, pagos, seguridad, audit trail, datos sensibles (p. ej. alérgenos en food), modelos core que todo lo demás referencia. |
 
-### Reglas para "Leer antes"
+### Dependencias
 
-Listá **3 a 5 archivos canónicos** de la KB por change, con sección específica cuando aplique (`§2.1`, `§Auth`, `§Round lifecycle`).
+Aplicá en orden:
 
-Priorizar:
-- Para auth: `03_actores_y_roles.md`, `05_reglas_de_negocio.md §Auth`, archivo de seguridad si existe.
-- Para entidades: `04_modelo_de_datos.md §entidad`.
-- Para endpoints: `07_flujos_principales.md`, archivo de API si existe.
-- Para frontend: `08_arquitectura_propuesta.md §frontend`, archivo de convenciones.
-- Para pagos / integraciones: `05_reglas_de_negocio.md §Pagos`, archivo de capas de abstracción.
+1. **Infra primero, solo si falta**: en un repo vacío, `R-01` suele ser el scaffolding.
+2. **Modelos core antes que features.**
+3. **Auth antes que recursos protegidos.**
+4. **Entidad referenciada antes que la que la referencia** (`categorías` antes que `productos`).
+5. **Backend antes que el frontend que lo consume.**
+6. **Integraciones externas, pagos y webhooks al final**: dependen del dominio.
+7. **Admin y dashboards al final**: dependen de los datos que muestran.
+8. **Restyle visual al final del todo.**
 
-### Reglas para Scope
+### Paralelismo y camino crítico
 
-Bullets **operacionales**, no descriptivos. Cada bullet debe describir algo que el agente va a generar:
-
-- ✅ Bueno: `POST /api/auth/login — JWT access + refresh, rate limiting 5/60s por IP+email`
-- ❌ Malo: `Sistema de autenticación completo con tokens`
-
-- ✅ Bueno: `Migración 003: tablas allergen, product_allergen, allergen_cross_reaction`
-- ❌ Malo: `Crear las tablas de alérgenos`
-
-Mencioná explícitamente:
-- Modelos / entidades nuevas (`Modelos: Category, Subcategory, Product`)
-- Endpoints clave (`/api/admin/categories`, `/api/public/menu/{slug}`)
-- Migración numerada si la KB define convención (`Migración 002: ...`)
-- Eventos WS si existen (`ROUND_PENDING, ROUND_CONFIRMED, ...`)
-- Tests esperados (`Tests: CRUD, aislamiento multi-tenant, cache invalidation`)
+- **Gates**: cada punto del grafo donde, completado un ítem, se desbloquean varios que no dependen entre sí. Numeralos desde `GATE 0` y marcá con `← FORK` los que abren más de 2 ramas.
+- **Camino crítico**: la cadena lineal más corta desde el primer ítem hasta el último indispensable para producción. Sin restyle, dashboards extra ni features opcionales. Si hay dos candidatos a último, marcá ambos con `*`.
 
 ---
 
 ## Workflow
 
-1. Ejecutar pre-checks (existen los 10 canónicos de la KB).
-2. Leer los 4 canónicos obligatorios + los 3 opcionales si están.
-3. Identificar capacidades atómicas del sistema (cada una será un C-NN).
-4. Asignar C-NN secuenciales agrupados por FASES semánticas.
-5. Inferir dependencias aplicando las 8 reglas.
-6. Calcular GATES de paralelismo.
-7. Identificar camino crítico.
-8. Diseñar plan con 3 agentes.
-9. Para cada change escribir: Estado, Scope, Dependencias, Governance, Leer antes.
-10. Escribir `CHANGES.md` en la raíz.
-11. Cerrar con tabla resumen + sugerencia del primer change.
-12. **Si orquestado**: ejecutar el hook de estado — actualizar `state.roadmap` con `created_by: "roadmap-generator"`, `source: "CHANGES.md"`, `changes_file: "CHANGES.md"` y la lista de IDs `C-NN` generados. No escribir `step` (el orquestador avanza el step). Ver [`assets/state-contract.md`](assets/state-contract.md) para el algoritmo condicional completo.
+1. Correr los pre-checks.
+2. Leer la KB, `GLOSSARY.md` y `docs/adr/`.
+3. Identificar los ítems y agruparlos en fases con nombre semántico.
+4. Asignar IDs, dependencias y governance.
+5. Calcular árbol, gates y camino crítico.
+6. Escribir el cuerpo en un archivo temporal (fuera del repo) con la plantilla y pasar su checklist.
+7. **Confirmar con el usuario** antes de publicar: mostrá el repo destino (`nameWithOwner`), el título, la cantidad de ítems por fase y la ruta del borrador. Esperá un sí explícito. Si el repo no es del usuario o no es el que esperaba, no publiques.
+8. Publicar:
 
-### Output al usuario al cerrar
+   ```bash
+   gh label create roadmap --description "Plan de specs del proyecto" --color 0E8A16 --force
+   gh issue create --title "Roadmap: <NombreProyecto>" --label roadmap --body-file "<borrador>"
+   ```
 
-```markdown
-## CHANGES.md generado
+9. Cerrar con el próximo paso.
 
-✅ `CHANGES.md` creado en la raíz con **{N} changes** organizados en **{M} fases**.
+## Próximo paso
 
-**Camino crítico**: {K} changes
-**Gates de paralelismo**: {G}
-**Primer item elegible**: `{id}` ({nombre})
+Cerrá con este mensaje y frená; no lances `agent-instruction` vos.
 
-Para arrancar, leé las referencias del item elegido y acordá su alcance y verificación.
 ```
-
----
-
-## State integration (orchestrated)
-
-Este hook es **condicional y standalone-safe**: se ejecuta solo si `.active-orchestrator-state.json` ya existe en la raíz del proyecto (run orquestado por active-orchestrator). Si el archivo no existe, la generación de Markdown termina sin crear estado.
-
-**Cuándo corre**: inmediatamente después de escribir `CHANGES.md` (último paso del workflow, antes de retornar al usuario).
-
-**Qué escribe**: solo `state.roadmap` — nunca toca `step`, `owner`, `kb`, `skills`, ni `agents`.
-
-**Slice que registra**:
-| Campo | Valor |
-|---|---|
-| `created_by` | `"roadmap-generator"` |
-| `source` | `"CHANGES.md"` |
-| `changes_file` | `"CHANGES.md"` |
-| `changes` | lista de IDs `C-NN` generados, en orden |
-
-El slice es un **índice thin**: el detalle de scope, governance y dependencias por change vive en `CHANGES.md` (fuente de verdad única). No se duplica nada en el estado.
-
-**Algoritmo completo, reglas de input orquestado y fallback a disco**: ver [`assets/state-contract.md`](assets/state-contract.md).
+Roadmap publicado: <url del issue> — <N> ítems en <M> fases, camino crítico de <K>, primer ítem R-01 (<nombre>).
+Próximo paso: agent-instruction — genera AGENTS.md a partir de la KB y del roadmap.
+```
 
 ---
 
 ## Resources
 
-- **Templates**: ver [assets/changes-template.md](assets/changes-template.md) — plantilla completa de `CHANGES.md` con ejemplos.
-- **State contract**: ver [assets/state-contract.md](assets/state-contract.md) — schema slice `state.roadmap`, algoritmo de escritura condicional, reglas de input orquestado (`state.kb.files` / `state.kb.discovery`), fallback a disco.
+- [assets/roadmap-template.md](assets/roadmap-template.md): plantilla del cuerpo del issue, con ejemplo y checklist.
