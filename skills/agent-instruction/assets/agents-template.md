@@ -57,7 +57,7 @@ Cargá la skill que corresponde al contexto ANTES de escribir código.
 
 ## Roadmap
 
-<!-- Omitir la sección entera si no hay issue de roadmap. Resumen, NO el detalle. -->
+<!-- Omitir la sección entera si no hay issue de roadmap, y sacar también las menciones a "roadmap #{N}" del encabezado y del Flujo de Trabajo. Resumen, NO el detalle. -->
 
 El plan de specs es el issue [#{N} Roadmap: {NombreProyecto}]({url}). Resumen:
 
@@ -85,10 +85,10 @@ Todo el trabajo vive en GitHub Issues:
 ```
 1. Elegir un ítem del roadmap #{N} con sus deps cerradas  → priorizar el camino crítico
 2. Leer los punteros de "leer" del ítem
-3. /mattpocock-skills:grill-with-docs → /mattpocock-skills:to-spec   → issue de spec
-4. /mattpocock-skills:to-tickets                                      → issues hijos con bloqueos
-5. Por cada ticket desbloqueado: su rama, /mattpocock-skills:implement #T, su PR con "Closes #T"
-6. Editar la línea del ítem en el roadmap: - [ ] R-NN #M
+3. /mattpocock-skills:grill-with-docs → /mattpocock-skills:to-spec   → issue de spec #M
+4. Editar la línea del ítem en el roadmap: - [ ] R-NN #M
+5. /mattpocock-skills:to-tickets                                      → issues hijos con bloqueos
+6. Por cada ticket desbloqueado: su rama, /mattpocock-skills:implement #T, su PR con "Closes #T"
 ```
 
 Aplicar TODAS las reglas duras en cada paso. Ante conflicto entre la KB y este archivo, las reglas duras prevalecen.

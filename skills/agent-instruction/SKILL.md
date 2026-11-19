@@ -75,7 +75,7 @@ Todo lo que está fuera del bloque es de otras herramientas o del dev y se conse
 
 Si `CLAUDE.md` tiene contenido que no es solo `@AGENTS.md`, migralo para que quede una sola fuente:
 
-1. Sacá de ese contenido las líneas `@AGENTS.md` que ya tenga.
+1. Sacá de ese contenido las líneas `@AGENTS.md` que ya tenga y, si trae un bloque `active-stack:agent-instruction` (de una versión anterior que escribía dos copias), sacá el bloque entero con sus marcadores: el bloque nuevo lo reemplaza.
 2. Agregá el resto a `AGENTS.md`, **fuera del bloque**, después del marcador de cierre, tal cual (sin reformatear ni deduplicar). Desde ahí es contenido ajeno: las corridas siguientes no lo tocan.
 3. Dejá `CLAUDE.md` en `@AGENTS.md`.
 
@@ -197,7 +197,7 @@ Si ya tiene `## Agent skills`:
 
 ```
 Instrucciones actualizadas: solo cambió el bloque de agent-instruction; `## Agent skills` quedó intacta.
-Próximo paso: /mattpocock-skills:grill-with-docs sobre R-01 del roadmap #<N>.
+Próximo paso: /mattpocock-skills:grill-with-docs sobre R-01 del roadmap #<N> (sin roadmap: roadmap-generator).
 ```
 
 ---
