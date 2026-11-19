@@ -7,7 +7,7 @@ no se invoca con su nombre) o una skill derivada sin crédito.
 
 ## Sub-features
 
-- `static-foundation` falla si una skill de fundación presente menciona `openspec`, `/opsx`, `CHANGES.md` u `orchestrator-state`, y lista cada `archivo:línea`.
+- `static-foundation` falla si una skill de fundación presente menciona `openspec`, `/opsx`, `CHANGES.md` u `orchestrator-state`, o usa governance `BAJO`/`MEDIO`/`ALTO`/`CRITICO` en mayúsculas, y lista cada `archivo:línea`.
 - `static-foundation-absent` no falla por una skill de fundación que todavía no está en el repo; la nombra como no revisada.
 - `static-names` falla si el `name:` del frontmatter de una skill (de `skills/` o de `.claude/skills/`) no coincide con su carpeta, o si falta el frontmatter.
 - `static-derived` falla si una skill con `<!-- Origen:` no figura en NOTICE, si una skill de fundación no tiene Origen o si NOTICE lista una skill que no existe o no tiene Origen.

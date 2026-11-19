@@ -21,6 +21,9 @@ FOUNDATION="discovery-research kb-creator roadmap-generator web-scraper agent-in
 
 # Lo que una skill de fundación no puede mencionar.
 FORBIDDEN_RE='openspec|/opsx|CHANGES\.md|orchestrator-state'
+# Governance con el vocabulario viejo. Va aparte y sensible a mayúsculas:
+# "medio", "alto" o "crítico" en minúscula son castellano normal.
+OLD_GOVERNANCE_RE='(^|[^A-Za-z])(BAJO|MEDIO|ALTO|CRITICO|CRÍTICO)([^A-Za-z]|$)'
 
 status=0
 fail() { status=1; }
@@ -38,10 +41,10 @@ skill_dirs() {
 forbidden_hits() {
   local file="$1"
   # La regex va por el entorno: "awk -v" interpretaría el "\." de CHANGES\.md.
-  tr -d '\r' < "$file" | FRE="$FORBIDDEN_RE" awk '
-    BEGIN { re = ENVIRON["FRE"] }
+  tr -d '\r' < "$file" | FRE="$FORBIDDEN_RE" GRE="$OLD_GOVERNANCE_RE" awk '
+    BEGIN { re = ENVIRON["FRE"]; gre = ENVIRON["GRE"] }
     /<!-- Origen:/ { skip = 1 }
-    !skip && tolower($0) ~ tolower(re) { print NR ":" $0 }
+    !skip && (tolower($0) ~ tolower(re) || $0 ~ gre) { print NR ":" $0 }
     skip && /-->/ { skip = 0 }'
 }
 
@@ -59,7 +62,7 @@ check_foundation_clean() {
     done < <(find "$ROOT/skills/$s" -type f)
   done
   if [ -n "$out" ]; then
-    echo "FAIL fundación sin OpenSpec: estas líneas mencionan OpenSpec, /opsx, CHANGES.md o un archivo de estado del orquestador:"
+    echo "FAIL fundación sin OpenSpec: estas líneas mencionan OpenSpec, /opsx, CHANGES.md, un archivo de estado del orquestador o governance BAJO/MEDIO/ALTO/CRITICO:"
     printf '%s' "$out"
     fail
   else

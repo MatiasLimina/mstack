@@ -1,146 +1,69 @@
 # roadmap-generator
 
-Skill para generar **`CHANGES.md`** — el índice operativo y canónico de todos los changes necesarios para implementar un sistema desde cero hasta producción.
+Skill que publica el **plan de specs** de un proyecto nuevo como un único issue de roadmap en GitHub, a partir de su base de conocimiento.
 
 ---
 
 ## ¿Qué hace?
 
-Lee tu base de conocimiento estructurada en `knowledge-base/` y genera `CHANGES.md` en la raíz del proyecto con:
+Lee `knowledge-base/`, `GLOSSARY.md` y `docs/adr/` y publica un issue `Roadmap: <Proyecto>` con label `roadmap`, que contiene:
 
-- **Árbol de dependencias** visual (ASCII art jerárquico).
-- **Paralelismo por fase** con gates explícitos y asignación sugerida de agentes.
-- **Camino crítico**: mínimo irreducible de changes para llegar a producción.
-- **Plan óptimo con 3 agentes**: tabla de asignaciones por paso.
-- **Por cada change**: estado checkbox, scope operacional, dependencias, nivel de governance y archivos KB a leer antes.
+- **Árbol de dependencias** (ASCII jerárquico).
+- **Paralelismo** con gates explícitos.
+- **Camino crítico**: el mínimo irreducible para llegar a producción.
+- **Task list**: una línea por spec futura, con ID `R-NN`, alcance, governance (LOW/MEDIUM/HIGH/CRITICAL), dependencias y qué leer antes.
 
-Es **fire-and-forget**: no hace preguntas, va directo al output.
+No escribe archivos en el repo ni crea issues hijos. Antes de publicar te muestra el repo destino y espera tu confirmación.
 
 ---
 
-## ¿Por qué no es solo "un roadmap"?
+## Dónde encaja
 
-Un roadmap clásico es informativo (qué viene y en qué orden). `CHANGES.md` es **operativo**: te dice cómo paralelizar el trabajo entre múltiples agentes o personas, qué es el mínimo irreducible si te falta tiempo, qué archivos KB debe leer el agente antes de proponer cada change, y qué nivel de revisión humana requiere cada uno.
+Es el tercer paso de la fundación:
 
-Diferencias clave con un roadmap simple:
+`discovery-research` (opcional) → `kb-creator` → **`roadmap-generator`** → `agent-instruction` → `/setup-matt-pocock-skills`
 
-| Aspecto | Roadmap simple | CHANGES.md |
-|---------|---------------|------------|
-| Dependencias | Tabla 1-a-1 | Árbol jerárquico + gates |
-| Paralelización | Implícita o nula | Explícita, con asignación a agentes |
-| Priorización ante tiempo limitado | Difícil de inferir | Camino crítico marcado |
-| Contrato con la KB | Implícito | Sección "Leer antes" por change |
-| Nivel de riesgo | No declarado | Governance: BAJO/MEDIO/ALTO/CRITICO |
-| Scope por change | Descriptivo | Operacional (modelos, endpoints, migraciones) |
-| Tracking de progreso | No | Checkboxes `[ ]` / `[x]` |
+Después, cada ítem del roadmap entra al workflow normal: `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement`. Cuando la spec de un ítem existe como `#N`, su línea pasa a `- [ ] R-NN #N`.
 
 ---
 
 ## Pre-requisitos
 
-Antes de invocar esta skill necesitás:
-
-**Base de conocimiento generada** en `knowledge-base/` (raíz). Si falta la KB o alguno de sus 10 archivos canónicos, la skill te avisa y se detiene sin escribir.
-
----
-
-## Instalación
-
-```bash
-npx skills add https://github.com/Group-Active-IA/roadmap-generator
-```
+- `knowledge-base/` con los 9 canónicos (`01` a `08` y `10`). Si falta alguno, la skill avisa y no publica.
+- `gh` logueado y un remote de GitHub.
+- Ningún issue abierto con label `roadmap`. Si ya hay uno, la skill propone editarlo.
 
 ---
 
 ## Uso
 
 ```
-Tu repo:
-proyecto/
-├── docs/                        # Documentos fuente
-└── knowledge-base/              # KB generada por kb-creator
-
 Le decís al agente:
-"generá el CHANGES.md del proyecto"
+"armá el roadmap del proyecto"
 ```
 
-El agente lee la KB y escribe `CHANGES.md` en la raíz si falta. En una fundación, la variante `reuse` valida el roadmap existente y conserva su contenido.
+Al terminar:
 
----
-
-## Estructura del output
-
-```markdown
-# CHANGES — Secuencia de Implementación
-
-> Índice canónico de todos los changes del proyecto X.
-
-## Cómo usar este documento
-(5 pasos)
-
-## Árbol de dependencias
-(ASCII art jerárquico)
-
-### Paralelismo por fase
-(GATES con asignación a agentes)
-
-### Camino crítico
-(cadena lineal irreducible)
-
-### Plan óptimo con 3 agentes
-(tabla paso × agente)
-
-## FASE 0 — Cimientos
-### [C-01] `foundation-setup`
-- Estado: [ ] pendiente
-- Scope: bullets operacionales
-- Dependencias: ninguna
-- Governance: BAJO
-- Leer antes:
-  - knowledge-base/01_vision_y_objetivos.md
-  - ...
-
-## FASE 1A — Autenticación
-### [C-03] `auth`
-- ...
+```
+Roadmap publicado: https://github.com/<owner>/<repo>/issues/1 — 10 ítems en 4 fases, camino crítico de 7, primer ítem R-01 (foundation-setup).
+Próximo paso: agent-instruction — genera AGENTS.md a partir de la KB y del roadmap.
 ```
 
 ---
-
-## Reglas que aplica para inferir dependencias
-
-1. **Infra primero**: C-01 nunca depende de nada.
-2. **Modelos core antes que features**: C-02 es típicamente core-models.
-3. **Auth antes que recursos protegidos**.
-4. **Entidad referenciada antes que la que referencia** (`categorías` antes que `productos`).
-5. **Backend antes que frontend acoplado**.
-6. **Integraciones externas (pagos, webhooks) al final**.
-7. **Admin / dashboards al final** (dependen de datos que muestran).
-8. **Refactors visuales / UI restyle al final del todo** (requieren producto estable).
 
 ## Niveles de governance
 
 | Nivel | Cuándo se usa |
 |-------|---------------|
-| **BAJO** | Scaffolding, CRUDs simples, pages frontend sin lógica crítica. |
-| **MEDIO** | Flujos con estado, sesiones, máquinas de estado, WS no críticos. |
-| **ALTO** | Notificaciones, gestión de roles, WS gateway, observabilidad. |
-| **CRITICO** | Auth, pagos, datos de seguridad, audit trail, modelos core. |
+| **LOW** | Scaffolding, CRUDs simples, pantallas sin lógica crítica. |
+| **MEDIUM** | Lógica de negocio, flujos con estado, adapters. |
+| **HIGH** | Config que afecta datos del usuario, roles, notificaciones, observabilidad. |
+| **CRITICAL** | Auth, pagos, seguridad, audit trail, modelos core. |
 
----
-
-## Output al cerrar
-
-```
-✅ CHANGES.md creado en la raíz con 10 changes en 4 fases.
-Camino crítico: 7 changes
-Gates de paralelismo: 5
-Primer change recomendado: C-01 (foundation-setup)
-Para arrancar: leé las referencias de C-01 y acordá su alcance y verificación.
-```
+Son los mismos niveles que usa el gate final del `CLAUDE.md` global.
 
 ---
 
 ## Licencia
 
-Apache-2.0
+Apache-2.0. Deriva de [Group-Active-IA/roadmap-generator](https://github.com/Group-Active-IA/roadmap-generator); ver `NOTICE.md` en la raíz de mstack.
