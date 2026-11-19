@@ -47,8 +47,8 @@ por cada ticket desbloqueado (su rama, su PR):
   artefacto con su propia skill, aunque el cambio parezca chico.
 - En la fase de `to-spec`: si la spec sale de un ítem del issue de roadmap,
   después de crear el issue de spec editá el issue de roadmap y reemplazá el
-  texto de ese ítem por `#N` (el número de la spec). Así GitHub muestra el
-  título de la spec y tilda el ítem solo cuando la spec se cierra.
+  texto de ese ítem por `#N` (el número de la spec), para que GitHub lo
+  tilde al cerrarse la spec.
 - `implement` commitea en la rama actual, así que antes de `/implement #N`
   parate en la rama del ticket: si no existe, creala desde la default
   actualizada como `<tipo>/<N>-<slug>` (`<tipo>`: `feat`, `fix`, `refactor`,
@@ -59,13 +59,11 @@ por cada ticket desbloqueado (su rama, su PR):
 - Antes de implementar, ubicá el estado del proyecto: leé su `CLAUDE.md` /
   `AGENTS.md` y, si existen, `knowledge-base/`, `GLOSSARY.md`, `docs/adr/`
   y el issue de roadmap.
-- Fundación (solo proyectos grandes y vacíos; el resto arranca con
-  `grill-with-docs`): `discovery-research` (opcional) → `kb-creator` →
-  `roadmap-generator` → `agent-instruction` →
+- Fundación (solo proyectos grandes y vacíos): `discovery-research`
+  (opcional) → `kb-creator` → `roadmap-generator` → `agent-instruction` →
   `/mattpocock-skills:setup-matt-pocock-skills` → `agent-instruction` otra
-  vez (para sumar las skills de Matt). Cada skill termina con el próximo
-  comando; después, cada ítem del issue de roadmap entra al workflow
-  por `/mattpocock-skills:grill-with-docs`.
+  vez. Después, cada ítem del issue de roadmap entra al workflow por
+  `/mattpocock-skills:grill-with-docs`, igual que cualquier otro proyecto.
 - Las skills de Matt vienen del plugin `mattpocock-skills`. Siempre van con
   prefijo (`mattpocock-skills:code-review`, no el `/code-review` built-in de
   Claude Code). En un proyecto nuevo, el usuario corre

@@ -129,7 +129,7 @@ La fundación deja las instrucciones de cada proyecto en `AGENTS.md`, y el
 
 - **Gemini CLI** lee `GEMINI.md` por defecto. Para que lea `AGENTS.md` en
   todos los proyectos, agregalo una vez a sus archivos de contexto en
-  `%USERPROFILE%\.gemini\settings.json` (si el archivo ya existe, sumá la
+  `$env:USERPROFILE\.gemini\settings.json` (si el archivo ya existe, sumá la
   clave sin pisar el resto):
 
   ```json
