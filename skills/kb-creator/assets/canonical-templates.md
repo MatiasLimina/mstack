@@ -1,6 +1,8 @@
 # Canonical Templates — Estructura interna de cada archivo
 
-Esta es la estructura **mínima esperada** de cada uno de los 10 archivos canónicos. Adaptala según el dominio, pero respetá las secciones marcadas como obligatorias.
+Esta es la estructura **mínima esperada** de cada uno de los 9 archivos canónicos (el 09 queda vacío). Adaptala según el dominio, pero respetá las secciones marcadas como obligatorias.
+
+En todos los archivos, los términos del dominio se escriben en negrita con link a `GLOSSARY.md` (`[**Turno**](../GLOSSARY.md)`) y no se redefinen: la definición vive solo en el glosario.
 
 ---
 
@@ -53,7 +55,7 @@ Esta es la estructura **mínima esperada** de cada uno de los 10 archivos canón
 # Actores y Roles
 
 ## Actores del sistema
-[Tabla: Actor → Descripción → Cómo interactúa]
+[Tabla: Actor (término del glosario, con link) → Cómo interactúa con el sistema]
 
 ## RBAC — Matriz de permisos
 [Tabla: Rol → Recurso → Permisos (CRUD)]
@@ -192,29 +194,6 @@ proyecto/
 
 ---
 
-## 09_decisiones_y_supuestos.md
-
-```markdown
-# Decisiones y Supuestos
-
-## Decisiones documentadas
-### DD-01 — {Título}
-**Decisión**: [qué se decidió]
-**Contexto**: [por qué hubo que decidir]
-**Alternativas consideradas**: [opciones evaluadas]
-**Justificación**: [por qué se eligió esta]
-**Trade-offs aceptados**: [qué se resigna]
-
-## Supuestos inferidos
-### SU-01 — {Título}
-**Supuesto**: [qué se asume]
-**Origen**: [de qué documento/conversación se infirió]
-**Riesgo si es falso**: [impacto]
-**Cómo validar**: [acción concreta]
-```
-
----
-
 ## 10_preguntas_abiertas.md
 
 ```markdown
@@ -226,6 +205,13 @@ proyecto/
 **Documento B dice**: [...]
 **Impacto**: [qué se rompe si no se resuelve]
 **Resolución propuesta**: [opción recomendada]
+
+## Supuestos a validar
+### SU-01 — {Título}
+**Supuesto**: [qué se asume]
+**Origen**: [de qué documento/conversación se infirió]
+**Riesgo si es falso**: [impacto]
+**Cómo validar**: [acción concreta]
 
 ## Preguntas abiertas (priorizadas)
 | Prioridad | Pregunta | Bloquea | Decisor |
@@ -250,14 +236,24 @@ Base de conocimiento generada a partir de los documentos del proyecto.
 |---------|-----------|
 | [01_vision_y_objetivos.md](01_vision_y_objetivos.md) | ... |
 | [02_descripcion_general.md](02_descripcion_general.md) | ... |
-| ... |
+| ... | |
+| [10_preguntas_abiertas.md](10_preguntas_abiertas.md) | ... |
+
+El 09 no existe a propósito: las decisiones de diseño viven como ADRs.
+
+## Vocabulario y decisiones
+
+| Archivo | Contenido |
+|---------|-----------|
+| [GLOSSARY.md](../GLOSSARY.md) | Vocabulario del dominio: cada término se define acá una sola vez |
+| [docs/adr/](../docs/adr/) | Decisiones de diseño (ADRs) |
 
 ## Quick Start para Desarrolladores
 
-1. Entender el dominio → [01](01_vision_y_objetivos.md), [03](03_actores_y_roles.md)
+1. Entender el dominio → [01](01_vision_y_objetivos.md), [03](03_actores_y_roles.md), [GLOSSARY.md](../GLOSSARY.md)
 2. Entender los datos → [04](04_modelo_de_datos.md)
 3. Entender las reglas → [05](05_reglas_de_negocio.md)
-4. Entender la arquitectura → [02](02_descripcion_general.md), [08](08_arquitectura_propuesta.md)
+4. Entender la arquitectura → [02](02_descripcion_general.md), [08](08_arquitectura_propuesta.md), [docs/adr/](../docs/adr/)
 5. Implementar → [07](07_flujos_principales.md), [06](06_funcionalidades.md)
 6. Antes de codificar → [10](10_preguntas_abiertas.md)
 
