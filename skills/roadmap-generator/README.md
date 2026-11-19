@@ -46,7 +46,7 @@ Al terminar:
 
 ```
 Roadmap publicado: https://github.com/<owner>/<repo>/issues/1 — 10 ítems en 4 fases, camino crítico de 7, primer ítem R-01 (foundation-setup).
-Próximo paso: agent-instruction — genera AGENTS.md a partir de la KB y del roadmap.
+Próximo paso: /agent-instruction — genera AGENTS.md a partir de la KB y del roadmap.
 ```
 
 ---

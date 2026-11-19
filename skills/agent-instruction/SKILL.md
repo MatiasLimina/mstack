@@ -5,7 +5,9 @@ description: >
   de knowledge-base/, GLOSSARY.md, docs/adr/ y el issue de roadmap: stack, punteros a la KB, skills por agente,
   resumen del roadmap, workflow con issues y las reglas duras del proyecto. Escribe solo dentro de su bloque
   delimitado y conserva textual el resto del archivo (en particular `## Agent skills`). Interactivo SOLO para
-  confirmar las reglas duras. NO repite las instrucciones globales que el stack ya instaló.
+  confirmar las reglas duras. NO repite las instrucciones globales que el stack ya instaló. Al terminar, cierra
+  siempre con una línea `Próximo paso: …` (/mattpocock-skills:setup-matt-pocock-skills si AGENTS.md no tiene
+  `## Agent skills`; si ya la tiene, /mattpocock-skills:grill-with-docs).
   Trigger: cuando el usuario pide crear/generar/actualizar AGENTS.md o CLAUDE.md, "armar las reglas del proyecto",
   "instrucciones para los agentes", "regenerá AGENTS.md", o después de roadmap-generator.
 license: Apache-2.0
@@ -22,6 +24,10 @@ metadata:
      hook de estado del orquestador (state.agents, "plan confirmado"); conserva
      el bloque delimitado active-stack:agent-instruction de upstream y todo lo de
      alrededor; cierra indicando /mattpocock-skills:setup-matt-pocock-skills; no se copió tests/. -->
+
+> **Cierre obligatorio.** El mensaje con el que termina esta skill lleva
+> siempre, como última línea, el `Próximo paso: …` de la sección
+> [Próximo paso](#próximo-paso), aunque la conversación haya sido larga.
 
 ## When to Use
 
@@ -190,14 +196,14 @@ Si `AGENTS.md` todavía no tiene `## Agent skills`:
 
 ```
 Instrucciones listas: AGENTS.md (bloque de agent-instruction) y CLAUDE.md → @AGENTS.md.
-Próximo paso: /mattpocock-skills:setup-matt-pocock-skills con GitHub como tracker. Después volvé a correr agent-instruction para que las instrucciones incluyan las skills de Matt.
+Próximo paso: /mattpocock-skills:setup-matt-pocock-skills con GitHub como tracker. Después volvé a correr /agent-instruction para que las instrucciones incluyan las skills de Matt.
 ```
 
 Si ya tiene `## Agent skills`:
 
 ```
 Instrucciones actualizadas: solo cambió el bloque de agent-instruction; `## Agent skills` quedó intacta.
-Próximo paso: /mattpocock-skills:grill-with-docs sobre R-01 del roadmap #<N> (sin roadmap: roadmap-generator).
+Próximo paso: /mattpocock-skills:grill-with-docs sobre R-01 del roadmap #<N> (sin roadmap: /roadmap-generator).
 ```
 
 ---

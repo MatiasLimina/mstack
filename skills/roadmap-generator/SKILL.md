@@ -1,7 +1,7 @@
 ---
 name: roadmap-generator
 description: >
-  Publica el plan de trabajo de un proyecto como un único issue de roadmap en GitHub, a partir de knowledge-base/: árbol de dependencias, paralelismo, camino crítico y una task list con una línea por spec futura (alcance, governance LOW/MEDIUM/HIGH/CRITICAL, dependencias y qué leer antes). Confirma el repo destino antes de publicar y no crea issues hijos.
+  Publica el plan de trabajo de un proyecto como un único issue de roadmap en GitHub, a partir de knowledge-base/: árbol de dependencias, paralelismo, camino crítico y una task list con una línea por spec futura (alcance, governance LOW/MEDIUM/HIGH/CRITICAL, dependencias y qué leer antes). Confirma el repo destino antes de publicar y no crea issues hijos. Al terminar, cierra siempre con la línea `Próximo paso: /agent-instruction`.
   Trigger: When user asks to create, build, regenerate, or update the roadmap, change map, implementation plan; or says "armar roadmap", "issue de roadmap", "generar plan de implementación", "qué specs necesito", or after kb-creator.
 license: Apache-2.0
 metadata:
@@ -18,6 +18,10 @@ metadata:
      local-markdown/reuse ni ClickUp; sin plan de 3 agentes; confirma el repo
      destino antes de publicar; cierra indicando agent-instruction; no se copió
      tests/. -->
+
+> **Cierre obligatorio.** El mensaje con el que termina esta skill lleva
+> siempre, como última línea, el `Próximo paso: …` de la sección
+> [Próximo paso](#próximo-paso), aunque la conversación haya sido larga.
 
 ## When to Use
 
@@ -154,7 +158,7 @@ Cerrá con este mensaje y frená; no lances `agent-instruction` vos.
 
 ```
 Roadmap publicado: <url del issue> — <N> ítems en <M> fases, camino crítico de <K>, primer ítem R-01 (<nombre>).
-Próximo paso: agent-instruction — genera AGENTS.md a partir de la KB y del roadmap.
+Próximo paso: /agent-instruction — genera AGENTS.md a partir de la KB y del roadmap.
 ```
 
 ---
