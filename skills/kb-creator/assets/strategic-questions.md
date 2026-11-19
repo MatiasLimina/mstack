@@ -13,9 +13,9 @@ Cuando entrás en Mode B, tu trabajo NO es generar archivos automáticamente sin
 
 ---
 
-## Preguntas de discovery (obligatorias para orquestación)
+## Preguntas de contexto (opcionales)
 
-Estas dos preguntas se hacen **antes** de la primera ronda cuando el run es orquestado (`.active-orchestrator-state.json` presente). En modo standalone son opcionales pero recomendadas para mejorar la calidad del KB.
+Hacelas antes de la primera ronda cuando el tipo de sistema o la escala no salen del contexto. Mejoran la calidad de `02` y `08`.
 
 ### P0-sys — Tipo de sistema
 
@@ -29,7 +29,7 @@ Estas dos preguntas se hacen **antes** de la primera ronda cuando el run es orqu
 - (e) SaaS multi-tenant (múltiples organizaciones aisladas)
 - (f) Otro (describí)
 
-**Por qué importa**: el `system_type` condiciona patrones de arquitectura, estructura de autenticación y tipo de documentación que tiene más valor. Mapea a `state.kb.discovery.system_type`.
+**Por qué importa**: el tipo de sistema condiciona patrones de arquitectura, estructura de autenticación y tipo de documentación que tiene más valor.
 
 ---
 
@@ -43,7 +43,7 @@ Estas dos preguntas se hacen **antes** de la primera ronda cuando el run es orqu
 - (c) Público multi-usuario (> 10k usuarios, un solo tenant)
 - (d) Multi-tenant (múltiples organizaciones, cada una con sus propios usuarios)
 
-**Por qué importa**: la escala determina decisiones de DB, caché, queue, y si el sistema necesita separación de datos por tenant. Mapea a `state.kb.discovery.scale`.
+**Por qué importa**: la escala determina decisiones de DB, caché, queue, y si el sistema necesita separación de datos por tenant. Si `discovery/discovery.md` describe a los usuarios, usalo como punto de partida y pedí confirmación.
 
 ---
 
@@ -76,7 +76,7 @@ Estas dos preguntas se hacen **antes** de la primera ronda cuando el run es orqu
 
 > ¿Quiénes usan el sistema y **qué hace cada uno**? Listá los roles con UN verbo principal cada uno.
 
-**Por qué importa**: el modelo de RBAC y la mitad de las pantallas se derivan de acá. Si confundís roles ahora, después tenés que re-modelar.
+**Por qué importa**: el modelo de RBAC y la mitad de las pantallas se derivan de acá. Si confundís roles ahora, después tenés que re-modelar. Cada actor confirmado es un término de `GLOSSARY.md`.
 
 ---
 
@@ -90,7 +90,7 @@ Estas dos preguntas se hacen **antes** de la primera ronda cuando el run es orqu
 - ¿Compatibilidad con sistemas legacy?
 - ¿Compliance (GDPR, HIPAA, PCI-DSS)?
 
-**Por qué importa**: si la restricción es real, condiciona toda la arquitectura. Si no es real (es preferencia disfrazada de restricción), evita encerrarte. El stack obligatorio mapea a `state.kb.discovery.stack`; las sub-preguntas de infra (Cloud/on-prem/DB/queues) resuelven el booleano `state.kb.discovery.needs_infra`.
+**Por qué importa**: si la restricción es real, condiciona toda la arquitectura. Si no es real (es preferencia disfrazada de restricción), evita encerrarte. Una restricción real que condiciona la arquitectura es candidata a ADR.
 
 ---
 
@@ -136,7 +136,7 @@ Si el usuario responde con frases como las siguientes, **no avances** — cuesti
 |----------------|--------------|
 | "todo lo que se pueda" | "no podemos documentar 'todo'. Dame 3 cosas concretas en orden de prioridad." |
 | "que sea escalable" | "escalable a qué escala — 100 usuarios, 100k, 100M? cada respuesta es una arquitectura distinta." |
-| "como hacen otros sistemas similares" | Si `state.discovery.competitors` YA tiene competidores investigados de verdad (fase `discovery-research` corrida antes), NO deflectes — usá esos datos reales: "vi que investigaste a [competidores], que hacen [resumen]. ¿Tu enfoque va en esa línea o pensás algo distinto?". Si NO hay `discovery` previo, seguí deflectando: "decime UN sistema que admires concretamente y QUÉ específico de él querés copiar." |
+| "como hacen otros sistemas similares" | Si `discovery/discovery.md` YA tiene competidores investigados de verdad (sección 4, de `discovery-research`), NO deflectes — usá esos datos reales: "vi que investigaste a [competidores], que hacen [resumen]. ¿Tu enfoque va en esa línea o pensás algo distinto?". Si NO hay discovery previo, seguí deflectando: "decime UN sistema que admires concretamente y QUÉ específico de él querés copiar." |
 | "lo que sea estándar de la industria" | "no existe 'el estándar'. Dame el contexto: tipo de empresa, equipo, presupuesto." |
 
 ---
@@ -150,6 +150,9 @@ Al final de cada ronda, escribí:
 - [Punto 1]
 - [Punto 2]
 - ...
+
+**Términos para el glosario** (una palabra por concepto; las otras van a `_Avoid_`):
+- **[Término]**: [definición corta] — evitar: [sinónimos]
 
 **Supuestos que estoy haciendo** (corregilos si no son ciertos):
 - **Suposición**: [...]

@@ -1,7 +1,7 @@
 ---
 name: kb-creator
 description: >
-  Builds a structured project knowledge base of 10 canonical .md files at knowledge-base/ (project root). Has dual mode: silent generation from existing source documents in docs/, or interactive iterative creation from scratch.
+  Arma la base de conocimiento de un proyecto: 9 archivos canónicos en knowledge-base/, el vocabulario del dominio en GLOSSARY.md y las decisiones de diseño como ADRs en docs/adr/, con los formatos de domain-modeling de Matt. Dos modos: silencioso desde documentos fuente en docs/, o interactivo desde cero. Lee discovery/discovery.md si existe.
   Trigger: When user asks to create, build, or generate a knowledge base for a project, document a project from source documents (.txt, .docx, .pdf), or asks to "armar base de conocimiento" / "crear KB" / "documentar proyecto".
 license: Apache-2.0
 metadata:
@@ -10,8 +10,13 @@ metadata:
 ---
 
 <!-- Origen: Group-Active-IA/kb-creator@e204c47 (Apache-2.0). Ver NOTICE.md.
-     Cambios: ninguno en el contenido; solo se agregó este encabezado y no se
-     copió tests/ (prueba el contrato de estado del orquestador). -->
+     assets/domain-formats.md deriva de domain-modeling (mattpocock/skills, MIT).
+     Cambios: 9 canónicos (sale 09_decisiones_y_supuestos; las decisiones pasan a
+     ADRs en docs/adr/ y los supuestos a 10_preguntas_abiertas); vocabulario en
+     GLOSSARY.md con los formatos de domain-modeling de Matt; lee
+     discovery/discovery.md de disco; sin orquestador ni archivo de estado (se
+     borró assets/state-contract.md); sin mención a OpenSpec; cierra indicando
+     roadmap-generator; no se copió tests/. -->
 
 ## When to Use
 
@@ -20,49 +25,25 @@ metadata:
 - Documentar un sistema desde cero acompañando al usuario como socio estratégico.
 
 **Don't use when:**
-- Ya existe `knowledge-base/` con los 10 archivos canónicos completos (sugerí actualizar archivos puntuales en su lugar).
+- Ya existe `knowledge-base/` con los 9 archivos canónicos completos (sugerí actualizar archivos puntuales en su lugar).
 - El usuario pide UN documento específico (es una skill de KB completa, no de archivos sueltos).
 
 ---
 
-## Operating Modes
+## Qué produce
 
-En fundación, la fase `kb` recibe una variante confirmada. Ejecutá ese plan aunque el modo que se detectaría usando solo `docs/` sea distinto:
+| Salida | Contenido | Formato |
+|---|---|---|
+| `knowledge-base/` | 9 archivos canónicos + extras opcionales + `README.md` índice | [assets/canonical-templates.md](assets/canonical-templates.md) |
+| `GLOSSARY.md` (raíz) | Vocabulario del dominio | [assets/domain-formats.md](assets/domain-formats.md) |
+| `docs/adr/NNNN-slug.md` | Decisiones de diseño que cumplen el filtro ADR | [assets/domain-formats.md](assets/domain-formats.md) |
 
-- `import`: usá Mode A con las fuentes confirmadas. Pueden estar fuera de `docs/`. Verificá antes que sean archivos accesibles y compatibles; informá si falta alguno y esperá a que se confirme el reemplazo.
-- `interview`: usá Mode B. Preguntá por la información necesaria antes de escribir y reutilizá evidencia disponible para evitar preguntas repetidas.
-- `reuse`: verificá los 10 canónicos y el índice de `knowledge-base/` sin escribir en sus archivos. Devolvé las rutas verificadas y la metadata respaldada por la KB. Si falta metadata, el orquestador registra estas rutas y la evidencia disponible en el estado confirmado.
+`knowledge-base/` va en la **raíz del proyecto**, separada de `docs/` (que contiene los documentos fuente). La única salida dentro de `docs/` es `docs/adr/`.
 
-Si hay una KB parcial, no sobrescribas los documentos existentes. Reutilizá como entrada los documentos verificados y acordá cómo completar los faltantes antes de generarlos. Si los documentos existentes pertenecen a la misma ejecución interrumpida, retomá con los pendientes del plan confirmado. Escribí solo los archivos pendientes.
-
-En uso independiente, aplicá esta detección automática:
-
-### Mode A — From existing source docs (silent)
-
-**Trigger automático**: la carpeta `docs/` existe **y** contiene archivos fuente (`.txt`, `.docx`, `.pdf`, o `.md` distintos a un README).
-
-**Comportamiento**: leés todas las fuentes desde `docs/`, analizás, y generás la KB canónica completa en `knowledge-base/` (raíz del proyecto) **sin hacer preguntas**. Fire-and-forget.
-
-### Mode B — From scratch (interactive)
-
-**Trigger automático**: la carpeta `docs/` no existe, está vacía, o solo tiene un README, **y** `knowledge-base/` no existe en raíz.
-**Trigger explícito**: el usuario dice "armemos desde cero", "construyamos la KB", "no tengo documentación previa".
-
-**Comportamiento**: actuás como **socio estratégico** — analizás contexto, detectás huecos, hacés 3-5 preguntas estratégicas, proponés enfoques con pros/contras, iterás archivo por archivo con validación.
-
----
-
-## Critical Patterns
-
-### Output location (ambos modos)
-Todos los archivos de la KB van a `knowledge-base/` en la **raíz del proyecto**. **NUNCA** mezclar con `docs/` (que contiene los documentos fuente).
-
-### Canonical files (10 obligatorios)
-
-La KB **DEBE** contener estos 10 archivos con estos nombres exactos:
+### Canonical files (9 obligatorios)
 
 | # | Archivo | Contenido |
-|---|---------|-----------|
+|---------|---------|-----------|
 | 01 | `01_vision_y_objetivos.md` | Propósito, objetivos por actor, alcance, fuera de alcance |
 | 02 | `02_descripcion_general.md` | Stack tecnológico, arquitectura general, integraciones externas |
 | 03 | `03_actores_y_roles.md` | Actores del sistema, tabla RBAC, permisos, rutas públicas |
@@ -71,49 +52,72 @@ La KB **DEBE** contener estos 10 archivos con estos nombres exactos:
 | 06 | `06_funcionalidades.md` | Historias de usuario / features organizadas por épica |
 | 07 | `07_flujos_principales.md` | Flujos extremo a extremo (auth, dominio principal, etc.) |
 | 08 | `08_arquitectura_propuesta.md` | Patrones, estructura de directorios, seguridad, env vars |
-| 09 | `09_decisiones_y_supuestos.md` | Decisiones de diseño documentadas + supuestos inferidos |
-| 10 | `10_preguntas_abiertas.md` | Inconsistencias detectadas + preguntas abiertas priorizadas |
+| 10 | `10_preguntas_abiertas.md` | Inconsistencias, supuestos a validar y preguntas abiertas priorizadas |
 
-Más un `README.md` índice en `knowledge-base/README.md`.
+El número 09 queda vacío a propósito: las referencias por número siguen apuntando al archivo correcto.
 
-Ver `assets/canonical-templates.md` para la estructura interna esperada de cada archivo.
+Si el dominio lo requiere, sumá extras con prefijo `1X_` o `2X_` y nombre kebab-case (ej. `11_pagos_mercadopago.md`, `12_devops_y_despliegue.md`). Los extras complementan a los 9 canónicos.
 
-### Optional extras (permitidos)
+### Vocabulario y decisiones
 
-Si el dominio lo requiere, podés agregar archivos extra con prefijo `1X_` o `2X_` y nombre kebab-case. Ejemplos:
-- `11_pagos_mercadopago.md` (e-commerce con pasarela específica)
-- `12_devops_y_despliegue.md` (proyecto con infra compleja)
-- `13_observabilidad.md` (sistema con telemetría no trivial)
+- **Términos**: cada término del dominio se define **una sola vez**, en `GLOSSARY.md`. Los archivos de la KB lo usan en negrita con link al glosario (`[**Turno**](../GLOSSARY.md)`) y no lo redefinen. Un término de actor se define en el glosario; `03` describe sus permisos.
+- **Decisiones**: una decisión de diseño va a un ADR solo si pasa el filtro ADR de [assets/domain-formats.md](assets/domain-formats.md) (difícil de revertir, sorprendente sin contexto, resultado de un trade-off real). Una decisión que no lo pasa queda como una línea en el archivo temático donde se aplica (stack en `02`, patrones en `08`). Un proyecto con stack decidido tiene al menos un ADR: las tecnologías con lock-in (base de datos, auth, deploy) pasan el filtro.
+- **Supuestos**: todo supuesto inferido va a `10_preguntas_abiertas.md`, sección "Supuestos a validar".
+- **Archivos existentes**: si `GLOSSARY.md` o `docs/adr/` ya existen (por ejemplo, de un `/grill-with-docs` anterior), extendelos: sumá los términos que faltan y numerá los ADRs nuevos a partir del más alto. Los términos y ADRs existentes quedan como están; si la KB los contradice, registrá la contradicción en `10_preguntas_abiertas.md`.
 
-Los extras **nunca reemplazan** los 10 canónicos — los complementan.
+### Discovery previo (opcional)
 
-### Mode A workflow (silent)
+Si existe `discovery/discovery.md` (lo escribe `discovery-research`), leelo en los dos modos, antes de preguntar o inferir. Cada sección alimenta la KB:
 
-**Mode A → `source: "ingest"`** (see State integration below)
+| Sección de `discovery.md` | Va a |
+|---|---|
+| 1. Problema que resuelve | `01` (propósito) |
+| 2. Usuarios / roles | `03` y términos de actor en `GLOSSARY.md` |
+| 3. Casos de uso | `06` y `07` |
+| 4. Competidores / soluciones existentes | `01` (contexto); las notas de `discovery/sources/` como referencia |
+| 5. Funcionalidades necesarias | `06` (alcance del MVP en `01`) |
+| 6. Funcionalidades opcionales | `01` las nombra en "Fuera de alcance"; `06` las detalla en una épica posterior |
+| 7. Reglas de negocio | `05` |
+| 8. Integraciones | `02` |
+| 9. Restricciones | `02` y `08`; una restricción que no se ve en el código es un ADR |
+| 10. Riesgos | `10` (supuestos a validar) |
+| 11. Preguntas abiertas | `10` |
 
-1. Usá las fuentes confirmadas cuando la variante es `import`. En uso independiente, enumerá `docs/*.{txt,docx,pdf,md}` (excluí README).
-2. Leé todas las fuentes. Si `.active-orchestrator-state.json` existe y tiene una sección `discovery` de nivel superior (escrita por `discovery-research`, distinta de `kb.discovery`), leela también — ver `assets/state-contract.md` §5 para el mapeo exacto de qué campos pre-completa.
-3. Para cada archivo canónico, extraé contenido relevante de las fuentes (y de `discovery`, si la leíste) y estructuralo siguiendo `assets/canonical-templates.md`.
+Si no existe, la skill corre igual, con las fuentes de `docs/` o las preguntas del Mode B.
+
+---
+
+## Operating Modes
+
+Si hay una KB parcial, conservá los documentos existentes: usalos como entrada, acordá con el usuario cómo completar los faltantes y escribí solo los pendientes.
+
+### Mode A — From existing source docs (silent)
+
+**Trigger automático**: `docs/` contiene archivos fuente (`.txt`, `.docx`, `.pdf`, o `.md` distintos a un README). `docs/adr/` y `docs/agents/` son salidas de skills, no fuentes: no cuentan para el trigger ni se leen como fuente.
+
+1. Enumerá las fuentes de `docs/` (las de arriba) y leelas todas, junto con `discovery/discovery.md` si existe.
+2. Para cada archivo canónico, extraé el contenido relevante y estructuralo siguiendo `assets/canonical-templates.md`. Si `discovery.md` y `docs/` se contradicen, registrá la discrepancia en `10_preguntas_abiertas.md` en lugar de elegir una.
+3. Extraé los términos del dominio a `GLOSSARY.md` y las decisiones que pasan el filtro a `docs/adr/`.
 4. Si una fuente cubre dominios extra (ej. pagos con un PSP específico), creá un archivo extra `1X_*.md`.
-5. Escribí los 10 canónicos + extras + `README.md`, respetando la regla de reanudación para archivos verificados.
-6. Cerrá con una tabla resumen: `archivo → líneas → temas cubiertos`.
-7. **Si orquestado**: inferí los 6 campos `discovery` de los docs generados y ejecutá el hook de estado (ver `assets/state-contract.md` §4). Fuente: `"ingest"`.
+5. Escribí los 9 canónicos + extras + `README.md` índice + `GLOSSARY.md` + ADRs.
+6. Cerrá con la tabla resumen (ver Code Examples) y el próximo paso.
 
-**No hagas preguntas en este modo.** Si una fuente es ambigua, registrá la duda en `10_preguntas_abiertas.md` y seguí. Si un campo `discovery` no puede inferirse con confianza, registrá la incertidumbre en `10_preguntas_abiertas.md` — nunca inventes un valor.
+**No hagas preguntas en este modo.** Si una fuente es ambigua, registrá la duda en `10_preguntas_abiertas.md` y seguí.
 
-### Mode B workflow (interactive)
+### Mode B — From scratch (interactive)
 
-**Mode B → `source: "interactive"`** (see State integration below)
+**Trigger automático**: `docs/` no existe o no tiene fuentes, **y** `knowledge-base/` no existe en raíz.
+**Trigger explícito**: el usuario dice "armemos desde cero", "construyamos la KB", "no tengo documentación previa".
 
-1. Analizá contexto disponible (nombre del repo, mensaje del usuario, archivos visibles). Si `.active-orchestrator-state.json` existe y tiene una sección `discovery` de nivel superior (escrita por `discovery-research`), leela — ver `assets/state-contract.md` §5. Esto viene de una fase previa OPCIONAL de investigación de mercado, distinta de tu propio `kb.discovery`.
+1. Analizá el contexto disponible (nombre del repo, mensaje del usuario, archivos visibles, `discovery/discovery.md` si existe).
 2. Resumí en un párrafo qué entendés del proyecto.
 3. Listá las **incertidumbres principales** (3-5).
 4. Proponé 2-3 enfoques iniciales con pros y contras.
-5. Hacé las **3-5 preguntas estratégicas** (ver `assets/strategic-questions.md`), incluyendo las preguntas de discovery P0-sys y P0-scale que mapean a `system_type` y `scale`. Si algún campo ya salió de `discovery` (§5 del state-contract), NO lo vuelvas a preguntar de cero — mostralo como algo a confirmar en vez de pregunta abierta.
+5. Hacé las **3-5 preguntas estratégicas** de `assets/strategic-questions.md`. Lo que ya responde `discovery.md` no se pregunta de cero: mostralo como resumen a confirmar.
 6. Esperá respuesta del usuario antes de generar archivos.
-7. Después, proponé estructura inicial de la KB y validá.
+7. Proponé la estructura inicial de la KB, los términos del glosario y las decisiones candidatas a ADR, y validá.
 8. Iterá archivo por archivo, escribiendo + pidiendo feedback.
-9. **Si orquestado**: registrá los 6 campos `discovery` de las respuestas del usuario y ejecutá el hook de estado (ver `assets/state-contract.md` §4). Fuente: `"interactive"`.
+9. Cerrá con el próximo paso.
 
 ### Tono según modo
 - **Mode A**: eficiente, factual, sin floreos.
@@ -121,22 +125,14 @@ Los extras **nunca reemplazan** los 10 canónicos — los complementan.
 
 ---
 
-## State integration (orchestrated)
+## Próximo paso
 
-Este hook es **condicional y standalone-safe**: se ejecuta solo si `.active-orchestrator-state.json` ya existe en la raíz del proyecto (run orquestado por active-orchestrator). Si el archivo no existe, el comportamiento es idéntico al de hoy — ningún archivo de estado es creado.
+Cerrá con este mensaje y frená; no lances `roadmap-generator` vos.
 
-**Cuándo corre**: verificá los archivos y ejecutá el hook inmediatamente después de escribir la KB en Mode A o B. En `reuse` el orquestador registra la metadata tras validar el resultado.
-
-**Qué escribe**: solo `state.kb` — nunca toca `step`, `owner`, `roadmap`, `skills`, ni `agents`.
-
-**Mode → source mapping**:
-| Modo | `state.kb.source` |
-|---|---|
-| Mode A (silent, desde `docs/`) | `"ingest"` |
-| Mode B (interactive, desde cero) | `"interactive"` |
-Mixed runs: si el run comenzó desde `docs/` (trigger Mode A), resuelve a `"ingest"` aunque se hayan completado huecos con preguntas. El origen dominante determina `source`.
-
-**Algoritmo completo, reglas de inferencia para Mode A y low-confidence rule**: ver [`assets/state-contract.md`](assets/state-contract.md).
+```
+KB lista: knowledge-base/ (9 canónicos + <N> extras), GLOSSARY.md (<T> términos), docs/adr/ (<A> ADRs)
+Próximo paso: roadmap-generator — arma el plan de trabajo a partir de la KB.
+```
 
 ---
 
@@ -145,13 +141,15 @@ Mixed runs: si el run comenzó desde `docs/` (trigger Mode A), resuelve a `"inge
 ### Mode A: tabla resumen al cerrar
 
 ```markdown
-## KB generada en knowledge-base/
+## KB generada
 
 | Archivo | Líneas | Temas cubiertos |
 |---------|--------|-----------------|
-| 01_vision_y_objetivos.md | 84 | Propósito, 3 actores, alcance v5.0 |
-| 02_descripcion_general.md | 132 | FastAPI + React, REST, 14 endpoints |
-| ...
+| knowledge-base/01_vision_y_objetivos.md | 84 | Propósito, 3 actores, alcance v5.0 |
+| knowledge-base/02_descripcion_general.md | 132 | FastAPI + React, REST, 14 endpoints |
+| ... | | |
+| GLOSSARY.md | 40 | 12 términos |
+| docs/adr/0001-postgres-como-base.md | 3 | Base de datos |
 ```
 
 ### Mode B: pregunta estratégica modelo
@@ -170,22 +168,8 @@ Mixed runs: si el run comenzó desde `docs/` (trigger Mode A), resuelve a `"inge
 
 ---
 
-## Commands
-
-```bash
-# Instalar la skill
-npx skills add https://github.com/Group-Active-IA/kb-creator
-
-# Invocar en el agente (carga automática por contexto):
-"crear base de conocimiento del proyecto"
-"generar KB desde los docs"
-"armemos la documentación desde cero"
-```
-
----
-
 ## Resources
 
-- **Templates**: ver [assets/canonical-templates.md](assets/canonical-templates.md) — estructura interna esperada de los 10 archivos canónicos.
-- **Strategic questions**: ver [assets/strategic-questions.md](assets/strategic-questions.md) — banco de preguntas para Mode B (incluye P0-sys y P0-scale para discovery orquestado).
-- **State contract**: ver [assets/state-contract.md](assets/state-contract.md) — schema slice `state.kb`, algoritmo de escritura condicional, reglas de inferencia Mode A, low-confidence rule, y §5 (pre-fill opcional desde `discovery-research`).
+- **Templates**: [assets/canonical-templates.md](assets/canonical-templates.md) — estructura interna de los 9 archivos canónicos y del índice.
+- **Domain formats**: [assets/domain-formats.md](assets/domain-formats.md) — formato de `GLOSSARY.md`, de los ADRs y el filtro ADR.
+- **Strategic questions**: [assets/strategic-questions.md](assets/strategic-questions.md) — banco de preguntas para Mode B.
