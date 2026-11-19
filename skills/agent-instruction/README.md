@@ -2,7 +2,7 @@
 
 Skill que genera las instrucciones de un proyecto en `AGENTS.md` a partir de su base de conocimiento (`knowledge-base/`, `GLOSSARY.md`, `docs/adr/`) y de su issue de roadmap en GitHub. `CLAUDE.md` queda con una sola línea, `@AGENTS.md`.
 
-El contenido va dentro de un bloque delimitado por `<!-- active-stack:agent-instruction -->`. Al regenerar, la skill reescribe solo ese bloque y conserva textual el resto del archivo, por ejemplo la sección `## Agent skills` de `/setup-matt-pocock-skills`.
+El contenido va dentro de un bloque delimitado por `<!-- active-stack:agent-instruction -->`. Al regenerar, la skill reescribe solo ese bloque y conserva textual el resto del archivo, por ejemplo la sección `## Agent skills` de `/mattpocock-skills:setup-matt-pocock-skills`.
 
 El bloque tiene:
 
@@ -21,7 +21,7 @@ El bloque tiene:
 
 Pre-requisitos: `knowledge-base/` (corré `kb-creator`) y, opcionalmente, el issue de roadmap (corré `roadmap-generator`).
 
-En la cadena de fundación corre dos veces: antes y después de `/setup-matt-pocock-skills`.
+En la cadena de fundación corre dos veces: antes y después de `/mattpocock-skills:setup-matt-pocock-skills`.
 
 ## Estructura
 

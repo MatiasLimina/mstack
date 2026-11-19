@@ -21,7 +21,7 @@ metadata:
      el escaneo de skills instaladas); sin variantes generate/reuse/update ni
      hook de estado del orquestador (state.agents, "plan confirmado"); conserva
      el bloque delimitado active-stack:agent-instruction de upstream y todo lo de
-     alrededor; cierra indicando /setup-matt-pocock-skills; no se copió tests/. -->
+     alrededor; cierra indicando /mattpocock-skills:setup-matt-pocock-skills; no se copió tests/. -->
 
 ## When to Use
 
@@ -56,12 +56,12 @@ La skill escribe **solo** entre estos dos marcadores, cada uno en su propia lín
 <!-- /active-stack:agent-instruction -->
 ```
 
-Todo lo que está fuera del bloque es de otras herramientas o del dev y se conserva **textual**, en particular la sección `## Agent skills` que agrega `/setup-matt-pocock-skills`. Nunca muevas, reformatees ni reordenes contenido ajeno.
+Todo lo que está fuera del bloque es de otras herramientas o del dev y se conserva **textual**, en particular la sección `## Agent skills` que agrega `/mattpocock-skills:setup-matt-pocock-skills`. Nunca muevas, reformatees ni reordenes contenido ajeno.
 
 | Estado de `AGENTS.md` | Qué hacer |
 |-----------------------|-----------|
 | No existe | Crealo con el bloque como único contenido. |
-| Existe con un par de marcadores bien formado | Reemplazá solo lo que hay entre los marcadores. |
+| Existe con un par de marcadores bien formado | Reemplazá solo lo que hay entre los marcadores. Si entre ellos hay una sección `## ` que no es de la plantilla (por ejemplo `## Agent skills`), no la borres: movela textual después del marcador de cierre y mostralo en el diff. |
 | Existe sin marcadores | Insertá el bloque al principio del archivo, seguido de una línea en blanco y del contenido existente tal cual. |
 | Marcadores incompletos, repetidos o en orden invertido | Conflicto: no escribas nada. Mostrale al usuario las líneas de los marcadores y pedile que lo resuelva. |
 
@@ -93,7 +93,7 @@ Si `AGENTS.md` o `CLAUDE.md` ya existían, mostrale al usuario el diff de lo que
 |-------|----------|
 | `knowledge-base/` existe en la raíz | "Falta la KB. Corré `kb-creator` primero." No generes nada. |
 | `knowledge-base/02_descripcion_general.md` existe | "KB incompleta. Corré `kb-creator`." No generes nada. |
-| `gh issue list --label roadmap --state open --json number,title,url` devuelve un issue | Generá igual, sin la sección Roadmap, y avisá: "No encontré el issue de roadmap — corré `roadmap-generator` para incluirlo." Si devuelve más de uno, preguntá cuál usar. |
+| `gh issue list --label roadmap --state open --json number,title,url` devuelve un issue | Generá igual, sin la sección Roadmap, y avisá: "No encontré el issue de roadmap — corré `roadmap-generator` para incluirlo." Si devuelve más de uno, preguntá cuál usar. En una regeneración, si el bloque anterior tenía sección Roadmap y ahora no la vas a escribir, decilo en el diff. |
 
 ---
 
@@ -123,9 +123,7 @@ Para cada regla universal (governance, TDD, memoria, commits, builds), verificá
 - Si **ya está** → NO la repitas; el proyecto la hereda.
 - Si **NO está** → incluila en el proyecto, para que no quede en el limbo.
 
-Verificá de verdad, no asumas. Cuando al menos una regla universal esté en el global, agregá esta línea:
-
-> Las reglas globales (governance, TDD, memoria, workflow) ya están en las instrucciones globales del cliente: el proyecto las hereda. Acá viven solo las reglas **específicas de este proyecto** y las universales que el global no cubra.
+Verificá de verdad, no asumas. Cuando al menos una regla universal esté en el global, dejá en `## Reglas Duras` la línea de referencia de la plantilla.
 
 **Paso 2 — Derivá reglas candidatas del stack detectado** (de `knowledge-base/02_descripcion_general.md`). Ejemplos, NO fijos:
 - **Go** → `gofmt`/`go vet` obligatorios; errores envueltos con `%w`; sin `panic` en librerías.
@@ -177,8 +175,8 @@ Después de escribir, comprobá en disco:
 Si algo falla, reportá qué y no declares terminado.
 
 ```bash
-grep -c '^<!-- active-stack:agent-instruction -->$' AGENTS.md    # 1
-grep -c '^<!-- /active-stack:agent-instruction -->$' AGENTS.md   # 1
+tr -d '\r' < AGENTS.md | grep -c '^<!-- active-stack:agent-instruction -->$'    # 1
+tr -d '\r' < AGENTS.md | grep -c '^<!-- /active-stack:agent-instruction -->$'   # 1
 tr -d '\r' < CLAUDE.md | sed '/^[[:space:]]*$/d'                  # @AGENTS.md
 ```
 
