@@ -11,7 +11,7 @@ trabajar.
 | `gemini-loop` | "gemini loop" | Revisa un cambio con un revisor Gemini en loop hasta que los dos agentes estén de acuerdo. | Adaptada de `sol-loop` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `file-pr` | "abrí el PR" | Abre un PR con título y descripción concisos, sin secretos. | Adaptada de `file-pr` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `babysit-pr` | "vigilá el PR" | Vigila CI y reviews del PR hasta que esté listo para mergear. Incluye `pr-wait`. | Adaptada de `babysit-pr` ([tstack](https://github.com/t3dotgg/tstack)) |
-| `council` | "council" | Convoca a Opus, Gemini Argon y un tercer modelo a elección para revisar o dar feedback. | Adaptada de `council` ([tstack](https://github.com/t3dotgg/tstack)) |
+| `council` | "council" | Convoca a Opus, Gemini Neon y un tercer modelo a elección para revisar o dar feedback. | Adaptada de `council` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `full-send` | "full send" | Lleva el cambio solo hasta un PR mergeado: prueba, code-review, gemini-loop, PR y vigilancia. | Adaptada de `full-send` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `full-stop` | "full stop" | Igual que `full-send`, pero deja el PR listo sin mergear. | Adaptada de `full-stop` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `opsx-orchestrator` | "opsx" | Modo orquestador OpenSpec (propose/apply/archive), opt-in para proyectos que usan `openspec/`. | Propia (antes vivía en el `CLAUDE.md` global) |

@@ -18,11 +18,11 @@ y no tengas miedo de discutirle.
 
 Cadena por defecto, en orden:
 
-1. `antigravity` / `gemini-4-neon`, `thinking_level: medium`
-2. `antigravity` / `gemini-4-argon`, `thinking_level: medium` (fallback)
+1. `antigravity` / `gemini-4-neon`, `thought_level: medium`
+2. `antigravity` / `gemini-4-argon`, `thought_level: medium` (fallback)
 
 En cambios arriesgados (ver Presupuesto) los dos modelos de la cadena suben a
-`thinking_level: high`.
+`thought_level: high`.
 
 Si el `CLAUDE.md` / `AGENTS.md` del usuario define otra cadena para
 `gemini-loop`, usá esa.
@@ -43,7 +43,7 @@ Reglas del fallback:
 - Default: 3 rondas en total. La ronda 1 es completa. Las siguientes revisan
   solo el código cambiado y los hallazgos abiertos.
 - Cambios arriesgados: seguridad, permisos, auth, pérdida de datos o
-  estado/concurrencia. Ahí la cadena sube a `thinking_level: high` y el tope
+  estado/concurrencia. Ahí la cadena sube a `thought_level: high` y el tope
   pasa a 5 rondas, mientras siga abierto un blocker o should con evidencia.
   También si el usuario lo pide. Decidí si es arriesgado en el paso 1 y
   anotalo en el brief. No lo cambies a mitad del loop.
