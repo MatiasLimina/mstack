@@ -12,6 +12,7 @@ trabajar.
 | `file-pr` | "abrí el PR" | Abre un PR con título y descripción concisos, sin secretos. | Adaptada de `file-pr` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `babysit-pr` | "vigilá el PR" | Vigila CI y reviews del PR hasta que esté listo para mergear. Incluye `pr-wait`. | Adaptada de `babysit-pr` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `council` | "council" | Convoca a Opus, Gemini Neon y un tercer modelo a elección para revisar o dar feedback. | Adaptada de `council` ([tstack](https://github.com/t3dotgg/tstack)) |
+| `design-studio` | `/design-studio` | Explora un diseño (web, móvil, escritorio o imagen): Gemini Neon lidera, tres diseñadores proponen en paralelo y elegís entre capturas. La ganadora queda en `docs/design/`. Solo la invocás vos. | Propia |
 | `full-send` | "full send" | Lleva el cambio solo hasta un PR mergeado: prueba, code-review, gemini-loop, PR y vigilancia. | Adaptada de `full-send` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `full-stop` | "full stop" | Igual que `full-send`, pero deja el PR listo sin mergear. | Adaptada de `full-stop` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `opsx-orchestrator` | "opsx" | Modo orquestador OpenSpec (propose/apply/archive), opt-in para proyectos que usan `openspec/`. | Propia (antes vivía en el `CLAUDE.md` global) |
@@ -31,6 +32,7 @@ el agente. Tracker en GitHub Issues: un PR por ticket.
 
 ```
 /mattpocock-skills:grill-with-docs ─┬─ (trabado / dudas de diseño) ──→ council          [divergente]
+                                    └─ (cómo se ve algo) ──→ /design-studio → docs/design/
                   ▼
 /mattpocock-skills:to-spec        → issue de spec
                   ▼
