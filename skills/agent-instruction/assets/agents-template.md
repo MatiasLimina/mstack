@@ -1,11 +1,15 @@
-# {NombreProyecto} — Instrucciones para Agentes
+# Plantilla del bloque de agent-instruction
 
-
-Las rutas de esta plantilla suponen que el archivo vive en la raíz. En destinos anidados calculá los enlaces desde el directorio del archivo de instrucciones a cada artefacto referenciado.
-> Este archivo (y su copia `CLAUDE.md`) es lo PRIMERO que todo agente lee al entrar al repo.
-> Generado a partir de `knowledge-base/` y `CHANGES.md`. No editar a mano sin re-sincronizar ambos archivos.
+Contenido que la skill escribe en `AGENTS.md`, **entre los marcadores**. Lo que queda fuera de los marcadores (por ejemplo `## Agent skills`) no es parte de la plantilla y no se toca. Adaptá nombres y contenido al proyecto, pero respetá las secciones y su orden. Borrá los comentarios `<!-- ... -->` de guía al generar; los marcadores se quedan.
 
 ---
+
+~~~~markdown
+<!-- active-stack:agent-instruction -->
+# {NombreProyecto} — Instrucciones para Agentes
+
+> Generado por `agent-instruction` a partir de `knowledge-base/` y del roadmap #{N}.
+> Este bloque se regenera: editá la KB o el roadmap y volvé a correr la skill. Lo que esté fuera del bloque no se toca.
 
 ## Stack Tecnológico
 
@@ -13,88 +17,91 @@ Las rutas de esta plantilla suponen que el archivo vive en la raíz. En destinos
 
 | Capa | Tecnología | Versión |
 |------|------------|---------|
-| Frontend | {React + TypeScript / Vite / Tailwind / Zustand / TanStack} | {x.x} |
-| Backend | {FastAPI / SQLModel / PostgreSQL / Alembic} | {x.x} |
+| Frontend | {React + TypeScript / Vite / Tailwind} | {x.x} |
+| Backend | {FastAPI / SQLModel / PostgreSQL} | {x.x} |
 | Integraciones | {MercadoPago, ...} | — |
 
 Detalle completo: [knowledge-base/02_descripcion_general.md](knowledge-base/02_descripcion_general.md)
 
----
-
 ## Base de Conocimiento
 
-La fuente de verdad del dominio vive en `knowledge-base/`. **Leé el archivo relevante ANTES de implementar.**
+La fuente de verdad del dominio vive en `knowledge-base/`, `GLOSSARY.md` y `docs/adr/`. **Leé el archivo relevante ANTES de implementar.**
 
 | Archivo | Cuándo leerlo |
 |---------|---------------|
-| [01_vision_y_objetivos.md](knowledge-base/01_vision_y_objetivos.md) | Entender propósito y alcance |
-| [03_actores_y_roles.md](knowledge-base/03_actores_y_roles.md) | Auth, RBAC, permisos |
-| [04_modelo_de_datos.md](knowledge-base/04_modelo_de_datos.md) | Entidades, ERD, migraciones |
+| [GLOSSARY.md](GLOSSARY.md) | Nombrar cosas con los términos del dominio |
+| [docs/adr/](docs/adr/) | Decisiones ya tomadas; no las reabras sin un ADR nuevo |
+| [01_vision_y_objetivos.md](knowledge-base/01_vision_y_objetivos.md) | Propósito y alcance |
+| [03_actores_y_roles.md](knowledge-base/03_actores_y_roles.md) | Auth, roles, permisos |
+| [04_modelo_de_datos.md](knowledge-base/04_modelo_de_datos.md) | Entidades, relaciones, migraciones |
 | [05_reglas_de_negocio.md](knowledge-base/05_reglas_de_negocio.md) | Reglas codificadas (RN-XX) |
-| [06_funcionalidades.md](knowledge-base/06_funcionalidades.md) | Historias de usuario por épica |
-| [07_flujos_principales.md](knowledge-base/07_flujos_principales.md) | Flujos E2E |
+| [06_funcionalidades.md](knowledge-base/06_funcionalidades.md) | Historias por épica |
+| [07_flujos_principales.md](knowledge-base/07_flujos_principales.md) | Flujos de punta a punta |
 | [08_arquitectura_propuesta.md](knowledge-base/08_arquitectura_propuesta.md) | Patrones, estructura, env vars |
-| [10_preguntas_abiertas.md](knowledge-base/10_preguntas_abiertas.md) | ⚠️ Inconsistencias a resolver ANTES de codear |
+| [10_preguntas_abiertas.md](knowledge-base/10_preguntas_abiertas.md) | Inconsistencias a resolver ANTES de codear |
 
-> ⚠️ Resolver las preguntas de prioridad **Alta** de `10_preguntas_abiertas.md` antes de arrancar el primer change.
-
----
+<!-- Incluir solo si 10_preguntas_abiertas.md tiene preguntas de prioridad Alta. -->
+> ⚠️ Resolver las preguntas de prioridad **Alta** de `10_preguntas_abiertas.md` antes de arrancar R-01.
 
 ## Skills Disponibles
 
-<!-- Fuente de verdad: .atl/skill-registry.md (generado por skill-registry). Adaptar filas a las skills que lista el registry; fallback al inventario de skills del cliente activo si no existe. -->
+<!-- Solo skills encontradas en el escaneo de skills instaladas. -->
 
 | Agente | Rol | Skills que carga |
 |--------|-----|------------------|
-| **Backend Core** | FastAPI / SQLModel / UoW / migraciones | `fastapi-templates`, `python-testing-patterns`, `postgresql-table-design`, `test-driven-development` |
-| **Backend Aux** | Servicios, integraciones, seguridad | `api-security-best-practices`, `postgresql-optimization` |
-| **Frontend** | React / Zustand / TanStack / Tailwind | `typescript-advanced-types`, `tailwind-design-system`, `playwright-best-practices` |
-| **Orquestación** | Contexto e instrucciones | `kb-creator`, `roadmap-generator`, `agent-instruction`, `skill-creator` |
+| **Backend** | API, modelos, migraciones | `{skill}`, `{skill}` |
+| **Frontend** | UI y estado | `{skill}`, `{skill}` |
+| **Fundación** | Contexto e instrucciones | `kb-creator`, `roadmap-generator`, `agent-instruction` |
 
-Cargá la skill correspondiente al contexto ANTES de escribir código.
+Cargá la skill que corresponde al contexto ANTES de escribir código.
 
-<!-- Incluir esta referencia solamente si .atl/skill-registry.md existe. -->
-> Los compact rules de cada skill los resuelve el orquestador desde `.atl/skill-registry.md` (generado por `skill-registry`; no versionado — no está en el repo). Esta tabla solo mapea skill→rol.
+## Roadmap
 
----
+<!-- Omitir la sección entera si no hay issue de roadmap. Resumen, NO el detalle. -->
 
-## Roadmap de Changes
+El plan de specs es el issue [#{N} Roadmap: {NombreProyecto}]({url}). Resumen:
 
-<!-- Resumen de CHANGES.md — NO duplicar el detalle completo -->
+- **Total**: {I} ítems en {F} fases.
+- **Camino crítico**: `{R-01 → R-02 → ... → R-NN}`.
+- **Primer ítem**: `R-01` ({nombre}).
 
-El plan de implementación completo está en [CHANGES.md](CHANGES.md). Resumen:
-
-- **Total**: {N} changes en {M} fases.
-- **Camino crítico** ({K}): `{C-01 → C-02 → ... → C-NN}`.
-- **Primer change**: `C-01` ({nombre}).
-
-**Antes de iniciar un item**: leé [CHANGES.md](CHANGES.md), identificá las dependencias del change y los archivos de "Leer antes".
-
----
+Cada ítem es una spec futura. Cuando su spec exista como issue `#M`, la línea del roadmap pasa a `- [ ] R-NN #M`.
 
 ## Reglas Duras
 
-> Reglas **globales** ya definidas en el archivo global de instrucciones del cliente activo (orquestador, governance, TDD, engram): el proyecto las **hereda**, no se repiten acá.
+> Las reglas globales (governance, TDD, memoria, workflow) ya están en las instrucciones globales del cliente: el proyecto las hereda. Acá viven solo las reglas **específicas de este proyecto** y las universales que el global no cubra.
 
-Acá van: (a) las reglas específicas de este proyecto, derivadas de su stack ({stack}) y **confirmadas con el usuario**; y (b) cualquier regla universal que el global NO cubra todavía (ej. no buildear/commitear sin pedido, conventional commits sin co-autoría IA — incluir SOLO si no están en el global). Son contrato; romperlas es un defecto. Formato `NUNCA X → hacer Y`:
+<!-- Reemplazar con las reglas confirmadas en el Paso 3. Ejemplos por stack — NO copiar a ciegas:
+     Go:       NUNCA mergear sin `gofmt`/`go vet` limpios → correrlos antes de cada commit.
+     Python:   NUNCA schema Pydantic sin `extra='forbid'` → rechazar campos no declarados.
+     React/TS: NUNCA usar `any` → tipar estricto; componentes en PascalCase. -->
 
-<!-- Reemplazar con las reglas confirmadas en el Paso 3 de la skill. Ejemplos por stack — NO copiar a ciegas: -->
-<!-- Go:        NUNCA mergear sin `gofmt`/`go vet` limpios → correrlos antes de cada commit. -->
-<!-- Python:    NUNCA schema Pydantic sin `extra='forbid'` → rechazar campos no declarados. -->
-<!-- React/TS:  NUNCA usar `any` → tipar estricto; componentes en PascalCase. -->
-
-- {Reglas confirmadas del proyecto. Si el usuario no agregó ninguna específica, dejá solo la línea de referencia al global de arriba — es válido.}
-
----
+- {Reglas confirmadas. Si el usuario no agregó ninguna, dejá solo la línea de referencia de arriba.}
 
 ## Flujo de Trabajo
 
+Todo el trabajo vive en GitHub Issues:
+
 ```
-1. Leer la KB relevante (knowledge-base/)        → entender el dominio
-2. Identificar el change en CHANGES.md           → respetar dependencias
-3. Acordar alcance y criterios de aceptación
-4. Implementar y verificar respetando las reglas del proyecto
-5. Registrar la evidencia y actualizar el estado en CHANGES.md
+1. Elegir un ítem del roadmap #{N} con sus deps cerradas  → priorizar el camino crítico
+2. Leer los punteros de "leer" del ítem
+3. /mattpocock-skills:grill-with-docs → /mattpocock-skills:to-spec   → issue de spec
+4. /mattpocock-skills:to-tickets                                      → issues hijos con bloqueos
+5. Por cada ticket desbloqueado: su rama, /mattpocock-skills:implement #T, su PR con "Closes #T"
+6. Editar la línea del ítem en el roadmap: - [ ] R-NN #M
 ```
 
 Aplicar TODAS las reglas duras en cada paso. Ante conflicto entre la KB y este archivo, las reglas duras prevalecen.
+<!-- /active-stack:agent-instruction -->
+~~~~
+
+---
+
+## Checklist antes de escribir
+
+- [ ] El bloque arranca y termina con los marcadores, cada uno en su propia línea.
+- [ ] No quedan `{placeholders}` ni comentarios de guía.
+- [ ] Cada enlace local apunta a un archivo que existe; los que no existen se sacaron.
+- [ ] La sección Roadmap nombra el issue por número y URL, o no está (si no hay roadmap).
+- [ ] La tabla de skills solo tiene skills instaladas.
+- [ ] Las reglas duras son las confirmadas por el usuario.
