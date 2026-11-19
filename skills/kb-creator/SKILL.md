@@ -10,6 +10,7 @@ metadata:
 ---
 
 <!-- Origen: Group-Active-IA/kb-creator@e204c47 (Apache-2.0). Ver NOTICE.md.
+     assets/domain-formats.md deriva de domain-modeling (mattpocock/skills, MIT).
      Cambios: 9 canónicos (sale 09_decisiones_y_supuestos; las decisiones pasan a
      ADRs en docs/adr/ y los supuestos a 10_preguntas_abiertas); vocabulario en
      GLOSSARY.md con los formatos de domain-modeling de Matt; lee
@@ -53,14 +54,14 @@ metadata:
 | 08 | `08_arquitectura_propuesta.md` | Patrones, estructura de directorios, seguridad, env vars |
 | 10 | `10_preguntas_abiertas.md` | Inconsistencias, supuestos a validar y preguntas abiertas priorizadas |
 
-El número 09 queda vacío a propósito: las referencias por número siguen apuntando al archivo correcto. No crees ningún `09_*`.
+El número 09 queda vacío a propósito: las referencias por número siguen apuntando al archivo correcto.
 
 Si el dominio lo requiere, sumá extras con prefijo `1X_` o `2X_` y nombre kebab-case (ej. `11_pagos_mercadopago.md`, `12_devops_y_despliegue.md`). Los extras complementan a los 9 canónicos.
 
 ### Vocabulario y decisiones
 
 - **Términos**: cada término del dominio se define **una sola vez**, en `GLOSSARY.md`. Los archivos de la KB lo usan en negrita con link al glosario (`[**Turno**](../GLOSSARY.md)`) y no lo redefinen. Un término de actor se define en el glosario; `03` describe sus permisos.
-- **Decisiones**: una decisión de diseño va a un ADR solo si pasa el filtro ADR de [assets/domain-formats.md](assets/domain-formats.md) (difícil de revertir, sorprendente sin contexto, resultado de un trade-off real). Una decisión que no lo pasa queda como una línea en el archivo temático donde se aplica (stack en `02`, patrones en `08`).
+- **Decisiones**: una decisión de diseño va a un ADR solo si pasa el filtro ADR de [assets/domain-formats.md](assets/domain-formats.md) (difícil de revertir, sorprendente sin contexto, resultado de un trade-off real). Una decisión que no lo pasa queda como una línea en el archivo temático donde se aplica (stack en `02`, patrones en `08`). Un proyecto con stack decidido tiene al menos un ADR: las tecnologías con lock-in (base de datos, auth, deploy) pasan el filtro.
 - **Supuestos**: todo supuesto inferido va a `10_preguntas_abiertas.md`, sección "Supuestos a validar".
 - **Archivos existentes**: si `GLOSSARY.md` o `docs/adr/` ya existen (por ejemplo, de un `/grill-with-docs` anterior), extendelos: sumá los términos que faltan y numerá los ADRs nuevos a partir del más alto. Los términos y ADRs existentes quedan como están; si la KB los contradice, registrá la contradicción en `10_preguntas_abiertas.md`.
 
@@ -75,10 +76,10 @@ Si existe `discovery/discovery.md` (lo escribe `discovery-research`), leelo en l
 | 3. Casos de uso | `06` y `07` |
 | 4. Competidores / soluciones existentes | `01` (contexto); las notas de `discovery/sources/` como referencia |
 | 5. Funcionalidades necesarias | `06` (alcance del MVP en `01`) |
-| 6. Funcionalidades opcionales | `01` (fuera de alcance) y `06` como épica posterior |
+| 6. Funcionalidades opcionales | `01` las nombra en "Fuera de alcance"; `06` las detalla en una épica posterior |
 | 7. Reglas de negocio | `05` |
 | 8. Integraciones | `02` |
-| 9. Restricciones | `02` y `08`; ADR si pasa el filtro |
+| 9. Restricciones | `02` y `08`; una restricción que no se ve en el código es un ADR |
 | 10. Riesgos | `10` (supuestos a validar) |
 | 11. Preguntas abiertas | `10` |
 
