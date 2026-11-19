@@ -4,7 +4,7 @@ description: Convoca un consejo de tres modelos de distintos proveedores (Opus, 
 ---
 
 <!-- Origen: tstack/skills/council (MIT, Theo Browne). Ver NOTICE.md.
-     Cambios: miembros fijos Opus + Gemini Argon, tercer miembro elegido por el
+     Cambios: miembros fijos Opus + Gemini Neon, tercer miembro elegido por el
      usuario al invocarlo; Gemini vía antigravity. -->
 
 # council
@@ -20,7 +20,7 @@ nuevas, no arregles código que se va a tirar.
 Tres delegados de tres proveedores distintos, todos con razonamiento alto:
 
 1. `claudeAgent` / `claude-opus-5-5`, effort `high`
-2. `antigravity` / `gemini-4-neon`, `thinking_level: high`
+2. `antigravity` / `gemini-4-neon`, `thought_level: high`
 3. El modelo que el usuario nombra al invocarlo (por ejemplo,
    "council con GPT Sol"), con su nivel de razonamiento alto.
 
