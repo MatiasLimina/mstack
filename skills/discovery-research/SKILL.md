@@ -1,7 +1,7 @@
 ---
 name: discovery-research
 description: >-
-  Corre la fase de Discovery/Investigacion antes de armar la Knowledge Base de un proyecto: investiga competidores via web-scraper si hay URLs, y guia una Q&A sobre el checklist completo (problema, usuarios, casos de uso, competidores, funcionalidades necesarias y opcionales, reglas de negocio, integraciones, restricciones, riesgos, preguntas abiertas). Es el primer paso, opcional, de la fundacion de un proyecto grande y vacio. Usala cuando el usuario quiera investigar el mercado/pensar que construir antes de tener claridad. NO la uses para construir la Knowledge Base en si (eso es kb-creator, que consume el resultado de esta skill) ni para scrapear una URL suelta sin el resto del checklist (eso es web-scraper directamente).
+  Corre la fase de Discovery/Investigacion antes de armar la Knowledge Base de un proyecto: investiga competidores via web-scraper si hay URLs, y guia una Q&A sobre el checklist completo (problema, usuarios, casos de uso, competidores, funcionalidades necesarias y opcionales, reglas de negocio, integraciones, restricciones, riesgos, preguntas abiertas). Es el primer paso, opcional, de la fundacion de un proyecto grande y vacio. Usala cuando el usuario quiera investigar el mercado/pensar que construir antes de tener claridad. NO la uses para construir la Knowledge Base en si (eso es kb-creator, que consume el resultado de esta skill) ni para scrapear una URL suelta sin el resto del checklist (eso es web-scraper directamente). Al terminar, cierra siempre con la línea `Próximo paso: /kb-creator`.
 license: Apache-2.0
 ---
 
@@ -11,6 +11,12 @@ license: Apache-2.0
      al terminar indica kb-creator como próximo paso; governance MEDIUM. -->
 
 # Discovery Research
+
+> **Cierre obligatorio.** El mensaje con el que termina esta skill lleva
+> siempre, como última línea, el `Próximo paso: …` de la sección
+> [Fase 5 — Próximo paso](#fase-5--próximo-paso), aunque la conversación haya sido larga o
+> cierres con un resumen. Sin esa línea la cadena de fundación se corta: el
+> usuario no sabe qué correr después.
 
 Convierte "tengo una idea" en "sé qué voy a construir y por qué", ANTES de que
 exista una Knowledge Base. El principio que ordena todo: **no completes un punto

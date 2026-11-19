@@ -1,7 +1,7 @@
 ---
 name: kb-creator
 description: >
-  Arma la base de conocimiento de un proyecto: 9 archivos canónicos en knowledge-base/, el vocabulario del dominio en GLOSSARY.md y las decisiones de diseño como ADRs en docs/adr/, con los formatos de domain-modeling de Matt. Dos modos: silencioso desde documentos fuente en docs/, o interactivo desde cero. Lee discovery/discovery.md si existe.
+  Arma la base de conocimiento de un proyecto: 9 archivos canónicos en knowledge-base/, el vocabulario del dominio en GLOSSARY.md y las decisiones de diseño como ADRs en docs/adr/, con los formatos de domain-modeling de Matt. Dos modos: silencioso desde documentos fuente en docs/, o interactivo desde cero. Lee discovery/discovery.md si existe. Al terminar, cierra siempre con la línea `Próximo paso: /roadmap-generator`.
   Trigger: When user asks to create, build, or generate a knowledge base for a project, document a project from source documents (.txt, .docx, .pdf), or asks to "armar base de conocimiento" / "crear KB" / "documentar proyecto".
 license: Apache-2.0
 metadata:
@@ -17,6 +17,12 @@ metadata:
      discovery/discovery.md de disco; sin orquestador ni archivo de estado (se
      borró assets/state-contract.md); sin mención a OpenSpec; cierra indicando
      roadmap-generator; no se copió tests/. -->
+
+> **Cierre obligatorio.** El mensaje con el que termina esta skill lleva
+> siempre, como última línea, el `Próximo paso: …` de la sección
+> [Próximo paso](#próximo-paso), aunque la conversación haya sido larga o
+> cierres con un resumen. Sin esa línea la cadena de fundación se corta: el
+> usuario no sabe qué correr después.
 
 ## When to Use
 
@@ -131,7 +137,7 @@ Cerrá con este mensaje y frená; no lances `roadmap-generator` vos.
 
 ```
 KB lista: knowledge-base/ (9 canónicos + <N> extras), GLOSSARY.md (<T> términos), docs/adr/ (<A> ADRs)
-Próximo paso: roadmap-generator — arma el plan de trabajo a partir de la KB.
+Próximo paso: /roadmap-generator — arma el plan de trabajo a partir de la KB.
 ```
 
 ---
