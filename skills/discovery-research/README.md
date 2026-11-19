@@ -21,24 +21,23 @@ restricciones, riesgos, preguntas abiertas):
    que salió del scraping para no repreguntar lo ya sabido.
 3. **Gate final** — resume todo y espera confirmación explícita antes de
    escribir nada.
-4. **Escribir** — genera `discovery/discovery.md` y la sección `discovery` del
-   state compartido con `jr-orchestrator`.
+4. **Escribir** — genera `discovery/discovery.md`, junto a las notas de
+   `discovery/sources/`. No usa ningún archivo de estado.
+5. **Próximo paso** — te indica seguir con `kb-creator`, que lee
+   `discovery/discovery.md` de disco.
 
 ---
 
 ## Instalación
 
-```bash
-npx skills add https://github.com/Group-Active-IA/discovery-research
-```
-
-La skill queda disponible para tu agente y se carga sola cuando `jr-orchestrator`
-despacha la fase `discovery` del flujo de fundación, o cuando le decís algo como
-"quiero investigar el mercado antes de definir qué construir".
+Viene en mstack: se instala con el resto de las skills (ver el `README.md` de
+la raíz). Es el primer paso, opcional, de la fundación, y se carga cuando le
+decís al agente algo como "quiero investigar el mercado antes de definir qué
+construir".
 
 Para que el paso de scraping funcione, también necesitás instalada
-`Group-Active-IA/web-scraper` — sin ella, esta skill sigue funcionando solo con
-la Q&A.
+`web-scraper`, que viene en mstack — sin ella, esta skill sigue funcionando solo
+con la Q&A.
 
 ---
 
@@ -53,7 +52,7 @@ Le decís al agente algo como:
 
 El agente pregunta si tenés fuentes para investigar, corre la Q&A guiada de los
 11 puntos, te muestra un resumen para confirmar, y recién ahí escribe
-`discovery/discovery.md` + el estado compartido que va a leer `kb-creator`.
+`discovery/discovery.md`, que es lo que va a leer `kb-creator`.
 
 ---
 
@@ -66,8 +65,7 @@ discovery-research/
 ├── scripts/
 │   └── collect_sources.py
 ├── references/
-│   ├── checklist.md
-│   └── state-contract.md
+│   └── checklist.md
 └── assets/
     └── example-discovery.md
 ```
@@ -81,9 +79,9 @@ discovery-research/
 - **`scripts/collect_sources.py` en vez de releer notas a mano** — cuando hay
   3+ competidores scrapeados, armar la tabla comparativa a mano es trabajo
   determinístico que se repite en cada corrida; el script lo hace una vez.
-- **`state-contract.md` separado** — documenta el schema exacto que
-  `jr-orchestrator` y `kb-creator` esperan encontrar en `state.discovery`, para
-  que un cambio de contrato quede en un solo lugar versionable.
+- **Sin archivo de estado** — el único contrato con `kb-creator` es
+  `discovery/discovery.md`, con la estructura de `assets/example-discovery.md`.
+  Cada paso de la fundación lee de disco lo que dejó el anterior.
 
 ---
 

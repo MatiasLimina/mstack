@@ -87,8 +87,8 @@ si no se documentan acá, se pierden y aparecen como bugs meses después.
 > APIs de terceros, sistemas legacy de la organización)
 
 **Por qué importa**: cada integración es una dependencia externa con su propio
-riesgo (rate limits, costos, disponibilidad) — mapea directo a
-`state.kb.discovery.needs_infra` y al stack que va a proponer `kb-creator`.
+riesgo (rate limits, costos, disponibilidad) — le dice a `kb-creator` si el
+proyecto necesita infra propia y condiciona el stack que va a proponer.
 
 ### 9. Restricciones
 
