@@ -24,6 +24,7 @@ GitHub Issues y cada ticket se cierra con su propio PR.
 
 ```
 /mattpocock-skills:grill-with-docs ─┬─ (trabado / dudas de diseño) ──→ council
+                                    └─ (cómo se ve algo) ──→ /design-studio → docs/design/
           ▼
 /mattpocock-skills:to-spec        → issue de spec en GitHub
           ▼
@@ -145,9 +146,10 @@ Las skills leen estos valores; si falta alguno, usan su default.
 
 Si no tenés acceso al modelo asignado, usá `sonnet` y seguí.
 
-Overrides de skills: ninguno. `gemini-loop`, `council` y `babysit-pr` usan
-sus defaults. Para cambiar uno, agregalo acá como `skill: valor` (p. ej.
-`council — tercer miembro: <proveedor/modelo>`); solo lo que difiera del default.
+Overrides de skills: ninguno. `gemini-loop`, `council`, `babysit-pr` y
+`design-studio` usan sus defaults. Para cambiar uno, agregalo acá como
+`skill: valor` (p. ej. `council — tercer miembro: <proveedor/modelo>`); solo
+lo que difiera del default.
 
 ## Memoria (engram)
 
