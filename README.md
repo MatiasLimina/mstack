@@ -17,11 +17,11 @@ trabajar.
 | `opsx-orchestrator` | "opsx" | Modo orquestador OpenSpec (propose/apply/archive), opt-in para proyectos que usan `openspec/`. | Propia (antes vivía en el `CLAUDE.md` global) |
 | `leaving-pr-comments` | (automática) | Formatea los comentarios que un agente deja en GitHub en tu nombre. La usan `file-pr` y `babysit-pr`. | Adaptada de `leaving-pr-comments` ([tstack](https://github.com/t3dotgg/tstack)) |
 | `unslop` | `/unslop` | Saca de un texto las marcas típicas de la escritura de IA. Solo la invocás vos. | Copia de `unslop` ([pstack](https://github.com/cursor/plugins/tree/main/pstack)) |
-| `discovery-research` | "investiguemos el producto" | Fundación, paso opcional: investiga competidores (con `web-scraper`) y guía una Q&A sobre el producto antes de la KB. | Copia de [Group-Active-IA/discovery-research](https://github.com/Group-Active-IA/discovery-research) |
+| `discovery-research` | "investiguemos el producto" | Fundación, paso opcional: investiga competidores (con `web-scraper`) y guía una Q&A sobre el producto antes de la KB. Deja el resultado en `discovery/`. | Adaptada de [Group-Active-IA/discovery-research](https://github.com/Group-Active-IA/discovery-research) |
 | `web-scraper` | "investigá este competidor: `<URL>`" | Saca de la URL de un competidor una nota con esquema fijo. La usa `discovery-research`. | Copia de [Group-Active-IA/web-scraper](https://github.com/Group-Active-IA/web-scraper) |
-| `kb-creator` | "armá la KB" | Fundación: arma la base de conocimiento del proyecto en `knowledge-base/`. | Copia de [Group-Active-IA/kb-creator](https://github.com/Group-Active-IA/kb-creator) |
-| `roadmap-generator` | "armá el roadmap" | Fundación: arma el plan de trabajo a partir de la KB. | Copia de [Group-Active-IA/roadmap-generator](https://github.com/Group-Active-IA/roadmap-generator) |
-| `agent-instruction` | "generá el AGENTS.md" | Fundación: genera las instrucciones del proyecto para los agentes a partir de la KB y el roadmap. | Copia de [JuanCruzRobledo/agent-instruction](https://github.com/JuanCruzRobledo/agent-instruction) |
+| `kb-creator` | "armá la KB" | Fundación: arma la base de conocimiento del proyecto en `knowledge-base/`, el vocabulario en `GLOSSARY.md` y las decisiones como ADRs en `docs/adr/`. | Adaptada de [Group-Active-IA/kb-creator](https://github.com/Group-Active-IA/kb-creator) |
+| `roadmap-generator` | "armá el roadmap" | Fundación: publica el plan de trabajo como un issue de roadmap en GitHub, con una línea de task list por spec futura. | Adaptada de [Group-Active-IA/roadmap-generator](https://github.com/Group-Active-IA/roadmap-generator) |
+| `agent-instruction` | "generá el AGENTS.md" | Fundación: escribe las instrucciones del proyecto en `AGENTS.md` (y un `CLAUDE.md` que lo importa) a partir de la KB y el roadmap, sin pisar las secciones ajenas como `## Agent skills`. | Adaptada de [JuanCruzRobledo/agent-instruction](https://github.com/JuanCruzRobledo/agent-instruction) |
 
 ## Workflow
 
@@ -58,8 +58,32 @@ Gate final según el nivel de governance del cambio (detalle en `config/CLAUDE.m
 | HIGH | `code-review` + `gemini-loop` |
 | CRITICAL | `code-review` + `gemini-loop` + `council` |
 
-Fundación (solo proyectos grandes): `discovery-research` → `kb-creator` →
-`roadmap-generator` → `agent-instruction`.
+### Fundación
+
+Solo para proyectos grandes y vacíos; el resto arranca directo con
+`/mattpocock-skills:grill-with-docs`. Es una cadena sin orquestador ni archivo
+de estado: cada skill lee de disco o de GitHub lo que dejó la anterior y termina diciéndote
+el próximo comando.
+
+```
+discovery-research (opcional, con web-scraper)   → discovery/
+          ▼
+kb-creator                                       → knowledge-base/, GLOSSARY.md, docs/adr/
+          ▼
+roadmap-generator                                → issue de roadmap en GitHub (task list)
+          ▼
+agent-instruction                                → AGENTS.md + CLAUDE.md (@AGENTS.md)
+          ▼
+/mattpocock-skills:setup-matt-pocock-skills      → agrega ## Agent skills a AGENTS.md
+          ▼
+agent-instruction (otra vez)                     → suma las skills de Matt, conserva ## Agent skills
+```
+
+Lo que produce cae en los formatos que ya leen las skills de Matt. Después,
+cada ítem del issue de roadmap entra al workflow normal con
+`/mattpocock-skills:grill-with-docs`; cuando `to-spec` crea la spec, el agente
+deja la línea del ítem como `- [ ] R-NN #N` (conserva el ID y reemplaza el
+resto) y GitHub la tilda sola al cerrarse la spec.
 
 ## Instalación
 
@@ -90,14 +114,34 @@ Copy-Item -Recurse -Force "cursor-plugins\pstack\skills\maintain-verification-sk
 No mezcles el plugin de Matt con copias sueltas de sus skills en
 `~/.claude/skills`: quedarían duplicadas.
 
-Las skills de fundación vienen en este repo. Los agentes `advisor` y `scout`, y
-`active-orchestrator`, vienen de **active-stack**. Instalalo antes, pero ojo: su
-install/update reescribe el `CLAUDE.md` global con bloques `active-stack:sdd-*`;
-después de correrlo, volvé a copiar `config/CLAUDE.md`.
+Las skills de fundación vienen en este repo; no hace falta active-stack para
+correrlas. Los agentes `advisor` y `scout` vienen de **active-stack**. Instalalo
+antes, pero ojo: su install/update reescribe el `CLAUDE.md` global con bloques
+`active-stack:sdd-*`; después de correrlo, volvé a copiar `config/CLAUDE.md`.
 
 `config/CLAUDE.md` es el `CLAUDE.md` global: shell, workflow, governance,
 gate final y preferencias. Reemplaza al tuyo (el bloque de instalación hace
 backup en `CLAUDE.md.bak`).
+
+### AGENTS.md en otros agentes
+
+La fundación deja las instrucciones de cada proyecto en `AGENTS.md`, y el
+`CLAUDE.md` del proyecto solo lo importa (`@AGENTS.md`).
+
+- **Gemini CLI** lee `GEMINI.md` por defecto. Para que lea `AGENTS.md` en
+  todos los proyectos, agregalo una vez a sus archivos de contexto en
+  `$env:USERPROFILE\.gemini\settings.json` (si el archivo ya existe, sumá la
+  clave sin pisar el resto):
+
+  ```json
+  {
+    "context": {
+      "fileName": ["AGENTS.md", "GEMINI.md"]
+    }
+  }
+  ```
+
+- **OpenCode** lee `AGENTS.md` sin configurar nada.
 
 ## Preferencias personales
 
@@ -126,10 +170,11 @@ Este stack se apoya en el trabajo de otros. Gracias a:
   [kb-creator](https://github.com/Group-Active-IA/kb-creator),
   [roadmap-generator](https://github.com/Group-Active-IA/roadmap-generator) y
   [web-scraper](https://github.com/Group-Active-IA/web-scraper) (Apache-2.0).
-  Las skills de fundación homónimas son copias de esos repos.
+  Las skills de fundación homónimas se adaptaron de esos repos para el
+  workflow con GitHub Issues (`web-scraper` es copia sin cambios).
   Ver [`NOTICE.md`](NOTICE.md).
 - **Juan Cruz Robledo** — [agent-instruction](https://github.com/JuanCruzRobledo/agent-instruction) (Apache-2.0).
-  `agent-instruction` es una copia de su skill.
+  `agent-instruction` es una adaptación de su skill.
   Ver [`NOTICE.md`](NOTICE.md).
 - **Lauren Tan** — [pstack](https://github.com/cursor/plugins/tree/main/pstack) (MIT).
   La idea de una skill de verificación por proyecto (`create-verification-skill`)

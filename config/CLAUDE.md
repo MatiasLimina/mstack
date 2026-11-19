@@ -45,6 +45,11 @@ por cada ticket desbloqueado (su rama, su PR):
   conversación cierre una fase, decile al usuario el próximo comando, tal
   cual hay que escribirlo, y esperá a que lo corra. Cada fase produce su
   artefacto con su propia skill, aunque el cambio parezca chico.
+- En la fase de `to-spec`: si la spec sale de un ítem del issue de roadmap,
+  después de crear el issue de spec editá el issue de roadmap y dejá la línea
+  de ese ítem como `- [ ] R-NN #N`: conservá su ID `R-NN` (lo usan las
+  dependencias y el camino crítico) y reemplazá el resto por el número de la
+  spec, para que GitHub la tilde al cerrarse.
 - `implement` commitea en la rama actual, así que antes de `/implement #N`
   parate en la rama del ticket: si no existe, creala desde la default
   actualizada como `<tipo>/<N>-<slug>` (`<tipo>`: `feat`, `fix`, `refactor`,
@@ -53,13 +58,18 @@ por cada ticket desbloqueado (su rama, su PR):
 - El `code-review` que corre `implement` cuenta como el `code-review` del gate
   final para ese diff; el gate suma lo que falte según el nivel.
 - Antes de implementar, ubicá el estado del proyecto: leé su `CLAUDE.md` /
-  `AGENTS.md` y, si existen, `knowledge-base/` y `CHANGES.md`.
-- Fundación (solo proyectos grandes y vacíos): `discovery-research` →
-  `kb-creator` → `roadmap-generator` → `agent-instruction`.
+  `AGENTS.md` y, si existen, `knowledge-base/`, `GLOSSARY.md`, `docs/adr/`
+  y el issue de roadmap.
+- Fundación (solo proyectos grandes y vacíos): `discovery-research`
+  (opcional) → `kb-creator` → `roadmap-generator` → `agent-instruction` →
+  `/mattpocock-skills:setup-matt-pocock-skills` → `agent-instruction` otra
+  vez. Después, cada ítem del issue de roadmap entra al workflow por
+  `/mattpocock-skills:grill-with-docs`, igual que cualquier otro proyecto.
 - Las skills de Matt vienen del plugin `mattpocock-skills`. Siempre van con
   prefijo (`mattpocock-skills:code-review`, no el `/code-review` built-in de
-  Claude Code). En un proyecto nuevo, el usuario corre antes
-  `/mattpocock-skills:setup-matt-pocock-skills` con GitHub como tracker; sin
+  Claude Code). En un proyecto nuevo, el usuario corre
+  `/mattpocock-skills:setup-matt-pocock-skills` con GitHub como tracker antes
+  del primer `to-spec` (en la fundación, después de `agent-instruction`); sin
   eso, `to-spec` y `to-tickets` no saben dónde publicar.
 - `verify-<proyecto>` se crea con `/create-verification-skill` (pstack) si el
   proyecto no la tiene.
