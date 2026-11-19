@@ -46,9 +46,10 @@ por cada ticket desbloqueado (su rama, su PR):
   cual hay que escribirlo, y esperá a que lo corra. Cada fase produce su
   artefacto con su propia skill, aunque el cambio parezca chico.
 - En la fase de `to-spec`: si la spec sale de un ítem del issue de roadmap,
-  después de crear el issue de spec editá el issue de roadmap y reemplazá el
-  texto de ese ítem por `#N` (el número de la spec), para que GitHub lo
-  tilde al cerrarse la spec.
+  después de crear el issue de spec editá el issue de roadmap y dejá la línea
+  de ese ítem como `- [ ] R-NN #N`: conservá su ID `R-NN` (lo usan las
+  dependencias y el camino crítico) y reemplazá el resto por el número de la
+  spec, para que GitHub la tilde al cerrarse.
 - `implement` commitea en la rama actual, así que antes de `/implement #N`
   parate en la rama del ticket: si no existe, creala desde la default
   actualizada como `<tipo>/<N>-<slug>` (`<tipo>`: `feat`, `fix`, `refactor`,

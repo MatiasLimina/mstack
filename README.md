@@ -62,7 +62,7 @@ Gate final según el nivel de governance del cambio (detalle en `config/CLAUDE.m
 
 Solo para proyectos grandes y vacíos; el resto arranca directo con
 `/mattpocock-skills:grill-with-docs`. Es una cadena sin orquestador ni archivo
-de estado: cada skill lee de disco lo que dejó la anterior y termina diciéndote
+de estado: cada skill lee de disco o de GitHub lo que dejó la anterior y termina diciéndote
 el próximo comando.
 
 ```
@@ -82,7 +82,8 @@ agent-instruction (otra vez)                     → suma las skills de Matt, co
 Lo que produce cae en los formatos que ya leen las skills de Matt. Después,
 cada ítem del issue de roadmap entra al workflow normal con
 `/mattpocock-skills:grill-with-docs`; cuando `to-spec` crea la spec, el agente
-reemplaza el texto del ítem por `#N` y GitHub lo tilda solo al cerrarse.
+deja la línea del ítem como `- [ ] R-NN #N` (conserva el ID y reemplaza el
+resto) y GitHub la tilda sola al cerrarse la spec.
 
 ## Instalación
 
