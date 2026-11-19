@@ -7,8 +7,9 @@ disable-model-invocation: true
 # design-studio
 
 Un estudio de diseño de tres miembros que produce **prototipos descartables**
-para que el usuario elija. Nunca toca el código de la app: la opción ganadora
-se guarda como documentación y se implementa después por el flujo normal
+para que el usuario elija. Esta sesión escribe solo en dos lugares: la
+carpeta de corrida (paso 4) y `docs/design/<slug>/` (paso 8). El código de la
+app queda intacto: la ganadora se implementa después por el flujo normal
 (spec → tickets → implement).
 
 ## Miembros
@@ -19,8 +20,10 @@ se guarda como documentación y se implementa después por el flujo normal
 | Diseñador | `claudeAgent` / `claude-opus-5-5` | effort `high` |
 | Diseñador | `antigravity` / `gemini-4-argon` | `thought_level: high` |
 
-- Si el `CLAUDE.md` global tiene una línea `design-studio: ...` en
-  "Overrides de skills", esos miembros reemplazan a los de la tabla.
+- Un miembro se cambia con una línea en "Overrides de skills" del
+  `CLAUDE.md` global, una por rol: `design-studio — líder: <proveedor>/<modelo>`,
+  `design-studio — diseñador opus: ...` o `design-studio — diseñador argon: ...`.
+  Los roles sin línea usan la tabla.
 - Gemini va siempre por `antigravity`, nunca por `opencode`.
 - **Neon lidera con lo que escribe**: el brief y la crítica. La orquestación
   (lanzar delegados, renderizar, mostrar) la hace esta sesión, porque un
@@ -149,8 +152,8 @@ Con el "listo", guardá la ganadora en el repo, en `docs/design/<slug>/`
   ancho de la tabla del paso 5 y `preview_snapshot` con `save: true`. Copiá
   cada PNG con un nombre que diga el ancho (`captura-1280.png`). Cerrá la
   pestaña al terminar.
-- `README.md` con las decisiones: medio, paleta, tipografía, layout, el brief
-  resumido y por qué ganó (en palabras del usuario si las dio).
+- `README.md` con las decisiones: el `decisiones.md` del autor, más el medio,
+  el brief resumido y por qué ganó (en palabras del usuario si las dio).
 
 Las opciones descartadas quedan solo en la carpeta de corrida. Terminá con el
 próximo comando, tal cual:
