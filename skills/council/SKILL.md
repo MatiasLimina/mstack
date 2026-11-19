@@ -1,6 +1,6 @@
 ---
 name: council
-description: Convoca un consejo de tres modelos de distintos proveedores (Opus, Gemini Argon y un tercero que nombra el usuario) para revisar o dar feedback. Usala cuando el usuario diga "council".
+description: Convoca un consejo de tres modelos de distintos proveedores (Opus, Gemini Neon y un tercero que nombra el usuario) para revisar o dar feedback. Usala cuando el usuario diga "council".
 ---
 
 <!-- Origen: tstack/skills/council (MIT, Theo Browne). Ver NOTICE.md.
@@ -20,7 +20,7 @@ nuevas, no arregles código que se va a tirar.
 Tres delegados de tres proveedores distintos, todos con razonamiento alto:
 
 1. `claudeAgent` / `claude-opus-5-5`, effort `high`
-2. `antigravity` / `gemini-4-argon`, `thinking_level: high`
+2. `antigravity` / `gemini-4-neon`, `thinking_level: high`
 3. El modelo que el usuario nombra al invocarlo (por ejemplo,
    "council con GPT Sol"), con su nivel de razonamiento alto.
 
@@ -71,7 +71,7 @@ Rounds: 2
 | Delegate | Round 1 | Round 2 |
 | --- | --- | --- |
 | Claude Opus | 7/10 | 9/10 |
-| Gemini Argon | 8/10 | 10/10 |
+| Gemini Neon | 8/10 | 10/10 |
 | GPT Sol | 7/10 | 9/10 |
 ```
 

@@ -18,8 +18,8 @@ y no tengas miedo de discutirle.
 
 Cadena por defecto, en orden:
 
-1. `antigravity` / `gemini-4-argon`, `thinking_level: medium`
-2. `antigravity` / `gemini-4-hydrogen`, `thinking_level: medium` (fallback)
+1. `antigravity` / `gemini-4-neon`, `thinking_level: medium`
+2. `antigravity` / `gemini-4-argon`, `thinking_level: medium` (fallback)
 
 En cambios arriesgados (ver Presupuesto) los dos modelos de la cadena suben a
 `thinking_level: high`.
