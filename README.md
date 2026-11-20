@@ -89,14 +89,19 @@ resto) y GitHub la tilda sola al cerrarse la spec.
 
 ## Instalación
 
-Clonar el repo y copiar (o enlazar) las skills a la carpeta de skills del agente:
+Clonar el repo y correr el script de sincronización (copia las skills y
+`config/CLAUDE.md` a `~/.claude/`, haciendo backup en `CLAUDE.md.bak` sin tocar
+tus otras skills):
 
 ```powershell
 git clone https://github.com/MatiasLimina/mstack
-Copy-Item -Recurse -Force "mstack\skills\*" "$env:USERPROFILE\.claude\skills\"
-Copy-Item -Force "$env:USERPROFILE\.claude\CLAUDE.md" "$env:USERPROFILE\.claude\CLAUDE.md.bak"  # backup del global actual
-Copy-Item -Force "mstack\config\CLAUDE.md" "$env:USERPROFILE\.claude\CLAUDE.md"
+cd mstack
+.\scripts\sync.ps1
 ```
+
+Para actualizar después de un `git pull`, volvé a correr `.\scripts\sync.ps1`.
+Acepta `-DryRun` (muestra qué cambiaría sin escribir nada) y `-SkipClaudeMd`
+(actualiza solo las skills).
 
 ### Dependencias
 
