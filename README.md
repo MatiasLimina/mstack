@@ -103,6 +103,13 @@ Para actualizar después de un `git pull`, volvé a correr `.\scripts\sync.ps1`.
 Acepta `-DryRun` (muestra qué cambiaría sin escribir nada) y `-SkipClaudeMd`
 (actualiza solo las skills).
 
+Si usás Antigravity (Gemini Neon en T3 Code), el script también mantiene
+`~/.gemini/config/skills.json`: ahí las rutas al plugin de Matt llevan la
+versión, y Claude Code borra la versión vieja al actualizar el plugin. El
+script las reapunta a la versión instalada (backup en `skills.json.bak`) y
+avisa con `WARN` de cualquier ruta que no exista. Volvé a correrlo después de
+cada actualización del plugin. `-SkipAntigravity` lo saltea.
+
 ### Dependencias
 
 El workflow usa skills de terceros que este repo no copia:
