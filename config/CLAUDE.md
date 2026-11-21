@@ -68,7 +68,9 @@ por cada ticket desbloqueado (su rama, su PR):
   `/mattpocock-skills:grill-with-docs`, igual que cualquier otro proyecto.
 - Las skills de Matt vienen del plugin `mattpocock-skills`. Siempre van con
   prefijo (`mattpocock-skills:code-review`, no el `/code-review` built-in de
-  Claude Code). En un proyecto nuevo, el usuario corre
+  Claude Code). Fuera de Claude Code (Antigravity / Gemini Neon) se cargan
+  desde `~/.gemini/config/skills.json` sin prefijo: buscalas por el nombre
+  solo (`code-review`, `to-spec`). En un proyecto nuevo, el usuario corre
   `/mattpocock-skills:setup-matt-pocock-skills` con GitHub como tracker antes
   del primer `to-spec` (en la fundación, después de `agent-instruction`); sin
   eso, `to-spec` y `to-tickets` no saben dónde publicar.
