@@ -1,10 +1,11 @@
 ---
 name: gemini-loop
-description: Revisa un cambio con un revisor Gemini en loop hasta que los dos agentes estén de acuerdo. Usala cuando el usuario diga "gemini loop", o cuando full-send / full-stop pidan el paso de feedback.
+description: Revisa un cambio con un revisor Gemini en loop hasta que los dos agentes estén de acuerdo (Neon en cambios normales, Carbon en los arriesgados). Usala cuando el usuario diga "gemini loop", o cuando full-send / full-stop pidan el paso de feedback.
 ---
 
 <!-- Origen: tstack/skills/sol-loop (MIT, Theo Browne). Ver NOTICE.md.
-     Cambios: revisor Gemini vía antigravity con cadena de fallback, en vez de GPT Sol. -->
+     Cambios: revisor Gemini vía antigravity con cadena de fallback, en vez de GPT Sol;
+     dos cadenas según riesgo (Carbon revisa los cambios arriesgados). -->
 
 # gemini-loop
 
@@ -16,24 +17,33 @@ y no tengas miedo de discutirle.
 
 ## Revisor
 
-Cadena por defecto, en orden:
+Hay dos cadenas. Cuál usás depende de si el cambio es arriesgado (ver
+Presupuesto), y lo decidís una sola vez, en el paso 1.
+
+Cadena normal, en orden:
 
 1. `antigravity` / `gemini-4-neon`, `thought_level: medium`
 2. `antigravity` / `gemini-4-argon`, `thought_level: medium` (fallback)
 
-En cambios arriesgados (ver Presupuesto) los dos modelos de la cadena suben a
-`thought_level: high`.
+Cadena arriesgada, en orden, todos con `thought_level: high`:
 
-Si el `CLAUDE.md` / `AGENTS.md` del usuario define otra cadena para
-`gemini-loop`, usá esa.
+1. `antigravity` / `gemini-4-carbon`
+2. `antigravity` / `gemini-4-neon` (fallback)
+3. `antigravity` / `gemini-4-argon` (fallback)
 
-Reglas del fallback:
+Overrides: si el `CLAUDE.md` / `AGENTS.md` del usuario define
+`gemini-loop — cadena: <modelos>`, esa reemplaza la cadena normal; si define
+`gemini-loop — cadena arriesgada: <modelos>`, esa reemplaza la arriesgada. Un
+override conserva el `thought_level` de la cadena que reemplaza.
+
+Reglas del fallback (valen para las dos cadenas):
 
 - Pasás al siguiente modelo **solo** si el actual no está disponible, da
   error, o no responde. Nunca porque devolvió `CHANGES`: un veredicto que no
   te gusta no es una falla del revisor.
-- Una vez que cambiaste de modelo, quedate con ese el resto del loop. No
-  mezcles revisores entre rondas.
+- Una vez que cambiaste de modelo, quedate con ese el resto del loop (si ese
+  también falla, seguí al siguiente de la misma cadena). No mezcles revisores
+  entre rondas.
 - Gemini va siempre por `antigravity` (cuota del plan), nunca por `opencode`.
 - Si ningún modelo de la cadena corre, reportá el bloqueo. No sustituyas por
   un modelo fuera de la cadena.
@@ -43,10 +53,11 @@ Reglas del fallback:
 - Default: 3 rondas en total. La ronda 1 es completa. Las siguientes revisan
   solo el código cambiado y los hallazgos abiertos.
 - Cambios arriesgados: seguridad, permisos, auth, pérdida de datos o
-  estado/concurrencia. Ahí la cadena sube a `thought_level: high` y el tope
-  pasa a 5 rondas, mientras siga abierto un blocker o should con evidencia.
-  También si el usuario lo pide. Decidí si es arriesgado en el paso 1 y
-  anotalo en el brief. No lo cambies a mitad del loop.
+  estado/concurrencia. Ahí usás la cadena arriesgada y el tope pasa a 5
+  rondas, mientras siga abierto un blocker o should con evidencia. También si
+  el usuario lo pide, por ejemplo "revisalo con Carbon". Decidí si es
+  arriesgado en el paso 1 y anotalo en el brief. No lo cambies a mitad del
+  loop.
 - Cortá antes si una ronda devuelve solo nits. Los nits rechazados y los
   arreglos de solo comentarios, docs o formato no abren una ronda nueva.
 
@@ -72,14 +83,16 @@ Encontrá la base después de `git fetch origin`:
 
 El cambio es de la base al working tree en esos paths, con los archivos sin
 trackear. Usá un mismo comando de diff en todas las rondas. Escribí la
-intención y lo que queda fuera de alcance en 1-2 oraciones. Corré los checks
+intención y lo que queda fuera de alcance en 1-2 oraciones. Decidí si el
+cambio es arriesgado (ver Presupuesto) y con eso elegí la cadena. Corré los checks
 que cubren el cambio. No mandes código que este cambio rompe. Anotá en el
 brief los checks que faltan o que ya fallaban antes.
 
 ## 2. Lanzar el revisor
 
 En T3 Code, llamá a `orchestrator_capabilities` una vez y confirmá que el
-primer modelo de la cadena existe. Usá `delegate_task` en cada ronda
+primer modelo de la cadena elegida existe (si no existe, eso cuenta como falla
+y aplica el fallback). Usá `delegate_task` en cada ronda
 (`role: "review"`, `mode: "async"`). Guardá el `taskId`. Un `clientRequestId`
 nuevo por ronda. `childThreadId` es almacenamiento, no el destino siguiente.
 No uses `t3_thread_send`, `create_threads` ni `t3_thread_launch` para revisar.
@@ -97,6 +110,7 @@ Brief de la ronda 1 (los hijos de T3 no tienen historial):
 ```
 Review only. Do not edit, commit, push, comment on PRs, or start subagents.
 Repo: <abs path> Base: <sha> Intent: <intent> Out of scope: <scope> Checks: <results>
+Risk: <normal | risky: reason>
 See: git diff <base> [-- <paths>]; git status --short (read untracked).
 Read surrounding code. Find bugs, broken callers, mismatch with intent.
 Skip style unless it hides a bug. Hold to the smallest change. Flag code,
@@ -145,8 +159,8 @@ línea de modelo:
 
 `Reviewed with gemini-loop: <N> rounds with <model>. Verdict: approved`.
 
-Si hubo fallback, nombrá ambos modelos y en qué ronda cambió.
+Si hubo fallback, nombrá los modelos usados y en qué ronda cambió cada uno.
 
-Reporte: rondas, modelo(s), qué cambió por la revisión, tamaño del diff
-antes/después, hallazgos arreglados y rechazados con motivo, uso si se informa
+Reporte: cadena usada (normal o arriesgada) y por qué, rondas, modelo(s), qué
+cambió por la revisión, tamaño del diff antes/después, hallazgos arreglados y rechazados con motivo, uso si se informa
 (si no, decilo), si pusheaste o no.
