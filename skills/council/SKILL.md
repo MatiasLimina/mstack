@@ -1,6 +1,6 @@
 ---
 name: council
-description: Convoca un consejo de tres modelos de distintos proveedores (Opus, Gemini y un tercero que nombra el usuario) para revisar o dar feedback. Gemini es Carbon si hay código que revisar y Neon si se exploran ideas. Usala cuando el usuario diga "council".
+description: Convoca un consejo de tres modelos de distintos proveedores (Opus, Gemini y un tercero que nombra el usuario) para revisar o dar feedback. Gemini es Carbon si hay código que revisar y Neon para ideas o feedback sin código. Usala cuando el usuario diga "council".
 ---
 
 <!-- Origen: tstack/skills/council (MIT, Theo Browne). Ver NOTICE.md.
@@ -29,18 +29,19 @@ Tres delegados de tres proveedores distintos, todos con razonamiento alto:
 3. El modelo que el usuario nombra al invocarlo (por ejemplo,
    "council con GPT Sol"), con su nivel de razonamiento alto.
 
-Es un solo asiento de Gemini, no dos. Si hay código en juego, aunque también se
-discutan ideas, va Carbon. Decidí cuál va antes de lanzar y no lo cambies a
-mitad del consejo. Si el que corresponde no está disponible, reportalo: Carbon
-no cae a Neon.
+Es un solo asiento de Gemini, no dos. Si la consulta mezcla revisión de código
+e ideas, va Carbon, salvo que la implementación se vaya a descartar. Decidí
+cuál va antes de lanzar y no lo cambies a mitad del consejo.
 
 Si el usuario no nombra el tercer miembro, preguntale cuál antes de lanzar
 cualquier delegado. No elijas uno por tu cuenta ni arranques con dos.
 
 - Gemini va siempre por `antigravity` (cuota del plan), nunca por `opencode`.
-- Si el usuario nombra otros miembros, usá esos, también para el asiento de
-  Gemini (por ejemplo, "council con Neon" sobre un diff).
-- Si un miembro no está disponible, reportalo. No lo sustituyas por otro.
+- Si el usuario nombra otros miembros, usá esos en el asiento que corresponda,
+  incluido el de Gemini (por ejemplo, "council con Neon y GPT Sol" sobre un
+  diff). Reemplazar a Gemini no cubre el tercer asiento.
+- Si un miembro no está disponible, reportalo. No lo sustituyas por otro
+  (tampoco Carbon por Neon ni al revés).
 
 ## Lanzar
 
