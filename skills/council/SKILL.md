@@ -29,14 +29,17 @@ Tres delegados de tres proveedores distintos, todos con razonamiento alto:
 3. El modelo que el usuario nombra al invocarlo (por ejemplo,
    "council con GPT Sol"), con su nivel de razonamiento alto.
 
-Decidí cuál Gemini va antes de lanzar y no lo cambies a mitad del consejo. Es
-un solo asiento: Carbon reemplaza a Neon, no se suma como cuarto miembro.
+Es un solo asiento de Gemini, no dos. Si hay código en juego, aunque también se
+discutan ideas, va Carbon. Decidí cuál va antes de lanzar y no lo cambies a
+mitad del consejo. Si el que corresponde no está disponible, reportalo: Carbon
+no cae a Neon.
 
 Si el usuario no nombra el tercer miembro, preguntale cuál antes de lanzar
 cualquier delegado. No elijas uno por tu cuenta ni arranques con dos.
 
 - Gemini va siempre por `antigravity` (cuota del plan), nunca por `opencode`.
-- Si el usuario nombra otros miembros, usá esos.
+- Si el usuario nombra otros miembros, usá esos, también para el asiento de
+  Gemini (por ejemplo, "council con Neon" sobre un diff).
 - Si un miembro no está disponible, reportalo. No lo sustituyas por otro.
 
 ## Lanzar
@@ -83,7 +86,8 @@ Rounds: 2
 | GPT Sol | 7/10 | 9/10 |
 ```
 
-Nombrá cada delegado por el modelo que realmente participó. Si un delegado no da score, escribí `no score`. No lo inventes. Si el PR está
+Nombrá cada delegado por el modelo que realmente participó. Si un delegado no
+da score, escribí `no score`. No lo inventes. Si el PR está
 abierto, editá la descripción; no publiques un comentario. Si no hay PR, poné
 los mismos resultados solo en la respuesta final.
 
