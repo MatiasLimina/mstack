@@ -31,14 +31,10 @@ Cadena arriesgada, en orden, todos con `thought_level: high`:
 2. `antigravity` / `gemini-4-neon` (fallback)
 3. `antigravity` / `gemini-4-argon` (fallback)
 
-Carbon es el más fuerte en código complejo, pero gasta más cuota y tarda más.
-Por eso revisa solo lo arriesgado.
-
 Overrides: si el `CLAUDE.md` / `AGENTS.md` del usuario define
-`gemini-loop — cadena: <modelos>`, esa reemplaza la cadena normal. Si define
-`gemini-loop — cadena arriesgada: <modelos>`, esa reemplaza la arriesgada. Cada
-override toca solo su cadena. Una línea vieja que diga solo "otra cadena" para
-`gemini-loop`, sin aclarar cuál, cuenta como la normal.
+`gemini-loop — cadena: <modelos>`, esa reemplaza la cadena normal; si define
+`gemini-loop — cadena arriesgada: <modelos>`, esa reemplaza la arriesgada. Un
+override conserva el `thought_level` de la cadena que reemplaza.
 
 Reglas del fallback (valen para las dos cadenas):
 
@@ -56,11 +52,11 @@ Reglas del fallback (valen para las dos cadenas):
 - Default: 3 rondas en total. La ronda 1 es completa. Las siguientes revisan
   solo el código cambiado y los hallazgos abiertos.
 - Cambios arriesgados: seguridad, permisos, auth, pérdida de datos o
-  estado/concurrencia. Ahí usás la cadena arriesgada (Carbon primero, todo en
-  `thought_level: high`) y el tope pasa a 5 rondas, mientras siga abierto un
-  blocker o should con evidencia. También si el usuario lo pide, por ejemplo
-  "revisalo con Carbon". Decidí si es arriesgado en el paso 1 y anotalo en el
-  brief con la cadena elegida. No lo cambies a mitad del loop.
+  estado/concurrencia. Ahí usás la cadena arriesgada y el tope pasa a 5
+  rondas, mientras siga abierto un blocker o should con evidencia. También si
+  el usuario lo pide, por ejemplo "revisalo con Carbon". Decidí si es
+  arriesgado en el paso 1 y anotalo en el brief. No lo cambies a mitad del
+  loop.
 - Cortá antes si una ronda devuelve solo nits. Los nits rechazados y los
   arreglos de solo comentarios, docs o formato no abren una ronda nueva.
 
@@ -86,7 +82,8 @@ Encontrá la base después de `git fetch origin`:
 
 El cambio es de la base al working tree en esos paths, con los archivos sin
 trackear. Usá un mismo comando de diff en todas las rondas. Escribí la
-intención y lo que queda fuera de alcance en 1-2 oraciones. Corré los checks
+intención y lo que queda fuera de alcance en 1-2 oraciones. Decidí si el
+cambio es arriesgado (ver Presupuesto) y con eso elegí la cadena. Corré los checks
 que cubren el cambio. No mandes código que este cambio rompe. Anotá en el
 brief los checks que faltan o que ya fallaban antes.
 
@@ -163,6 +160,6 @@ línea de modelo:
 
 Si hubo fallback, nombrá ambos modelos y en qué ronda cambió.
 
-Reporte: cadena usada (normal o arriesgada) y por qué, rondas, modelo(s), qué cambió por la revisión, tamaño del diff
-antes/después, hallazgos arreglados y rechazados con motivo, uso si se informa
+Reporte: cadena usada (normal o arriesgada) y por qué, rondas, modelo(s), qué
+cambió por la revisión, tamaño del diff antes/después, hallazgos arreglados y rechazados con motivo, uso si se informa
 (si no, decilo), si pusheaste o no.
