@@ -41,8 +41,9 @@ Reglas del fallback (valen para las dos cadenas):
 - Pasás al siguiente modelo **solo** si el actual no está disponible, da
   error, o no responde. Nunca porque devolvió `CHANGES`: un veredicto que no
   te gusta no es una falla del revisor.
-- Una vez que cambiaste de modelo, quedate con ese el resto del loop. No
-  mezcles revisores entre rondas.
+- Una vez que cambiaste de modelo, quedate con ese el resto del loop (si ese
+  también falla, seguí al siguiente de la misma cadena). No mezcles revisores
+  entre rondas.
 - Gemini va siempre por `antigravity` (cuota del plan), nunca por `opencode`.
 - Si ningún modelo de la cadena corre, reportá el bloqueo. No sustituyas por
   un modelo fuera de la cadena.
