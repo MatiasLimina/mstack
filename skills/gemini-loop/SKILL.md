@@ -159,7 +159,7 @@ línea de modelo:
 
 `Reviewed with gemini-loop: <N> rounds with <model>. Verdict: approved`.
 
-Si hubo fallback, nombrá ambos modelos y en qué ronda cambió.
+Si hubo fallback, nombrá los modelos usados y en qué ronda cambió cada uno.
 
 Reporte: cadena usada (normal o arriesgada) y por qué, rondas, modelo(s), qué
 cambió por la revisión, tamaño del diff antes/después, hallazgos arreglados y rechazados con motivo, uso si se informa
